@@ -1,0 +1,56 @@
+---
+title: 'Cutting Cloud Cost with IAM-Driven Automation'
+date: '2026-01-12'
+displayDate: 'Jan 2026'
+tldr: 'How a small Go service, scoped tightly with AWS IAM roles, quietly reclaims stale S3 storage and idle resources across HVD clusters, turning a recurring manual chore into a safe, auditable job.'
+tags: ['Cloud', 'Go', 'System Design']
+kind: 'case study'
+timeline: false
+---
+
+<Lead>
+Cloud bills rarely balloon from one big mistake. They drift upward from
+thousands of small, stale resources nobody owns. Here is how I automated the
+cleanup safely.
+</Lead>
+
+## The slow leak
+
+Across many clusters, orphaned S3 objects, detached volumes and abandoned test
+buckets accumulate faster than humans can audit them. Manual cleanup is risky
+and nobody wants to be the one who deletes the wrong bucket.
+
+<Callout type="warning" title="Deletion is irreversible">
+Any automation with delete permissions is one bad filter away from data loss.
+Least-privilege scoping and a dry-run mode are not optional.
+</Callout>
+
+## Scoped, dry-run-first
+
+The job assumes a narrowly-scoped IAM role, lists candidates by age and tags,
+reports what it would remove, and only deletes on an explicit flag after the
+report is reviewed.
+
+```go title="reclaim.go" {5}
+func reclaim(ctx context.Context, c *s3.Client, dry bool) error {
+  stale := listStale(ctx, c, olderThan(90*day))
+  for _, obj := range stale {
+    if dry {
+      log.Printf("would delete %s (%s)", obj.Key, obj.Age)
+      continue
+    }
+    delete(ctx, c, obj)
+  }
+  return nil
+}
+```
+
+<Callout type="note" title="Audit everything">
+Every action (and every skipped candidate) is logged to Datadog, so the savings
+are provable and the deletions are traceable.
+</Callout>
+
+## The result
+
+A recurring, reviewable job replaced an anxious manual chore, trimmed cloud
+spend, and turned cost hygiene into something the whole team trusts.

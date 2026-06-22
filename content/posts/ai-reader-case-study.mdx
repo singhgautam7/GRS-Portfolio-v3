@@ -1,0 +1,105 @@
+---
+title: 'AI Book Reader: Deep Case Study'
+date: '2026-02-10'
+displayDate: 'Feb 2026'
+tldr: 'A privacy-first web app that turns personal documents and web articles into audiobooks using multiple AI TTS providers, built entirely client-side, with offline reading, audio caching and an immersive reader.'
+tags: ['AI', 'TTS', 'System Design']
+kind: 'case study'
+timeline: false
+---
+
+<Lead>
+AI Book Reader is a privacy-first, browser-based application that converts PDFs,
+EPUBs and web articles into immersive audiobooks using multiple AI
+text-to-speech providers, without uploading a single file to a server.
+</Lead>
+
+## The problem
+
+Traditional audiobook tools don't read personal documents, raise privacy
+concerns through cloud uploads, lock features behind subscriptions, and ship
+robotic voices with no offline capability or support for web articles.
+
+## The solution
+
+A unified reading platform that reads files locally, uses premium AI voices when
+available, falls back to browser TTS offline, handles large documents via
+chunking, preserves structure, and minimizes API usage through caching.
+
+## Multi-engine TTS
+
+- Browser native, the offline, free fallback
+- Gemini TTS, balanced quality
+- OpenAI TTS, natural voices
+- ElevenLabs, premium narration
+
+## System architecture
+
+The whole pipeline runs in the browser. Content flows from the user through
+processing and a provider-agnostic adapter layer, then into playback and a local
+cache.
+
+```text title="architecture.txt" {4,5}
+User
+  ↓
+React Frontend (SPA)
+  ↓
+Content Processing Layer
+  ↓
+TTS Adapter Layer
+  ↓
+Provider APIs / Browser TTS
+  ↓
+Audio Playback Engine
+  ↓
+Local Cache + History
+```
+
+<Callout type="note" title="One interface, many engines">
+Every provider implements the same generateSpeech(text, settings) contract, so
+the rest of the app never knows which engine is talking.
+</Callout>
+
+```ts title="tts-adapter.ts" {6,7}
+interface TTSAdapter {
+  generateSpeech(
+    text: string,
+    settings: VoiceSettings
+  ): Promise<Blob>;
+}
+
+// Pick the best available engine, fall back gracefully
+const engine = pickEngine(settings) ?? browserTTS;
+const audio = await engine.generateSpeech(chunk, settings);
+```
+
+## Caching strategy
+
+Cache keys hash the text chunk together with provider, voice, speed, pitch,
+emotion and model. Audio blobs live in IndexedDB; metadata in LocalStorage, so
+replays never re-hit an API and stay responsive offline.
+
+<Callout type="tip" title="Cache on the full render signature">
+Hashing every parameter that affects the waveform (not just the text) means a
+voice or speed change correctly misses the cache instead of replaying stale
+audio.
+</Callout>
+
+## Trade-offs
+
+Going backend-less buys maximum privacy, lower cost and simpler deployment, at
+the price of cross-device sync and browser storage limits. Chunking is what makes
+long documents, streaming UX and fine-grained caching all possible.
+
+<Callout type="warning" title="Mind the storage ceiling">
+IndexedDB quotas vary by browser and device. Large libraries need an eviction
+policy, or the cache will silently fail to write on constrained mobile devices.
+</Callout>
+
+## Why it stands out
+
+- Applied AI integration
+- System-design thinking
+- Privacy-centric architecture
+- Multi-provider abstraction
+- Product-level decision making

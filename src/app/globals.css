@@ -1,0 +1,454 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   GRS Portfolio v3 — design tokens (lifted verbatim from the handoff
+   tokens.css / GRS Portfolio v3.dc.html). AMOLED dark is the default (:root).
+   Light overrides under [data-theme="light"]. data-theme is set on <html> and
+   hydrated from localStorage('grs-theme') by a blocking inline script.
+   ========================================================================== */
+
+:root,
+[data-theme='dark'] {
+  --bg: #000000;
+  --surface: #0b0e14;
+  --surface-2: #11151e;
+  --surface-3: #161b26;
+  --bubble-user: rgba(90, 160, 255, 0.14);
+  --line: rgba(150, 180, 225, 0.12);
+  --line-2: rgba(150, 180, 225, 0.24);
+  --accent: #5aa0ff;
+  --accent-2: #8fc4ff;
+  --accent-ink: #04162e;
+  --ink: #eef2f9;
+  --ink-2: #a4b0c4;
+  --ink-3: #69748a;
+  --ink-faint: #3a4459;
+  --ok: #46d18b;
+  --warn: #f5b45a;
+  --grid: rgba(120, 160, 255, 0.05);
+  --grid-quiet: rgba(120, 160, 255, 0.022);
+  --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+  --avatar-glow: 0 0 28px -6px rgba(90, 160, 255, 0.5);
+  --scrim: rgba(0, 0, 0, 0.55);
+  /* Hero ambient field (theme-aware). Dark: light glow on black, additive. */
+  --hero-surface: #000000;
+  --ambient-blend: screen;
+  --ambient-core: rgba(90, 160, 255, 0.55);
+  --ambient-mid: rgba(40, 90, 205, 0.2);
+}
+
+[data-theme='light'] {
+  --bg: #f3f6fb;
+  --surface: #ffffff;
+  --surface-2: #eef2f9;
+  --surface-3: #e6ecf6;
+  --bubble-user: rgba(29, 78, 216, 0.1);
+  --line: rgba(30, 62, 112, 0.13);
+  --line-2: rgba(30, 62, 112, 0.22);
+  /* Darker blue on light so the accent and the hero ambient field stay clearly
+     visible against the pale background (dark theme keeps the lighter cyan). */
+  --accent: #1d4ed8;
+  --accent-2: #1a40bf;
+  --accent-ink: #ffffff;
+  --ink: #0d1726;
+  --ink-2: #45546d;
+  --ink-3: #75839a;
+  --ink-faint: #b6c3d8;
+  --ok: #16a34a;
+  --warn: #c2790a;
+  /* Darker grid stroke so the hero grid reads on the pale surface. */
+  --grid: rgba(30, 64, 130, 0.11);
+  --grid-quiet: rgba(40, 90, 170, 0.03);
+  --shadow: 0 24px 54px -28px rgba(31, 70, 140, 0.32);
+  --avatar-glow: 0 10px 26px -12px rgba(47, 111, 224, 0.5);
+  --scrim: rgba(20, 30, 50, 0.32);
+  /* Hero ambient field. Light: darker accent multiplied over a tinted surface
+     so the motion reads as a soft tinted darkening instead of vanishing. */
+  --hero-surface: #e6ecf9;
+  --ambient-blend: multiply;
+  --ambient-core: rgba(29, 78, 216, 0.42);
+  --ambient-mid: rgba(29, 78, 216, 0.2);
+}
+
+:root {
+  /* next/font self-hosts IBM Plex; fall back to the Google/system name. */
+  --font-sans: var(--font-ibm-sans), 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: var(--font-ibm-mono), 'IBM Plex Mono', ui-monospace, monospace;
+  --maxw: 1080px;
+  --gutter: clamp(18px, 4vw, 32px);
+  --r-card: 14px;
+  --r-control: 9px;
+  --r-input: 15px;
+  --r-chip: 6px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Expose a couple of tokens to Tailwind's utility layer for convenience. */
+@theme inline {
+  --font-sans: var(--font-ibm-sans), 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: var(--font-ibm-mono), 'IBM Plex Mono', ui-monospace, monospace;
+  --color-accent: var(--accent);
+  --color-ink: var(--ink);
+  --color-bg: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 6px;
+  border: 3px solid var(--bg);
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---- keyframes (from the design) ---- */
+@keyframes grsblink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes grsdot {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes grsup {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes grsfade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes grsspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes grsshimmer {
+  0% {
+    background-position: -360px 0;
+  }
+  100% {
+    background-position: 360px 0;
+  }
+}
+@keyframes grstype {
+  0%,
+  60%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+/* ---- reusable utilities ---- */
+.grs-h2 .grs-anchor {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.grs-h2:hover .grs-anchor,
+.grs-h2:focus-within .grs-anchor {
+  opacity: 1;
+}
+.grs-skel {
+  background: linear-gradient(
+    90deg,
+    var(--surface-2) 0px,
+    var(--surface-3) 180px,
+    var(--surface-2) 360px
+  );
+  background-size: 720px 100%;
+  animation: grsshimmer 1.4s linear infinite;
+}
+.grs-rail {
+  scrollbar-width: none;
+}
+.grs-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* faint blueprint grid — applied behind the hero only, radial-masked */
+.grs-hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 30px 30px;
+  -webkit-mask-image: radial-gradient(100% 65% at 50% 32%, #000 20%, transparent 72%);
+  mask-image: radial-gradient(100% 65% at 50% 32%, #000 20%, transparent 72%);
+}
+
+/* hero suggestion chips: wrapped + centered on larger screens, a single
+   horizontally-scrollable row with a right edge-fade on mobile (swipeable). */
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  justify-content: center;
+  margin-top: 18px;
+  width: 100%;
+}
+.hero-chips > .grs-chip {
+  flex: none;
+}
+@media (max-width: 640px) {
+  .hero-chips {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0 22px 2px 2px;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, #000 78%, transparent 100%);
+    mask-image: linear-gradient(90deg, #000 78%, transparent 100%);
+    scroll-snap-type: x proximity;
+  }
+  .hero-chips::-webkit-scrollbar {
+    display: none;
+  }
+  .hero-chips > .grs-chip {
+    scroll-snap-align: start;
+  }
+}
+
+/* ---- hero ambient field (compositor-only: transform + opacity) ----
+   Pre-rasterized blurred radial-gradient layers; the blur is static, only
+   transform/opacity animate. Each layer is its own compositor layer. The glow
+   blends with the hero surface via the theme-aware blend mode. */
+.ambient-root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.ambient-cursor {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.ambient-glow,
+.ambient-boost,
+.ambient-ripple {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  mix-blend-mode: var(--ambient-blend);
+  pointer-events: none;
+}
+.ambient-glow {
+  top: 42%;
+  width: 88vmin;
+  height: 88vmin;
+  margin-left: -44vmin;
+  margin-top: -44vmin;
+  background: radial-gradient(
+    circle closest-side,
+    var(--ambient-core),
+    var(--ambient-mid) 42%,
+    transparent 72%
+  );
+  filter: blur(44px);
+  will-change: transform, opacity;
+}
+.ambient-boost {
+  top: 48%;
+  width: 66vmin;
+  height: 66vmin;
+  margin-left: -33vmin;
+  margin-top: -33vmin;
+  background: radial-gradient(circle closest-side, var(--ambient-core), transparent 64%);
+  filter: blur(40px);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  will-change: opacity;
+}
+.ambient-root[data-active='1'] .ambient-boost {
+  opacity: 0.55;
+}
+.ambient-ripple {
+  top: 62%;
+  width: 42vmin;
+  height: 42vmin;
+  margin-left: -21vmin;
+  margin-top: -21vmin;
+  background: radial-gradient(
+    circle closest-side,
+    transparent 34%,
+    var(--ambient-core) 55%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  will-change: transform, opacity;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-boost {
+    transition: none !important;
+  }
+}
+
+/* quiet landing grid below the hero */
+.grs-landing-grid {
+  background-image:
+    linear-gradient(var(--grid-quiet) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-quiet) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center top;
+}
+
+/* ---- interaction utilities (hover/focus) ---- */
+.grs-chip {
+  transition:
+    border-color 0.18s,
+    color 0.18s,
+    transform 0.18s;
+}
+.grs-chip:hover {
+  border-color: var(--line-2);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+.grs-send {
+  transition:
+    transform 0.15s,
+    filter 0.15s;
+}
+.grs-send:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+.grs-nav-btn {
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
+}
+.grs-nav-btn:hover {
+  border-color: var(--line-2);
+  color: var(--ink);
+}
+.grs-card-btn {
+  transition:
+    border-color 0.18s,
+    transform 0.18s,
+    box-shadow 0.18s;
+}
+.grs-card-btn:hover {
+  border-color: var(--line-2);
+  transform: translateY(-2px);
+}
+.grs-ghost-btn {
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    transform 0.15s;
+}
+.grs-ghost-btn:hover {
+  border-color: var(--line-2);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+.grs-link:hover {
+  filter: brightness(1.1);
+}
+/* Resume button collapses out of the navbar on small screens (Jump-to + hero
+   cover it), per the handoff. */
+@media (max-width: 560px) {
+  .grs-resume-btn {
+    display: none !important;
+  }
+}
+.grs-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.grs-reveal[data-revealed='1'] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-blink] {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  .grs-skel {
+    animation: none !important;
+  }
+  .grs-h2 .grs-anchor {
+    opacity: 0.5;
+  }
+  .grs-chip,
+  .grs-send,
+  .grs-card-btn,
+  .grs-ghost-btn,
+  .grs-reveal {
+    transition: none !important;
+  }
+  .grs-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

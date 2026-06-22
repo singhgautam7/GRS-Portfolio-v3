@@ -1,0 +1,193 @@
+/* Blog reader prose + code styling. Scoped to .grs-prose so it never leaks. */
+
+.grs-prose {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+.grs-prose > p {
+  margin: 0 0 18px;
+}
+/* MDX wraps <Lead> text in a <p>; keep the lead's own spacing. */
+.grs-lead > p {
+  margin: 0;
+  color: inherit;
+  font-weight: inherit;
+}
+.grs-prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.grs-prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.grs-prose ul,
+.grs-prose ol {
+  margin: 6px 0 18px;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.grs-prose li {
+  display: flex;
+  gap: 11px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.grs-prose li::before {
+  content: '▪';
+  color: var(--accent);
+  font-family: var(--font-mono);
+  flex: none;
+}
+.grs-prose blockquote {
+  margin: 0 0 18px;
+  padding: 4px 0 4px 18px;
+  border-left: 2px solid var(--line-2);
+  color: var(--ink-3);
+}
+.grs-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 22px;
+  font-size: 14.5px;
+}
+.grs-prose th,
+.grs-prose td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  text-align: left;
+}
+.grs-prose th {
+  background: var(--surface-2);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.grs-prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 5px;
+  color: var(--ink);
+}
+
+/* ---- code blocks (rehype-pretty-code) ---- */
+.grs-prose figure[data-rehype-pretty-code-figure] {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 14px 0 24px;
+  background: var(--surface);
+}
+.grs-prose figcaption[data-rehype-pretty-code-title] {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 110px 9px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* three traffic-light dots before the filename */
+.grs-prose figcaption[data-rehype-pretty-code-title]::before {
+  content: '';
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line-2);
+  box-shadow:
+    14px 0 0 var(--line-2),
+    28px 0 0 var(--line-2);
+  margin-right: 22px;
+}
+.grs-prose pre {
+  margin: 0;
+  overflow-x: auto;
+  padding: 14px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  background: transparent !important;
+}
+.grs-prose pre code {
+  display: grid; /* one row per line */
+  counter-reset: line;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+.grs-prose pre code [data-line] {
+  counter-increment: line;
+  padding: 0 16px 0 0;
+  border-left: 2px solid transparent;
+}
+.grs-prose pre code [data-line]::before {
+  content: counter(line);
+  display: inline-block;
+  width: 2.2rem;
+  margin-right: 14px;
+  padding-right: 12px;
+  text-align: right;
+  color: var(--ink-faint);
+  user-select: none;
+}
+.grs-prose pre code [data-highlighted-line] {
+  background: var(--surface-3);
+  border-left: 2px solid var(--accent);
+}
+.grs-prose pre code [data-highlighted-line]::before {
+  color: var(--accent);
+}
+
+/* reader layout: article + sticky TOC; single column under 860px */
+.grs-reader-grid {
+  display: grid;
+  grid-template-columns: 1fr 210px;
+  gap: 46px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .grs-reader-grid {
+    grid-template-columns: 1fr;
+  }
+  .grs-toc {
+    display: none;
+  }
+}
+
+/* code copy button injected by CodeFigure */
+.grs-code-copy {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  z-index: 1;
+}
+.grs-code-copy[data-copied='1'] {
+  color: var(--ok);
+}

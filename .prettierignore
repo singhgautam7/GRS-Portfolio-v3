@@ -1,0 +1,6 @@
+.next
+out
+.velite
+node_modules
+bun.lock
+public

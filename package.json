@@ -1,0 +1,53 @@
+{
+  "name": "grs-portfolio-v3",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Gautam Singh — personal portfolio v3. A fully static, mobile-first conversational portfolio with a client-side \"Ask Me Anything\" assistant.",
+  "scripts": {
+    "dev": "next dev",
+    "og": "velite && bun run scripts/generate-og.ts",
+    "icons": "bun run scripts/generate-icons.ts",
+    "build": "bun run og && NEXT_PUBLIC_DEPLOYED_AT=\"$(node -e \"process.stdout.write(new Date().toLocaleDateString('en-US',{month:'short',year:'numeric'}))\")\" next build",
+    "preview": "bunx serve out",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "format": "prettier --write \"**/*.{ts,tsx,css,md,mdx,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,css,md,mdx,json}\""
+  },
+  "dependencies": {
+    "@orama/orama": "^3.1.18",
+    "fuse.js": "^7.4.2",
+    "lucide-react": "^1.21.0",
+    "motion": "^12.40.0",
+    "next": "15.5.19",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/bun": "latest",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.5.19",
+    "prettier": "^3.8.4",
+    "rehype-pretty-code": "^0.14.3",
+    "rehype-slug": "^6.0.0",
+    "remark-gfm": "^4.0.1",
+    "satori": "^0.26.0",
+    "shiki": "^4.2.0",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^5.7.0",
+    "velite": "^0.4.0",
+    "yaml": "^2.6.0"
+  },
+  "trustedDependencies": [
+    "unrs-resolver"
+  ]
+}
