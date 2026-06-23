@@ -149,7 +149,8 @@ export function HeroLauncher({ chatOpen = false, onAsk }: HeroLauncherProps) {
             margin: 0,
           }}
         >
-          <span ref={greetRef}>{GREETING}</span>
+          <span ref={greetRef} />
+          <noscript dangerouslySetInnerHTML={{ __html: GREETING }} />
           <span
             data-blink
             style={{
