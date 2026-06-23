@@ -366,6 +366,8 @@ export function Assistant({
   }
 
   const empty = messages.length === 0;
+  const lastResponse = [...messages].reverse().find((m) => m.role === 'assistant');
+  const showChips = empty || !lastResponse || lastResponse.buttons.length === 0;
 
   return (
     <motion.div
@@ -569,41 +571,43 @@ export function Assistant({
       </div>
 
       {/* chips rail */}
-      <div style={{ flex: 'none', padding: '6px 0 2px' }}>
-        <div
-          className="grs-rail"
-          style={{
-            display: 'flex',
-            gap: 9,
-            overflowX: 'auto',
-            padding: '8px 18px',
-            maxWidth: 716,
-            margin: '0 auto',
-          }}
-        >
-          {chips.map((chip) => (
-            <button
-              key={chip}
-              onClick={() => void ask(chip)}
-              className="grs-chip"
-              style={{
-                flex: 'none',
-                whiteSpace: 'nowrap',
-                fontFamily: 'var(--font-sans)',
-                fontSize: 13,
-                color: 'var(--ink-2)',
-                background: 'var(--surface-2)',
-                border: '1px solid var(--line)',
-                borderRadius: 999,
-                padding: '8px 14px',
-                cursor: 'pointer',
-              }}
-            >
-              {chip}
-            </button>
-          ))}
+      {showChips && (
+        <div style={{ flex: 'none', padding: '6px 0 2px' }}>
+          <div
+            className="grs-rail"
+            style={{
+              display: 'flex',
+              gap: 9,
+              overflowX: 'auto',
+              padding: '8px 18px',
+              maxWidth: 716,
+              margin: '0 auto',
+            }}
+          >
+            {chips.map((chip) => (
+              <button
+                key={chip}
+                onClick={() => void ask(chip)}
+                className="grs-chip"
+                style={{
+                  flex: 'none',
+                  whiteSpace: 'nowrap',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 13,
+                  color: 'var(--ink-2)',
+                  background: 'var(--surface-2)',
+                  border: '1px solid var(--line)',
+                  borderRadius: 999,
+                  padding: '8px 14px',
+                  cursor: 'pointer',
+                }}
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* docked input */}
       <div
