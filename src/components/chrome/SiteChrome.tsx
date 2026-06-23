@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { ChromeContext } from './ChromeContext';
 import { Navbar } from './Navbar';
 import { ScrollProgress } from './ScrollProgress';
@@ -17,6 +17,7 @@ import { Footer } from '@/components/sections/Footer';
  */
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
 
@@ -37,6 +38,13 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
         setPaletteOpen((o) => !o);
         return;
       }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        if (!isChat) {
+          e.preventDefault();
+          router.push('/askme');
+          return;
+        }
+      }
       const tag = (e.target as HTMLElement | null)?.tagName ?? '';
       const typing = tag === 'INPUT' || tag === 'TEXTAREA';
       if (e.key === '?' && !typing) {
@@ -51,7 +59,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [paletteOpen, shortcutsOpen]);
+  }, [paletteOpen, shortcutsOpen, router, isChat]);
 
   return (
     <ChromeContext.Provider

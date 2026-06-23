@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { AskClient } from './AskClient';
+import { AskmeSkeleton } from '@/components/assistant/AskmeSkeleton';
 
 export const metadata: Metadata = {
   title: 'Ask Me Anything',
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function AskPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<AskmeSkeleton />}>
       <AskClient />
     </Suspense>
   );

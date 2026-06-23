@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
 import { ArrowUp, ArrowUpRight, Download, Mail, MoreVertical, Trash2, X } from 'lucide-react';
 import { answer, buildContext } from '@/lib/assistant';
@@ -135,11 +136,13 @@ export function Assistant({
   morph = false,
   persist = false,
 }: AssistantProps) {
+  const router = useRouter();
   const reduced = useReducedMotion();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [hydrated, setHydrated] = useState(!persist);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const reducedRef = useRef(reduced);
   reducedRef.current = reduced;
@@ -254,9 +257,14 @@ export function Assistant({
   useEffect(() => {
     if (!persist) return;
     const stored = loadHistory();
-    if (stored.length) setMessages(stored);
+    if (stored.length) {
+      setMessages(stored);
+    } else if (!seed) {
+      router.push('/');
+      return;
+    }
     setHydrated(true);
-  }, [persist]);
+  }, [persist, seed, router]);
 
   // Persist settled messages whenever the thread changes.
   useEffect(() => {
@@ -264,12 +272,17 @@ export function Assistant({
     saveHistory(messages);
   }, [persist, hydrated, messages]);
 
-  const clearAll = useCallback(() => {
+  // Auto-scroll to bottom whenever the message list changes (new asks, stream ticks, history hydration).
+  useEffect(() => {
+    scrollBottom();
+  }, [messages, scrollBottom]);
+
+  const handleConfirmClear = () => {
     if (streamRef.current) window.clearInterval(streamRef.current);
     streamRef.current = null;
     busyRef.current = false;
     setMessages([]);
-    setMenuOpen(false);
+    setConfirmOpen(false);
     if (typeof window !== 'undefined') {
       try {
         window.localStorage.removeItem(STORAGE_KEY);
@@ -277,7 +290,13 @@ export function Assistant({
         // ignore
       }
     }
-  }, []);
+    router.push('/');
+  };
+
+  const triggerClear = () => {
+    setConfirmOpen(true);
+    setMenuOpen(false);
+  };
 
   // Close the overflow menu on outside click.
   useEffect(() => {
@@ -292,7 +311,11 @@ export function Assistant({
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         e.stopPropagation();
-        onClose();
+        if (confirmOpen) {
+          setConfirmOpen(false);
+        } else {
+          onClose();
+        }
         return;
       }
       if (e.key === 'Tab') {
@@ -315,7 +338,7 @@ export function Assistant({
     };
     document.addEventListener('keydown', onKey, true);
     return () => document.removeEventListener('keydown', onKey, true);
-  }, [onClose]);
+  }, [onClose, confirmOpen]);
 
   useEffect(() => () => {
     if (streamRef.current) window.clearInterval(streamRef.current);
@@ -416,6 +439,7 @@ export function Assistant({
             {menuOpen && (
               <div
                 role="menu"
+                onPointerDown={(e) => e.stopPropagation()}
                 onClick={(e) => e.stopPropagation()}
                 style={{
                   position: 'absolute',
@@ -433,7 +457,7 @@ export function Assistant({
               >
                 <button
                   role="menuitem"
-                  onClick={clearAll}
+                  onClick={triggerClear}
                   disabled={messages.length === 0}
                   style={{
                     display: 'flex',
@@ -583,7 +607,6 @@ export function Assistant({
             <span>
               grs@infra:~$ <span style={{ color: 'var(--ink-2)' }}>ask</span>
             </span>
-            <span>⌘↵ / Ctrl+↵ to send</span>
           </div>
           <motion.div
             layoutId={morph && !reduced ? 'ama-input' : undefined}
@@ -645,6 +668,84 @@ export function Assistant({
           </motion.div>
         </div>
       </div>
+      {confirmOpen && (
+        <div
+          onClick={() => setConfirmOpen(false)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 110,
+            background: 'var(--scrim)',
+            backdropFilter: 'blur(5px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 16,
+            animation: 'grsfade .18s ease',
+          }}
+        >
+          <div
+            role="dialog"
+            aria-label="Clear chat history confirmation"
+            aria-modal="true"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: 'min(400px,100%)',
+              background: 'var(--surface)',
+              border: '1px solid var(--line-2)',
+              borderRadius: 16,
+              boxShadow: 'var(--shadow)',
+              overflow: 'hidden',
+              animation: 'grsup .24s cubic-bezier(.2,.7,.2,1)',
+              padding: '20px 22px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 16,
+            }}
+          >
+            <div style={{ fontWeight: 600, fontSize: 16 }}>Clear conversation history?</div>
+            <div style={{ fontSize: 13.5, color: 'var(--ink-2)', lineHeight: 1.5 }}>
+              This will permanently delete all your messages and clear the chat history. This action cannot be undone.
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 4 }}>
+              <button
+                onClick={() => setConfirmOpen(false)}
+                className="grs-ghost-btn"
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  padding: '9px 15px',
+                  borderRadius: 10,
+                  border: '1px solid var(--line-2)',
+                  background: 'transparent',
+                  color: 'var(--ink-2)',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmClear}
+                className="grs-send"
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 13,
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: '9px 15px',
+                  borderRadius: 10,
+                  border: 'none',
+                  background: 'var(--accent)',
+                  color: 'var(--accent-ink)',
+                }}
+              >
+                Clear all
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -835,7 +936,7 @@ function Message({
           )}
         </div>
 
-        {m.cards.length > 0 && (
+        {(isUser || m.done) && m.cards.length > 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 13, width: '100%' }}>
             {m.cards.map((c) => (
               <div

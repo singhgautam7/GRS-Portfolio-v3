@@ -26,6 +26,7 @@ import {
 import { useTheme } from '@/components/providers/ThemeProvider';
 import { useChrome } from './ChromeContext';
 import { useSiteNav } from '@/lib/navigation';
+import { useActiveSection } from '@/lib/hooks/useActiveSection';
 import { SITE, SOCIALS } from '@/lib/site';
 
 type PaletteKind =
@@ -58,6 +59,7 @@ export function CommandPalette() {
   const { goSection, goPage } = useSiteNav();
   const { theme, toggleTheme } = useTheme();
   const router = useRouter();
+  const activeSection = useActiveSection();
   const [query, setQuery] = useState('');
   const [index, setIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -75,7 +77,7 @@ export function CommandPalette() {
       { group: 'PAGES', label: 'Projects Archive', icon: <LayoutGrid size={ICON} />, hint: 'all', kind: 'page', value: '/projects' },
       { group: 'PAGES', label: 'Timeline', icon: <Route size={ICON} />, hint: 'career', kind: 'page', value: '/timeline' },
       { group: 'PAGES', label: 'Blog', icon: <BookOpen size={ICON} />, hint: 'posts', kind: 'page', value: '/blog' },
-      { group: 'ACTIONS', label: 'Ask me anything', icon: <Sparkles size={ICON} />, hint: 'assistant', kind: 'chat' },
+      { group: 'ACTIONS', label: 'Ask me anything', icon: <Sparkles size={ICON} />, hint: '⌘↵', kind: 'chat' },
       { group: 'ACTIONS', label: 'Download Resume', icon: <Download size={ICON} />, hint: '.docx', kind: 'resume' },
       { group: 'ACTIONS', label: 'Open GitHub', icon: <ExternalLink size={ICON} />, hint: 'profile', kind: 'github' },
       { group: 'ACTIONS', label: 'Copy email', icon: <Copy size={ICON} />, hint: 'clipboard', kind: 'copyEmail' },
@@ -93,11 +95,14 @@ export function CommandPalette() {
   useEffect(() => {
     if (paletteOpen) {
       setQuery('');
-      setIndex(0);
+      const activeIdx = items.findIndex(
+        (it) => it.kind === 'section' && it.value === activeSection
+      );
+      setIndex(activeIdx !== -1 ? activeIdx : 0);
       const t = window.setTimeout(() => inputRef.current?.focus(), 40);
       return () => window.clearTimeout(t);
     }
-  }, [paletteOpen]);
+  }, [paletteOpen, activeSection, items]);
 
   const run = (it: PaletteItem) => {
     closePalette();

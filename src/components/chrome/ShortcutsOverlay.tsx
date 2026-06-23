@@ -7,7 +7,7 @@ const mono = 'var(--font-mono)';
 
 const SHORTCUTS: Array<{ label: string; keys: string[] }> = [
   { label: 'Open command palette', keys: ['⌘', 'K'] },
-  { label: 'Ask me anything', keys: ['Enter'] },
+  { label: 'Ask me anything', keys: ['⌘', 'Enter'] },
   { label: 'Keyboard shortcuts', keys: ['?'] },
   { label: 'Close any overlay', keys: ['Esc'] },
   { label: 'Navigate palette', keys: ['↑', '↓'] },

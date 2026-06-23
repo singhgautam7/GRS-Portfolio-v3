@@ -15,7 +15,7 @@ const toCard = (p: Project): AssistantCard => ({
 
 /** Curated local-first showcase, in a fixed order, for the projects reply. */
 export function showcaseCards(): AssistantCard[] {
-  const order = ['ai-reader', 'postpurush'];
+  const order = ['kuber', 'postpurush'];
   const picked = order
     .map((slug) => projects.find((p) => p.slug === slug))
     .filter((p): p is Project => Boolean(p))

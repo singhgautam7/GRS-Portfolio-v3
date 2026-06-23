@@ -73,7 +73,7 @@ describe('answerLayer1', () => {
   it('renders project cards for the projects intent', () => {
     const res = answerLayer1('show me your best projects', ctx);
     expect(res?.cards?.length).toBeGreaterThan(0);
-    expect(res?.cards?.[0]?.title).toBe('AI Reader');
+    expect(res?.cards?.[0]?.title).toBe('Kuber: Money Manager');
   });
 
   it('contains no en or em dashes in any reply', () => {

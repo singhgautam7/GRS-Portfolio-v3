@@ -198,46 +198,66 @@ export function HeroLauncher({ chatOpen = false, onAsk }: HeroLauncherProps) {
 
         <div style={{ width: '100%', maxWidth: 560, marginTop: 30, minHeight: 60 }}>
           {!chatOpen && (
-          <motion.div
-            layoutId={reduced ? undefined : 'ama-input'}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 9,
-              background: 'var(--surface-2)',
-              border: '1px solid var(--line-2)',
-              borderRadius: 16,
-              padding: '8px 8px 8px 18px',
-              boxShadow: 'var(--shadow)',
-            }}
-          >
-            <input
-              value={value}
-              onChange={(e) => {
-                ambientRef.current?.bumpTyping();
-                setValue(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  send();
-                }
-              }}
-              onFocus={() => ambientRef.current?.setFocused(true)}
-              onBlur={() => ambientRef.current?.setFocused(false)}
-              placeholder="Ask me anything…"
-              aria-label="Ask Gautam anything"
+          <>
+            <div
               style={{
-                flex: 1,
-                minWidth: 0,
-                background: 'none',
-                border: 'none',
-                outline: 'none',
-                color: 'var(--ink)',
-                fontFamily: 'var(--font-sans)',
-                fontSize: 16,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 8,
+                fontFamily: mono,
+                fontSize: 10.5,
+                color: 'var(--ink-3)',
+                margin: '0 4px 7px',
+                opacity: 0.85,
               }}
-            />
+            >
+              <span>
+                grs@infra:~$ <span style={{ color: 'var(--ink-2)' }}>ask</span>
+              </span>
+              <span>⌘↵ / Ctrl+↵ to send</span>
+            </div>
+            <motion.div
+              layoutId={reduced ? undefined : 'ama-input'}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 9,
+                background: 'var(--surface-2)',
+                border: '1px solid var(--line-2)',
+                borderRadius: 16,
+                padding: '8px 8px 8px 18px',
+                boxShadow: 'var(--shadow)',
+              }}
+            >
+              <input
+                value={value}
+                onChange={(e) => {
+                  ambientRef.current?.bumpTyping();
+                  setValue(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    send();
+                  }
+                }}
+                onFocus={() => ambientRef.current?.setFocused(true)}
+                onBlur={() => ambientRef.current?.setFocused(false)}
+                placeholder="Ask me anything…"
+                aria-label="Ask Gautam anything"
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  background: 'none',
+                  border: 'none',
+                  outline: 'none',
+                  color: 'var(--ink)',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 16,
+                }}
+              />
             <button
               onClick={send}
               aria-label="Send"
@@ -259,6 +279,7 @@ export function HeroLauncher({ chatOpen = false, onAsk }: HeroLauncherProps) {
               <ArrowUp size={18} />
             </button>
           </motion.div>
+          </>
           )}
 
           <div className="hero-chips" style={{ minHeight: 38 }}>
