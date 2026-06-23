@@ -3,6 +3,7 @@
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'motion/react';
+import { AskmeSkeleton } from './AskmeSkeleton';
 import { ArrowUp, ArrowUpRight, Download, Mail, MoreVertical, Trash2, X } from 'lucide-react';
 import { answer, buildContext } from '@/lib/assistant';
 import type { AssistantButton, AssistantCard } from '@/lib/assistant';
@@ -259,12 +260,9 @@ export function Assistant({
     const stored = loadHistory();
     if (stored.length) {
       setMessages(stored);
-    } else if (!seed) {
-      router.push('/');
-      return;
     }
     setHydrated(true);
-  }, [persist, seed, router]);
+  }, [persist]);
 
   // Persist settled messages whenever the thread changes.
   useEffect(() => {
@@ -290,7 +288,6 @@ export function Assistant({
         // ignore
       }
     }
-    router.push('/');
   };
 
   const triggerClear = () => {
@@ -364,14 +361,21 @@ export function Assistant({
     }
   };
 
+  if (persist && !hydrated) {
+    return <AskmeSkeleton />;
+  }
+
   const empty = messages.length === 0;
 
   return (
-    <div
+    <motion.div
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label="Ask Me Anything, Gautam's assistant"
+      initial={reduced ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: reduced ? 0 : 0.25, ease: 'easeInOut' }}
       style={{
         height: '100%',
         display: 'flex',
@@ -524,6 +528,27 @@ export function Assistant({
                 Experience, what I work on, my projects, what I&apos;m up to now, or something off the
                 wall. Answers run right here in your browser.
               </div>
+              <button
+                onClick={() => router.push('/')}
+                className="grs-ghost-btn"
+                style={{
+                  marginTop: 14,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 13,
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  padding: '9px 16px',
+                  borderRadius: 10,
+                  border: '1px solid var(--line-2)',
+                  background: 'transparent',
+                  color: 'var(--ink-2)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+              >
+                Go to Home
+              </button>
             </div>
           )}
 
@@ -746,7 +771,7 @@ export function Assistant({
           </div>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 

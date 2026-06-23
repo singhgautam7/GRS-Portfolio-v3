@@ -1,8 +1,13 @@
 'use client';
 
+import { motion } from 'motion/react';
+
 export function AskmeSkeleton() {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25, ease: 'easeInOut' }}
       style={{
         maxWidth: 840,
         margin: '0 auto',
@@ -152,6 +157,6 @@ export function AskmeSkeleton() {
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
