@@ -42,13 +42,14 @@
   --surface: #ffffff;
   --surface-2: #eef2f9;
   --surface-3: #e6ecf6;
-  --bubble-user: rgba(29, 78, 216, 0.1);
+  --bubble-user: rgba(194, 20, 60, 0.1);
   --line: rgba(30, 62, 112, 0.13);
   --line-2: rgba(30, 62, 112, 0.22);
-  /* Darker blue on light so the accent and the hero ambient field stay clearly
-     visible against the pale background (dark theme keeps the lighter cyan). */
-  --accent: #1d4ed8;
-  --accent-2: #1a40bf;
+  /* Light theme uses a crimson accent (dark theme stays blue). Crimson reads
+     clearly on the pale surface and the multiply-blend hero glow shows as a soft
+     red tint instead of vanishing the way blue did. */
+  --accent: #c2143c;
+  --accent-2: #9f1239;
   --accent-ink: #ffffff;
   --ink: #0d1726;
   --ink-2: #45546d;
@@ -62,12 +63,12 @@
   --shadow: 0 24px 54px -28px rgba(31, 70, 140, 0.32);
   --avatar-glow: 0 10px 26px -12px rgba(47, 111, 224, 0.5);
   --scrim: rgba(20, 30, 50, 0.32);
-  /* Hero ambient field. Light: darker accent multiplied over a tinted surface
-     so the motion reads as a soft tinted darkening instead of vanishing. */
-  --hero-surface: #e6ecf9;
+  /* Hero ambient field. Light: crimson accent multiplied over a neutral light
+     surface so the motion reads as a soft red tint instead of vanishing. */
+  --hero-surface: #efedf0;
   --ambient-blend: multiply;
-  --ambient-core: rgba(29, 78, 216, 0.42);
-  --ambient-mid: rgba(29, 78, 216, 0.2);
+  --ambient-core: rgba(194, 20, 60, 0.45);
+  --ambient-mid: rgba(194, 20, 60, 0.22);
 }
 
 :root {
@@ -289,15 +290,48 @@ body {
   position: absolute;
   left: 50%;
   border-radius: 50%;
-  mix-blend-mode: var(--ambient-blend);
   pointer-events: none;
+}
+/* Blend the glow with the hero surface. `mix-blend-mode` does NOT accept a
+   var() value (it silently falls back to `normal`), so set the keyword
+   literally per theme: additive screen on dark (light glow on black), multiply
+   on light (a soft tinted darkening that stays visible on the pale surface). */
+.ambient-glow,
+.ambient-boost,
+.ambient-ripple,
+.ambient-pointer {
+  mix-blend-mode: screen;
+}
+[data-theme='light'] .ambient-glow,
+[data-theme='light'] .ambient-boost,
+[data-theme='light'] .ambient-ripple,
+[data-theme='light'] .ambient-pointer {
+  mix-blend-mode: multiply;
+}
+/* A dedicated bloom that tracks the cursor directly across the hero (handoff
+   §6.5). Positioned at the origin and translated to the pointer each frame. */
+.ambient-pointer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56vmin;
+  height: 56vmin;
+  margin-left: -28vmin;
+  margin-top: -28vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, var(--ambient-core), transparent 66%);
+  filter: blur(46px);
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 .ambient-glow {
   top: 42%;
-  width: 88vmin;
-  height: 88vmin;
-  margin-left: -44vmin;
-  margin-top: -44vmin;
+  width: 176vmin;
+  height: 176vmin;
+  margin-left: -88vmin;
+  margin-top: -88vmin;
   background: radial-gradient(
     circle closest-side,
     var(--ambient-core),
@@ -338,8 +372,12 @@ body {
   will-change: transform, opacity;
 }
 @media (prefers-reduced-motion: reduce) {
-  .ambient-boost {
+  .ambient-boost,
+  .ambient-pointer {
     transition: none !important;
+  }
+  .ambient-pointer {
+    display: none;
   }
 }
 

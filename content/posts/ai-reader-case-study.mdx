@@ -10,36 +10,115 @@ timeline: false
 
 <Lead>
 AI Book Reader is a privacy-first, browser-based application that converts PDFs,
-EPUBs and web articles into immersive audiobooks using multiple AI
-text-to-speech providers, without uploading a single file to a server.
+EPUBs and web articles into immersive audiobooks using multiple AI text-to-speech
+providers, without uploading a single file to a server.
 </Lead>
 
-## The problem
+## Executive Summary
 
-Traditional audiobook tools don't read personal documents, raise privacy
-concerns through cloud uploads, lock features behind subscriptions, and ship
-robotic voices with no offline capability or support for web articles.
+Unlike typical audiobook tools, it:
 
-## The solution
+- Works entirely client-side
+- Supports multiple TTS engines (Browser, Gemini, OpenAI, ElevenLabs)
+- Caches generated audio to minimize API costs
+- Preserves reading progress and playback history
+- Provides a real reader-like experience with chunk highlighting
+- Supports both documents and live web articles
 
-A unified reading platform that reads files locally, uses premium AI voices when
-available, falls back to browser TTS offline, handles large documents via
-chunking, preserves structure, and minimizes API usage through caching.
+Built as an all-in-one AI narration platform.
 
-## Multi-engine TTS
+## Problem Statement
 
-- Browser native, the offline, free fallback
-- Gemini TTS, balanced quality
-- OpenAI TTS, natural voices
-- ElevenLabs, premium narration
+Traditional audiobook solutions suffer from:
 
-## System architecture
+- Lack of support for personal documents
+- Privacy concerns due to cloud uploads
+- Expensive subscriptions
+- Robotic voices
+- No support for web articles
+- No offline capability
+- Poor reading UX
+
+## Solution
+
+Create a unified AI reading platform that:
+
+- Reads personal files locally
+- Supports premium AI voices when available
+- Works offline using browser TTS
+- Handles large documents via chunking
+- Preserves structure and formatting
+- Minimizes API usage via caching
+- Tracks reading history
+
+## Key Features
+
+### Multi-Source Input
+
+- PDF
+- EPUB
+- Web article links
+- Testing mode sample text
+
+### Multi-Engine TTS Support
+
+| Provider       | Type    | Use-case          |
+| -------------- | ------- | ----------------- |
+| Browser Native | Offline | Free fallback     |
+| Gemini TTS     | Cloud   | Balanced quality  |
+| OpenAI TTS     | Cloud   | Natural voices    |
+| ElevenLabs     | Cloud   | Premium narration |
+
+### Chunk-Based Reading Engine
+
+Large content is split into manageable segments:
+
+- Prevents API limits
+- Enables auto-play sequencing
+- Supports pause/resume
+- Allows per-chunk caching
+
+### Audio Caching System
+
+Generated audio is stored locally:
+
+- Reduces API cost
+- Improves responsiveness
+- Enables replay without regeneration
+
+### Library and Playback History
+
+Tracks:
+
+- Uploaded items
+- Last played timestamp
+- Reader used
+- Playback history
+- Unique entries only
+
+### Reader UX Enhancements
+
+- Translucent highlight for active chunk
+- Paragraph preservation
+- Adjustable voice settings
+- Auto-play next chunk toggle
+- Provider-specific controls
+- Theme support
+
+### Privacy-First Design
+
+- Files processed locally
+- Encrypted API keys stored in local storage
+- No backend storage
+- Direct provider communication
+
+## System Architecture (High Level)
 
 The whole pipeline runs in the browser. Content flows from the user through
 processing and a provider-agnostic adapter layer, then into playback and a local
 cache.
 
-```text title="architecture.txt" {4,5}
+```text title="architecture.txt" {7,8}
 User
   ↓
 React Frontend (SPA)
@@ -55,12 +134,56 @@ Audio Playback Engine
 Local Cache + History
 ```
 
-<Callout type="note" title="One interface, many engines">
-Every provider implements the same generateSpeech(text, settings) contract, so
-the rest of the app never knows which engine is talking.
-</Callout>
+## Frontend Architecture
 
-```ts title="tts-adapter.ts" {6,7}
+```text title="frontend-architecture.txt"
+UI Layer (React + shadcn)
+ ├─ Home / Library
+ ├─ Reader View
+ ├─ Settings
+ └─ Help
+
+State Layer
+ ├─ Global Settings Store
+ ├─ Reader State
+ └─ Library State
+
+Service Layer
+ ├─ File Parser
+ ├─ Link Scraper
+ ├─ Chunk Generator
+ ├─ TTS Adapter
+ └─ Cache Manager
+```
+
+## Reading Flow (Sequence)
+
+```text title="reading-flow.txt"
+Upload File / Paste Link
+        ↓
+Text Extraction
+        ↓
+Chunk Generation
+        ↓
+User clicks Play
+        ↓
+Check Cache
+   ├─ Found → Play immediately
+   └─ Not found → Call TTS API
+                      ↓
+                Save Audio Blob
+                      ↓
+                   Play Audio
+```
+
+## TTS Provider Adapter Pattern
+
+Each provider implements a unified interface, so the rest of the app never knows
+which engine is talking. Adapters absorb provider-specific differences: request
+formats, voice parameters, authentication, rate limits, and streaming vs batch
+audio.
+
+```ts title="tts-adapter.ts" {9,10}
 interface TTSAdapter {
   generateSpeech(
     text: string,
@@ -73,11 +196,33 @@ const engine = pickEngine(settings) ?? browserTTS;
 const audio = await engine.generateSpeech(chunk, settings);
 ```
 
-## Caching strategy
+<Callout type="note" title="One interface, many engines">
+Every provider implements the same generateSpeech(text, settings) contract, so
+the rest of the app never knows which engine is talking.
+</Callout>
 
-Cache keys hash the text chunk together with provider, voice, speed, pitch,
-emotion and model. Audio blobs live in IndexedDB; metadata in LocalStorage, so
-replays never re-hit an API and stay responsive offline.
+## Caching Strategy
+
+Caching is based on both content and settings, so a voice or speed change
+correctly misses the cache instead of replaying stale audio.
+
+```text title="cache-key.txt"
+Cache Key =
+hash(
+  text chunk +
+  provider +
+  voice +
+  speed +
+  pitch +
+  emotion +
+  model
+)
+```
+
+Storage:
+
+- IndexedDB for large blobs
+- LocalStorage for metadata
 
 <Callout type="tip" title="Cache on the full render signature">
 Hashing every parameter that affects the waveform (not just the text) means a
@@ -85,21 +230,125 @@ voice or speed change correctly misses the cache instead of replaying stale
 audio.
 </Callout>
 
-## Trade-offs
-
-Going backend-less buys maximum privacy, lower cost and simpler deployment, at
-the price of cross-device sync and browser storage limits. Chunking is what makes
-long documents, streaming UX and fine-grained caching all possible.
-
 <Callout type="warning" title="Mind the storage ceiling">
 IndexedDB quotas vary by browser and device. Large libraries need an eviction
 policy, or the cache will silently fail to write on constrained mobile devices.
 </Callout>
 
-## Why it stands out
+## Web Article Processing Pipeline
+
+```text title="web-pipeline.txt"
+URL Input
+   ↓
+Fetch HTML
+   ↓
+Content Extraction
+   ↓
+Sanitization
+   ↓
+Structure Reconstruction
+   ↓
+Chunking
+   ↓
+Reader
+```
+
+Handles titles, paragraphs, lists and sections.
+
+## Data Persistence Model
+
+Stored locally.
+
+### Library Item
+
+```ts title="library-item.ts"
+id;
+title;
+type; // PDF | EPUB | LINK
+format;
+chunks;
+addedAt;
+lastPlayed;
+readerUsed;
+```
+
+### Playback History
+
+```ts title="playback-history.ts"
+itemId;
+datetime;
+reader;
+settingsSnapshot;
+```
+
+## Performance Optimizations
+
+- Lazy chunk generation
+- On-demand audio generation
+- Audio caching
+- Minimal re-renders
+- Client-side processing
+- No server latency
+
+## Trade-Offs Considered
+
+### No Backend Architecture
+
+**Advantages**
+
+- Maximum privacy
+- Lower infrastructure cost
+- Simpler deployment
+
+**Disadvantages**
+
+- No cross-device sync
+- Browser storage limits
+
+### Chunking Strategy
+
+Necessary for long documents, API limits, streaming UX and fine-grained caching.
+
+## Security Considerations
+
+- API keys stored locally only
+- No server transmission
+- No tracking
+- No telemetry
+
+## Future Improvements
+
+Potential roadmap:
+
+- Cross-device sync (optional cloud)
+- Voice cloning support
+- Annotation and bookmarks
+- Multi-language translation
+- Podcast-style playback
+- Mobile PWA mode
+- Multiple voices in a story
+- Document OCR support
+
+## Why This Project Stands Out
+
+This is not a simple CRUD application. It demonstrates:
 
 - Applied AI integration
-- System-design thinking
+- System design thinking
+- UX engineering
+- Performance optimization
 - Privacy-centric architecture
 - Multi-provider abstraction
 - Product-level decision making
+
+## Deployment Model
+
+Yet to be deployed, but here is an example:
+
+```text title="deployment.txt"
+Static Hosting (Vercel / Netlify / GitHub Pages)
+            ↓
+   Runs entirely in browser
+```
+
+No backend required.

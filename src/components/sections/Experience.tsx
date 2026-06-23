@@ -34,20 +34,29 @@ export function Experience() {
 
   return (
     <Section id="experience">
-      <SectionEyebrow
-        index="03"
-        label="EXPERIENCE"
-        right={
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <button onClick={expandAll} style={controlStyle} aria-label="Expand all experience entries">
-              <ChevronsUpDown size={13} /> Expand all
-            </button>
-            <button onClick={collapseAll} style={controlStyle} aria-label="Collapse all experience entries">
-              <ChevronsDownUp size={13} /> Collapse all
-            </button>
-          </div>
-        }
-      />
+      <SectionEyebrow index="03" label="EXPERIENCE" />
+      <Reveal
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: 16,
+          flexWrap: 'wrap',
+          marginBottom: 22,
+        }}
+      >
+        <h2 style={{ fontWeight: 700, fontSize: 'clamp(24px,3.4vw,34px)', letterSpacing: '-0.02em', margin: 0 }}>
+          A few places I&apos;ve grown.
+        </h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <button onClick={expandAll} style={controlStyle} aria-label="Expand all experience entries">
+            expand all <ChevronsUpDown size={13} />
+          </button>
+          <button onClick={collapseAll} style={controlStyle} aria-label="Collapse all experience entries">
+            collapse all <ChevronsDownUp size={13} />
+          </button>
+        </div>
+      </Reveal>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 11 }}>
         {jobs.map((job) => (
           <Reveal

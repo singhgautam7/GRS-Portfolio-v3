@@ -11,8 +11,8 @@ describe('computeStats', () => {
   it('counts 6 roles from content', () => {
     expect(s.roleCount).toBe(6);
   });
-  it('counts 2 published posts', () => {
-    expect(s.postCount).toBe(2);
+  it('counts 1 published post', () => {
+    expect(s.postCount).toBe(1);
   });
   it('derives 4 PyPI packages', () => {
     expect(s.pypiPackages).toBe(4);
