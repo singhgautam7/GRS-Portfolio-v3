@@ -66,6 +66,7 @@ const projects = defineCollection({
       external: s.string().url().optional(),
       github: s.string().url().optional(),
       excerpt: s.string(), // short card description
+      points: s.array(s.string()).default([]), // detailed bullets (timeline + assistant)
       timeline: s.boolean().default(false),
       major: s.boolean().default(false),
       summary: summary(),

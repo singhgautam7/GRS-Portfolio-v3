@@ -6,6 +6,13 @@ featured: true
 tech: ['Android', 'Flutter', 'Isar']
 external: 'https://play.google.com/store/apps/details?id=com.grs.kuber'
 excerpt: 'Offline-first expense manager: smart transactions, budgets with live progress, recurring automation and CSV/PDF export. All on-device.'
+points:
+  - 'Built a fully offline-first expense manager, no backend, no accounts, all data stored locally on device using Isar.'
+  - 'Designed a fast transaction flow with smart suggestions, built-in calculator, and seamless add/edit experience.'
+  - 'Implemented budgets with real-time progress tracking, over-budget indicators, and category-level insights.'
+  - 'Built a recurring transactions engine with flexible scheduling, pause/resume, and full history tracking.'
+  - 'Created advanced history with search, filters, multi-select bulk actions, and CSV/PDF export support.'
+  - 'Added loan tracking, investment tracking, lend and borrowed tracking, tags and more.'
 timeline: true
 major: false
 ---

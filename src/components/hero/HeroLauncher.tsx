@@ -17,7 +17,7 @@ interface HeroLauncherProps {
   /** When the in-page chat overlay is open, the launcher hides its input bar so
    *  the shared `layoutId` element can morph into the docked chat input. */
   chatOpen?: boolean;
-  /** Open the chat with a seed query. Falls back to the /ask route if absent. */
+  /** Open the chat with a seed query. Falls back to the /askme route if absent. */
   onAsk?: (seed: string) => void;
 }
 
@@ -65,7 +65,7 @@ export function HeroLauncher({ chatOpen = false, onAsk }: HeroLauncherProps) {
 
   const openChat = (seed: string) => {
     if (onAsk) onAsk(seed);
-    else router.push(`/ask?q=${encodeURIComponent(seed)}`);
+    else router.push(`/askme?q=${encodeURIComponent(seed)}`);
   };
 
   const send = () => {

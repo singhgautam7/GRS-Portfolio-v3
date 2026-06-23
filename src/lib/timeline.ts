@@ -11,6 +11,8 @@ export interface TimelineItem {
   title: string;
   org: string;
   desc: string;
+  /** Detailed bullets (shown on major cards), from the source collection. */
+  points: string[];
 }
 
 const fmt = (iso: string): string =>
@@ -38,6 +40,7 @@ export function buildTimeline(): TimelineItem[] {
       title: job.title,
       org: job.company,
       desc: job.summary,
+      points: job.points,
     });
   }
 
@@ -52,6 +55,7 @@ export function buildTimeline(): TimelineItem[] {
       title: project.title,
       org: project.tech.slice(0, 2).join(' · ') || project.type,
       desc: project.excerpt,
+      points: project.points,
     });
   }
 
@@ -66,6 +70,7 @@ export function buildTimeline(): TimelineItem[] {
       title: cert.title,
       org: cert.issuer,
       desc: cert.summary,
+      points: cert.points,
     });
   }
 
@@ -87,6 +92,7 @@ export function buildTimeline(): TimelineItem[] {
       title: ev.title,
       org: ev.org,
       desc: ev.body,
+      points: [],
     });
   }
 

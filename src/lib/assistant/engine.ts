@@ -1,6 +1,7 @@
 import { matchIntent } from './match';
 import { buildContext } from './context';
 import { fallbackResponse } from './fallback';
+import { resolveParametric } from './parametric';
 import { searchContent } from '@/lib/search';
 import type { SearchHit } from '@/lib/search';
 import type { AssistantContext, AssistantResponse } from './types';
@@ -12,11 +13,20 @@ import type { AssistantContext, AssistantResponse } from './types';
  *   3. Graceful fallback with a contact exit ramp.
  */
 
-/** Layer 1 only — synchronous and instant. Returns null on a miss. */
+/**
+ * Layer 1 only — synchronous and instant. Returns null on a miss.
+ *
+ * Parametric resolvers (named skill / company / project) run first: they answer
+ * questions about a specific entity from real content. With no named entity they
+ * return null and the deterministic intent registry takes over.
+ */
 export function answerLayer1(
   query: string,
   ctx: AssistantContext = buildContext(),
 ): AssistantResponse | null {
+  const parametric = resolveParametric(query, ctx);
+  if (parametric) return parametric;
+
   const match = matchIntent(query);
   if (!match) return null;
   return match.intent.handler(ctx, query);

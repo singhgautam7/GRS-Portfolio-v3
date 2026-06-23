@@ -111,7 +111,7 @@ export function NotFoundClient() {
             <Search size={15} /> Jump to ⌘K
           </button>
           <button
-            onClick={() => router.push('/ask')}
+            onClick={() => router.push('/askme')}
             className="grs-ghost-btn"
             style={{
               display: 'inline-flex',

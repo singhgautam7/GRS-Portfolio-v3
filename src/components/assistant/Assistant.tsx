@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowUp, ArrowUpRight, Download, Mail, X } from 'lucide-react';
+import { ArrowUp, ArrowUpRight, Download, Mail, MoreVertical, Trash2, X } from 'lucide-react';
 import { answer, buildContext } from '@/lib/assistant';
 import type { AssistantButton, AssistantCard } from '@/lib/assistant';
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
@@ -19,9 +19,91 @@ interface ChatMessage {
   pending: boolean;
   cards: AssistantCard[];
   buttons: AssistantButton[];
+  /** Epoch ms when the message was created (shown on hover/click, drives the
+   *  day separators). */
+  ts: number;
 }
 
 let nextId = 0;
+
+const STORAGE_KEY = 'grs:ama:history:v1';
+const HISTORY_CAP = 120;
+
+/** Persisted shape of a finished message (no transient stream/typing state). */
+interface StoredMessage {
+  role: 'user' | 'assistant';
+  full: string;
+  ts: number;
+  cards: AssistantCard[];
+  buttons: AssistantButton[];
+}
+
+function loadHistory(): ChatMessage[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as StoredMessage[];
+    if (!Array.isArray(parsed)) return [];
+    return parsed.map((s) => ({
+      id: nextId++,
+      role: s.role,
+      full: s.full,
+      shown: s.full,
+      done: true,
+      pending: false,
+      cards: Array.isArray(s.cards) ? s.cards : [],
+      buttons: Array.isArray(s.buttons) ? s.buttons : [],
+      ts: typeof s.ts === 'number' ? s.ts : Date.now(),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function saveHistory(messages: ChatMessage[]) {
+  if (typeof window === 'undefined') return;
+  try {
+    // Persist only settled messages (skip the in-flight "thinking" bubble).
+    const settled = messages
+      .filter((m) => !m.pending)
+      .slice(-HISTORY_CAP)
+      .map<StoredMessage>((m) => ({
+        role: m.role,
+        full: m.full,
+        ts: m.ts,
+        cards: m.cards,
+        buttons: m.buttons,
+      }));
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settled));
+  } catch {
+    // Storage full or unavailable (private mode): degrade to session-only.
+  }
+}
+
+/** Start of `ts`'s calendar day, in local time, as epoch ms. */
+function dayStart(ts: number): number {
+  const d = new Date(ts);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+}
+
+/** WhatsApp-style separator label: Today / Yesterday / full date. */
+function daySeparatorLabel(ts: number): string {
+  const today = dayStart(Date.now());
+  const day = dayStart(ts);
+  const ONE_DAY = 86400000;
+  if (day === today) return 'Today';
+  if (day === today - ONE_DAY) return 'Yesterday';
+  return new Date(ts).toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+function formatTime(ts: number): string {
+  return new Date(ts).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+}
 
 export interface AssistantProps {
   chips: string[];
@@ -32,6 +114,11 @@ export interface AssistantProps {
   /** When true, the docked input shares a `layoutId` with the hero input so it
    *  morphs in from the hero (in-page overlay on the home route). */
   morph?: boolean;
+  /** When true (dedicated /askme page only), the conversation persists to
+   *  localStorage across reloads, an overflow menu offers "Clear all", and
+   *  messages carry day separators and reveal their time on hover/click. The
+   *  home morph overlay leaves this off so it stays an ephemeral session. */
+  persist?: boolean;
 }
 
 /**
@@ -40,10 +127,19 @@ export interface AssistantProps {
  * typewriter stream and a "thinking" pending state. Conversation persists within
  * the session and resets on reload.
  */
-export function Assistant({ chips, seed, onClose, onRoute, morph = false }: AssistantProps) {
+export function Assistant({
+  chips,
+  seed,
+  onClose,
+  onRoute,
+  morph = false,
+  persist = false,
+}: AssistantProps) {
   const reduced = useReducedMotion();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
+  const [hydrated, setHydrated] = useState(!persist);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const reducedRef = useRef(reduced);
   reducedRef.current = reduced;
@@ -92,6 +188,7 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
       const resp = await answer(q, ctxRef.current);
       const isReduced = reducedRef.current;
 
+      const now = Date.now();
       const userMsg: ChatMessage = {
         id: nextId++,
         role: 'user',
@@ -101,6 +198,7 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
         pending: false,
         cards: [],
         buttons: [],
+        ts: now,
       };
       const botMsg: ChatMessage = {
         id: nextId++,
@@ -111,6 +209,7 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
         pending: !isReduced,
         cards: resp.cards ?? [],
         buttons: resp.buttons ?? [],
+        ts: now + 1,
       };
 
       setMessages((m) => [...m, userMsg, botMsg]);
@@ -148,6 +247,45 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
     const t = window.setTimeout(() => inputRef.current?.focus(), 60);
     return () => window.clearTimeout(t);
   }, []);
+
+  // Restore persisted history once, after hydration (avoids an SSR mismatch on
+  // the statically exported page). `hydrated` gates the save effect below so the
+  // initial empty render never clobbers stored history.
+  useEffect(() => {
+    if (!persist) return;
+    const stored = loadHistory();
+    if (stored.length) setMessages(stored);
+    setHydrated(true);
+  }, [persist]);
+
+  // Persist settled messages whenever the thread changes.
+  useEffect(() => {
+    if (!persist || !hydrated) return;
+    saveHistory(messages);
+  }, [persist, hydrated, messages]);
+
+  const clearAll = useCallback(() => {
+    if (streamRef.current) window.clearInterval(streamRef.current);
+    streamRef.current = null;
+    busyRef.current = false;
+    setMessages([]);
+    setMenuOpen(false);
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // ignore
+      }
+    }
+  }, []);
+
+  // Close the overflow menu on outside click.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = () => setMenuOpen(false);
+    window.addEventListener('pointerdown', onDown);
+    return () => window.removeEventListener('pointerdown', onDown);
+  }, [menuOpen]);
 
   // Esc to close + focus trap within the dialog.
   useEffect(() => {
@@ -250,6 +388,75 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
             on-device · no server · offline-ready
           </div>
         </div>
+        {persist && (
+          <div style={{ position: 'relative', flex: 'none' }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuOpen((o) => !o);
+              }}
+              aria-label="More options"
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 10,
+                border: '1px solid var(--line)',
+                background: menuOpen ? 'var(--surface-3)' : 'var(--surface-2)',
+                color: 'var(--ink-2)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <MoreVertical size={16} />
+            </button>
+            {menuOpen && (
+              <div
+                role="menu"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  position: 'absolute',
+                  top: 40,
+                  right: 0,
+                  minWidth: 168,
+                  background: 'var(--bg)',
+                  border: '1px solid var(--line-2)',
+                  borderRadius: 11,
+                  boxShadow: 'var(--shadow)',
+                  padding: 6,
+                  zIndex: 20,
+                  animation: 'grsfade .14s ease',
+                }}
+              >
+                <button
+                  role="menuitem"
+                  onClick={clearAll}
+                  disabled={messages.length === 0}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 9,
+                    width: '100%',
+                    padding: '9px 11px',
+                    borderRadius: 8,
+                    border: 'none',
+                    background: 'transparent',
+                    color: messages.length === 0 ? 'var(--ink-3)' : 'var(--ink)',
+                    cursor: messages.length === 0 ? 'not-allowed' : 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 13.5,
+                    textAlign: 'left',
+                  }}
+                >
+                  <Trash2 size={15} style={{ color: 'var(--accent)' }} /> Clear all
+                </button>
+              </div>
+            )}
+          </div>
+        )}
         <button
           onClick={onClose}
           aria-label="Close"
@@ -297,9 +504,17 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
           )}
 
           <div aria-live="polite" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-            {messages.map((m) => (
-              <Message key={m.id} message={m} onButton={runButton} />
-            ))}
+            {messages.map((m, i) => {
+              const prev = messages[i - 1];
+              const showSeparator =
+                persist && (!prev || dayStart(prev.ts) !== dayStart(m.ts));
+              return (
+                <Fragment key={m.id}>
+                  {showSeparator && <DaySeparator label={daySeparatorLabel(m.ts)} />}
+                  <Message message={m} onButton={runButton} showTime={persist} />
+                </Fragment>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -354,6 +569,10 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
         <div style={{ maxWidth: 680, margin: '0 auto' }}>
           <div
             style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 8,
               fontFamily: mono,
               fontSize: 10.5,
               color: 'var(--ink-3)',
@@ -361,7 +580,10 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
               opacity: 0.85,
             }}
           >
-            grs@infra:~$ <span style={{ color: 'var(--ink-2)' }}>ask</span>
+            <span>
+              grs@infra:~$ <span style={{ color: 'var(--ink-2)' }}>ask</span>
+            </span>
+            <span>⌘↵ / Ctrl+↵ to send</span>
           </div>
           <motion.div
             layoutId={morph && !reduced ? 'ama-input' : undefined}
@@ -380,6 +602,8 @@ export function Assistant({ chips, seed, onClose, onRoute, morph = false }: Assi
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
+                // Send on Cmd/Ctrl+Enter (and plain Enter too: this is a
+                // single-line input, so a bare Enter has nothing else to do).
                 if (e.key === 'Enter') {
                   e.preventDefault();
                   void ask(input);
@@ -477,25 +701,57 @@ function Avatar({ size, dot, glow }: { size: number; dot?: boolean; glow?: boole
   );
 }
 
+/** WhatsApp-style centered day chip ("Today" / "Yesterday" / a full date). */
+function DaySeparator({ label }: { label: string }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', padding: '2px 0' }}>
+      <span
+        style={{
+          fontFamily: mono,
+          fontSize: 10.5,
+          letterSpacing: '0.04em',
+          color: 'var(--ink-3)',
+          background: 'var(--surface-2)',
+          border: '1px solid var(--line)',
+          borderRadius: 999,
+          padding: '4px 12px',
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
 function Message({
   message: m,
   onButton,
+  showTime = false,
 }: {
   message: ChatMessage;
   onButton: (b: AssistantButton) => void;
+  /** Reveal the message time on hover / tap (dedicated /askme page). */
+  showTime?: boolean;
 }) {
   const isUser = m.role === 'user';
   const reduced = useReducedMotion();
+  const [pinTime, setPinTime] = useState(false);
+  const [hoverTime, setHoverTime] = useState(false);
   // Suggestion pills are revealed only after the typewriter for this answer
   // completes (assistant messages flip `done` when streaming finishes).
   const showButtons = (isUser || m.done) && m.buttons.length > 0;
+  const timeVisible = showTime && (pinTime || hoverTime);
   return (
     <div
+      onMouseEnter={showTime ? () => setHoverTime(true) : undefined}
+      onMouseLeave={showTime ? () => setHoverTime(false) : undefined}
+      onClick={showTime ? () => setPinTime((p) => !p) : undefined}
       style={{
         display: 'flex',
         gap: 10,
         alignItems: 'flex-start',
         justifyContent: isUser ? 'flex-end' : 'flex-start',
+        cursor: showTime ? 'default' : undefined,
       }}
     >
       {!isUser && (
@@ -670,6 +926,23 @@ function Message({
               </motion.button>
             ))}
           </div>
+        )}
+
+        {showTime && (
+          <span
+            aria-hidden={!timeVisible}
+            style={{
+              fontFamily: mono,
+              fontSize: 10,
+              color: 'var(--ink-3)',
+              marginTop: 5,
+              opacity: timeVisible ? 1 : 0,
+              transition: 'opacity .15s ease',
+              userSelect: 'none',
+            }}
+          >
+            {formatTime(m.ts)}
+          </span>
         )}
       </div>
     </div>

@@ -7,6 +7,9 @@ tech: ['Next.js', 'TypeScript', 'Web Speech']
 external: 'https://singhgautam7.github.io/AI-Book-Reader-Web/'
 github: 'https://github.com/singhgautam7/AI-Book-Reader-Web'
 excerpt: 'Converts EPUBs, PDFs and URLs into AI-narrated audio, privacy-first, fully client-side, with caching and a distraction-free reader.'
+points:
+  - 'Built a Next.js web application that converts EPUBs, PDFs, and URLs into audio experiences using AI narration.'
+  - 'Implemented natural-sounding Web Speech API with bookmarking and a distraction-free UI.'
 timeline: true
 major: true
 ---

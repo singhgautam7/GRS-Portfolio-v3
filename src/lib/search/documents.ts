@@ -27,7 +27,7 @@ export function buildDocuments(): SearchDoc[] {
       id: `project:${p.slug}`,
       type: 'project',
       title: p.title,
-      body: `${p.excerpt} ${p.summary} ${p.tech.join(' ')} ${p.type}`,
+      body: `${p.excerpt} ${p.summary} ${p.points.join(' ')} ${p.tech.join(' ')} ${p.type}`,
       tags: [...p.tech, p.type],
       href: '/projects/',
       external: p.external ?? p.github,

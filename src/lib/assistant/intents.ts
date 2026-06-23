@@ -1,4 +1,5 @@
 import type { AssistantContext, AssistantResponse, Intent } from './types';
+import { RECRUITER } from './config/recruiter';
 
 /**
  * Layer 1 — the intent registry.
@@ -159,17 +160,205 @@ export const intents: Intent[] = [
       ),
   },
 
+  // ----- recruiter / logistics (config-driven, these win over the hire pitch) -----
+  {
+    id: 'availability',
+    examples: [
+      'are you open to work?',
+      'are you available?',
+      'are you looking for a job?',
+      'are you open to new opportunities?',
+      'are you on the market?',
+      'are you actively looking?',
+    ],
+    keywords: [
+      'open to work',
+      'open to new',
+      'open to opportunities',
+      'open to a role',
+      'open to a new',
+      'looking for a job',
+      'looking for a new',
+      'looking for work',
+      'actively looking',
+      'on the market',
+      'are you available',
+      'available for a role',
+      'job hunting',
+    ],
+    handler: () =>
+      r(
+        {
+          text: RECRUITER.openToWork
+            ? `${RECRUITER.openHeadline} The roles that fit me: ${RECRUITER.roles.join(', ')}.`
+            : RECRUITER.closedHeadline,
+          buttons: [
+            { label: 'Email me', kind: 'primary', action: 'mailto' },
+            { label: 'Download Resume', kind: 'ghost', action: 'resume' },
+          ],
+        },
+        'availability',
+      ),
+  },
+  {
+    id: 'relocation',
+    examples: [
+      'are you open to relocation?',
+      'will you relocate?',
+      'would you move for a job?',
+      'are you willing to move?',
+      'do you work remotely?',
+      'are you remote?',
+    ],
+    keywords: [
+      'relocat',
+      'willing to move',
+      'would you move',
+      'open to moving',
+      'work remotely',
+      'remote only',
+      'fully remote',
+      'are you remote',
+    ],
+    handler: () =>
+      r(
+        {
+          text: `${RECRUITER.relocation} ${RECRUITER.location}`,
+          buttons: [{ label: 'Email me', kind: 'primary', action: 'mailto' }],
+        },
+        'relocation',
+      ),
+  },
+  {
+    id: 'notice',
+    examples: [
+      'what is your notice period?',
+      'how soon can you start?',
+      'when can you start?',
+      'what is your availability to start?',
+      'what is your start date?',
+    ],
+    keywords: [
+      'notice period',
+      'how soon can you start',
+      'when can you start',
+      'when could you start',
+      'availability to start',
+      'start date',
+      'how soon could you join',
+      'when can you join',
+    ],
+    handler: () =>
+      r(
+        {
+          text: RECRUITER.notice,
+          buttons: [{ label: 'Talk over email', kind: 'primary', action: 'mailto' }],
+        },
+        'notice',
+      ),
+  },
+  {
+    id: 'compensation',
+    examples: [
+      'what is your expected salary?',
+      'what are your salary expectations?',
+      'what is your expected CTC?',
+      'what do you charge?',
+      'what is your day rate?',
+      'what is your compensation expectation?',
+    ],
+    keywords: [
+      'salary',
+      'expected ctc',
+      'your ctc',
+      'compensation',
+      'expected pay',
+      'pay expectation',
+      'day rate',
+      'your rate',
+      'what do you charge',
+      'how much do you charge',
+      'remuneration',
+      'package expectation',
+      'expected package',
+    ],
+    handler: () =>
+      r(
+        {
+          text: RECRUITER.compensation,
+          buttons: [{ label: 'Email me', kind: 'primary', action: 'mailto' }],
+        },
+        'compensation',
+      ),
+  },
+  {
+    id: 'visa',
+    examples: [
+      'do you need visa sponsorship?',
+      'do you need sponsorship?',
+      'do you have work authorization?',
+      'do you need a work permit?',
+    ],
+    keywords: [
+      'visa',
+      'sponsorship',
+      'sponsor',
+      'work permit',
+      'work authorization',
+      'right to work',
+      'green card',
+      'h1b',
+      'h-1b',
+    ],
+    handler: () =>
+      r(
+        {
+          text: RECRUITER.visa,
+          buttons: [{ label: 'Email me', kind: 'primary', action: 'mailto' }],
+        },
+        'visa',
+      ),
+  },
+  {
+    id: 'freelance',
+    examples: [
+      'do you freelance?',
+      'are you available for contract work?',
+      'do you do consulting?',
+      'can I hire you for a contract?',
+    ],
+    keywords: [
+      'freelance',
+      'contract work',
+      'contractor',
+      'consulting',
+      'consultant',
+      'contract role',
+      'part time',
+      'part-time',
+      'moonlight',
+      'side gig',
+    ],
+    handler: () =>
+      r(
+        {
+          text: RECRUITER.freelance,
+          buttons: [{ label: 'Email me', kind: 'primary', action: 'mailto' }],
+        },
+        'freelance',
+      ),
+  },
+
   // ----- playful -----
   {
     id: 'hire',
     examples: [
       'Why should I hire you?',
-      'are you open to work?',
-      'are you available?',
-      'are you looking for a job?',
+      'why should we hire you?',
+      'what makes you a good hire?',
       'I want to recruit you',
     ],
-    keywords: ['hire', 'open to work', 'available', 'recruit', 'looking for'],
+    keywords: ['hire', 'recruit', 'why should we', 'good fit for', 'why you'],
     handler: () =>
       r(
         {
@@ -242,11 +431,46 @@ export const intents: Intent[] = [
 
   // ----- core topics -----
   {
+    id: 'career-journey',
+    examples: [
+      'Walk me through your career',
+      'tell me about your career journey',
+      'how did you get into engineering?',
+      'how did you start your career?',
+      'what is your proudest work?',
+      'what was your biggest challenge?',
+    ],
+    keywords: [
+      'walk me through',
+      'career journey',
+      'career path',
+      'your career',
+      'your journey',
+      'how did you get into',
+      'get into engineering',
+      'how did you start',
+      'proudest',
+      'biggest challenge',
+      'why did you leave',
+      'why leave',
+    ],
+    handler: (ctx) =>
+      r(
+        {
+          text: `The short arc: I started in sales at Byju's in 2019, taught myself to code, and pivoted into engineering at CodeNicely. From there it was data and backend at SpringML and Fractal, decision-science platforms at HSBC, and now high-availability infrastructure at HashiCorp. ${ctx.experienceLabel} years, and the throughline has always been making systems reliable. The timeline has the full story.`,
+          buttons: [
+            { label: 'View timeline', kind: 'primary', action: 'route', value: 'Timeline' },
+            { label: 'Download Resume', kind: 'ghost', action: 'resume' },
+          ],
+        },
+        'career-journey',
+      ),
+  },
+  {
     id: 'experience',
     examples: [
       'How much experience do you have?',
       'How senior are you?',
-      'Walk me through your career',
       'how long have you been working?',
       'who are you?',
       'tell me about yourself',
@@ -257,7 +481,6 @@ export const intents: Intent[] = [
       'how long',
       'senior',
       'level',
-      'career',
       'about you',
       'who are you',
     ],
@@ -281,6 +504,108 @@ export const intents: Intent[] = [
     },
   },
   {
+    id: 'meta',
+    examples: [
+      'how does this assistant work?',
+      'how was this site built?',
+      'is this open source?',
+      'what is this site built with?',
+      'who built this website?',
+      'how does this chat work?',
+    ],
+    keywords: [
+      'this assistant',
+      'this site',
+      'this website',
+      'this chat',
+      'how was this',
+      'how is this built',
+      'how does this',
+      'built with',
+      'open source',
+      'source code',
+      'who built this',
+      'who made this',
+      'tech behind this',
+    ],
+    handler: () =>
+      r(
+        {
+          text: 'This whole site is a static Next.js build with zero runtime cost, and this assistant is a small rule-based engine running entirely in your browser: no server, no API key, nothing leaves your device. Answers come from a hand-written intent registry plus an in-browser search index over my content.',
+          buttons: [
+            { label: 'See my projects', kind: 'ghost', action: 'route', value: 'Projects' },
+            { label: 'Are you a real AI?', kind: 'ghost', action: 'ask', value: 'Are you a real AI?' },
+          ],
+        },
+        'meta',
+      ),
+  },
+  {
+    id: 'working-style',
+    examples: [
+      'how do you work?',
+      'what is your working style?',
+      'what is your engineering philosophy?',
+      'how do you approach problems?',
+      'what do you value as an engineer?',
+    ],
+    keywords: [
+      'how do you work',
+      'how you work',
+      'working style',
+      'work style',
+      'engineering philosophy',
+      'philosophy',
+      'how do you approach',
+      'your approach',
+      'what do you value',
+      'methodology',
+    ],
+    handler: () =>
+      r(
+        {
+          text: 'I like making systems boring in the best way: reliable, observable, and cheap to run. I optimise for the stuff nobody sees until it breaks: the 3am page that never comes, the cost leak you caught early, the deploy that just works. I bias toward simple, well-tested code and I would rather ship something solid than something clever.',
+          buttons: [
+            { label: 'What I work on', kind: 'ghost', action: 'ask', value: 'What do you work on?' },
+            { label: 'My projects', kind: 'ghost', action: 'route', value: 'Projects' },
+          ],
+        },
+        'working-style',
+      ),
+  },
+  {
+    id: 'location',
+    examples: [
+      'where are you based?',
+      'where do you live?',
+      'what is your location?',
+      'which city are you in?',
+      'what timezone are you in?',
+    ],
+    keywords: [
+      'where are you based',
+      'where do you live',
+      'where are you located',
+      'your location',
+      'which city',
+      'what city',
+      'what timezone',
+      'time zone',
+      'based in',
+    ],
+    handler: () =>
+      r(
+        {
+          text: RECRUITER.location,
+          buttons: [
+            { label: 'Open to relocation?', kind: 'ghost', action: 'ask', value: 'are you open to relocation?' },
+            { label: 'Email me', kind: 'ghost', action: 'mailto' },
+          ],
+        },
+        'location',
+      ),
+  },
+  {
     id: 'work',
     examples: [
       'What do you work on?',
@@ -289,7 +614,7 @@ export const intents: Intent[] = [
       'what is your role?',
       'what do you build at work?',
     ],
-    keywords: ['work', 'do you do', 'hashicorp', 'infra', 'day to day', 'role', 'build at'],
+    keywords: ['work on', 'do you do', 'hashicorp', 'infra', 'day to day', 'your role', 'build at'],
     handler: () =>
       r(
         {
@@ -364,20 +689,56 @@ export const intents: Intent[] = [
       'how do I get in touch?',
       "what's your email?",
       'can we connect?',
+      "what's your LinkedIn?",
+      'are you on GitHub?',
+      'are you on Twitter?',
     ],
-    keywords: ['contact', 'email', 'reach', 'connect', 'talk', 'touch', 'hello there'],
-    handler: () =>
-      r(
+    keywords: [
+      'contact',
+      'email',
+      'reach',
+      'connect',
+      'talk',
+      'touch',
+      'hello there',
+      'linkedin',
+      'github',
+      'twitter',
+      'social',
+    ],
+    handler: (_ctx, query) => {
+      const q = query.toLowerCase();
+      const linkedin = { label: 'LinkedIn', kind: 'ghost' as const, action: 'link' as const, value: 'https://www.linkedin.com/in/singhgautam7' };
+      const github = { label: 'GitHub', kind: 'ghost' as const, action: 'link' as const, value: 'https://github.com/singhgautam7' };
+      if (q.includes('twitter') || /\bx\b/.test(q)) {
+        return r(
+          {
+            text: "I'm not really active on Twitter / X. The reliable places to find me are email, LinkedIn and GitHub.",
+            buttons: [{ label: 'Email me', kind: 'primary', action: 'mailto' }, linkedin, github],
+          },
+          'contact',
+        );
+      }
+      if (q.includes('linkedin')) {
+        return r(
+          { text: "Yes, I'm on LinkedIn. That or email both reach me.", buttons: [linkedin, { label: 'Email me', kind: 'ghost', action: 'mailto' }] },
+          'contact',
+        );
+      }
+      if (q.includes('github')) {
+        return r(
+          { text: 'Yes, my code lives on GitHub. Have a look around.', buttons: [github, { label: 'Email me', kind: 'ghost', action: 'mailto' }] },
+          'contact',
+        );
+      }
+      return r(
         {
           text: "Easiest is email, I read everything. I'm also on LinkedIn and GitHub.",
-          buttons: [
-            { label: 'Email me', kind: 'primary', action: 'mailto' },
-            { label: 'LinkedIn', kind: 'ghost', action: 'link', value: 'https://www.linkedin.com/in/singhgautam7' },
-            { label: 'GitHub', kind: 'ghost', action: 'link', value: 'https://github.com/singhgautam7' },
-          ],
+          buttons: [{ label: 'Email me', kind: 'primary', action: 'mailto' }, linkedin, github],
         },
         'contact',
-      ),
+      );
+    },
   },
   {
     id: 'skills',

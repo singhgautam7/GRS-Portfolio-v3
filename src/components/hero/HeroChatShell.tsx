@@ -12,7 +12,7 @@ import { useSiteNav } from '@/lib/navigation';
  * Hosts the idle hero and the in-page chat overlay so the transition from the
  * hero to the full-screen chat is a shared-element morph (the input bar carries
  * a `layoutId` across both). Scrolling never opens chat; sending or tapping a
- * chip does. The /ask route remains for deep links and the command palette.
+ * chip does. The /askme route remains for deep links and the command palette.
  * Reduced motion gets an instant switch (no morph, no fade).
  */
 export function HeroChatShell() {

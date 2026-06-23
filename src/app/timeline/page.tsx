@@ -138,10 +138,33 @@ export default function TimelinePage() {
                 >
                   <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.01em' }}>{ev.title}</div>
                   <div style={{ fontSize: 13, color: 'var(--accent)', marginTop: 3 }}>{ev.org}</div>
-                  {ev.desc && (
-                    <p style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--ink-2)', margin: '11px 0 0' }}>
-                      {ev.desc}
-                    </p>
+                  {ev.points.length > 0 ? (
+                    <ul
+                      style={{
+                        margin: '12px 0 0',
+                        padding: 0,
+                        listStyle: 'none',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 8,
+                      }}
+                    >
+                      {ev.points.map((pt) => (
+                        <li
+                          key={pt}
+                          style={{ display: 'flex', gap: 10, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
+                        >
+                          <span style={{ color: 'var(--accent)', fontFamily: mono, flex: 'none' }}>→</span>
+                          <span>{pt}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    ev.desc && (
+                      <p style={{ fontSize: 14, lineHeight: 1.55, color: 'var(--ink-2)', margin: '11px 0 0' }}>
+                        {ev.desc}
+                      </p>
+                    )
                   )}
                 </div>
               </Reveal>

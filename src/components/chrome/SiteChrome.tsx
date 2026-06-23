@@ -25,9 +25,9 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const openShortcuts = useCallback(() => setShortcutsOpen(true), []);
   const closeShortcuts = useCallback(() => setShortcutsOpen(false), []);
 
-  // The /ask page is a full-screen chat surface; it hides the global pill/progress.
+  // The /askme page is a full-screen chat surface; it hides the global pill/progress.
   // Normalize the trailing slash added by `trailingSlash: true`.
-  const isChat = pathname.replace(/\/+$/, '') === '/ask';
+  const isChat = pathname.replace(/\/+$/, '') === '/askme';
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

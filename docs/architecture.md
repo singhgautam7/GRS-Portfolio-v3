@@ -31,7 +31,7 @@ scripts/generate-og.ts   # build-time OG image generation (satori + resvg)
 src/
   app/                   # routes (App Router)
     page.tsx             # landing (hero + sections)
-    ask/                 # full-screen chat surface (/ask)
+    askme/                 # full-screen chat surface (/askme)
     projects/ timeline/ blog/ blog/[slug]/
     not-found.tsx sitemap.ts robots.ts layout.tsx globals.css
   components/
@@ -61,14 +61,14 @@ unit-testable in isolation (no DOM). The UI imports only the public API from
 
 ## Routing & SPA behaviour
 
-Routes are real Next routes (`/`, `/ask`, `/projects`, `/timeline`, `/blog`,
+Routes are real Next routes (`/`, `/askme`, `/projects`, `/timeline`, `/blog`,
 `/blog/[slug]`). The global chrome (navbar, command palette, shortcuts overlay,
 scroll progress, active-section pill) lives in `SiteChrome` in the root layout,
 so `Cmd+K` works everywhere. On the home route an IntersectionObserver tracks the
 active section and syncs the URL hash via `history.replaceState`.
 
 The hero never hijacks scroll: scrolling browses the landing; sending the input
-or tapping a chip navigates to `/ask?q=...`, which seeds the chat.
+or tapping a chip navigates to `/askme?q=...`, which seeds the chat.
 
 ## Theming
 

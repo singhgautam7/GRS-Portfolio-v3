@@ -109,7 +109,7 @@ export function CommandPalette() {
         goPage(it.value!);
         break;
       case 'chat':
-        router.push('/ask');
+        router.push('/askme');
         break;
       case 'resume':
         window.open(SITE.resumeUrl, '_blank', 'noopener');
