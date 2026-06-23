@@ -103,9 +103,37 @@ export const intents: Intent[] = [
       ),
   },
   {
+    id: 'how-are-you',
+    examples: [
+      'how are you',
+      'how are you doing',
+      'how have you been',
+      'how is it going',
+      "how's it going",
+    ],
+    keywords: [
+      'how are you',
+      'how have you been',
+      'how is it going',
+      "how's it going",
+      'how are you doing',
+    ],
+    handler: () =>
+      r(
+        {
+          text: "I am doing great! System metrics are green, CPU is cool, and memory usage is O(1). Though I would compile even happier if you had an open role for me on your team. :p",
+          buttons: [
+            { label: 'Work experience', kind: 'ghost', action: 'ask', value: 'How much experience do you have?' },
+            { label: 'Featured projects', kind: 'ghost', action: 'ask', value: 'Show me your best projects' },
+          ],
+        },
+        'how-are-you',
+      ),
+  },
+  {
     id: 'offtopic',
     examples: ['how is the weather?', "how's the weather today?", 'what is the weather like?'],
-    keywords: ['weather', 'how are you doing today', 'how is your day'],
+    keywords: ['weather', 'how is your day'],
     handler: () =>
       r(
         {

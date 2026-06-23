@@ -237,7 +237,7 @@ export function HeroLauncher({ chatOpen = false, onAsk }: HeroLauncherProps) {
                   setValue(e.target.value);
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                  if (e.key === 'Enter') {
                     e.preventDefault();
                     e.stopPropagation();
                     send();

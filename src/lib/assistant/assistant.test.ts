@@ -32,6 +32,8 @@ describe('matchIntent (Layer 1)', () => {
     ['what is the news today', 'news'],
     ['can you write a program for me', 'do-my-work'],
     ['fix my code', 'do-my-work'],
+    ['how is it going', 'how-are-you'],
+    ['how are you doing today', 'how-are-you'],
   ];
 
   for (const [query, expected] of cases) {
@@ -97,6 +99,7 @@ describe('answerLayer1', () => {
       'how is the weather',
       'what is the news',
       'can you write a program',
+      'how is it going',
     ];
     for (const q of queries) {
       const res = answerLayer1(q, ctx);
