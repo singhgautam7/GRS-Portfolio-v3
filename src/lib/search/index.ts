@@ -28,10 +28,15 @@ let indexPromise: Promise<SearchIndex> | null = null;
 export function getSearchIndex(): Promise<SearchIndex> {
   if (!indexPromise) {
     indexPromise = (async () => {
-      const db = create({ schema }) as SearchIndex;
-      const docs = buildDocuments().map((d) => ({ ...d, external: d.external ?? '' }));
-      await insertMultiple(db, docs);
-      return db;
+      try {
+        const db = create({ schema }) as SearchIndex;
+        const docs = buildDocuments().map((d) => ({ ...d, external: d.external ?? '' }));
+        await insertMultiple(db, docs);
+        return db;
+      } catch (e) {
+        indexPromise = null;
+        throw e;
+      }
     })();
   }
   return indexPromise;

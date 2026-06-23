@@ -40,11 +40,13 @@ const REDUCED = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/** Smooth-scroll to a landing section, accounting for the 58px sticky navbar. */
+const HEADER_HEIGHT = 58;
+
+/** Smooth-scroll to a landing section, accounting for the sticky navbar. */
 export function scrollToSection(id: string): void {
   const el = document.getElementById(id);
   if (!el) return;
-  const y = el.getBoundingClientRect().top + window.scrollY - 50;
+  const y = el.getBoundingClientRect().top + window.scrollY - HEADER_HEIGHT;
   window.scrollTo({ top: y, behavior: REDUCED() ? 'auto' : 'smooth' });
 }
 

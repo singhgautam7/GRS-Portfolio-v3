@@ -82,6 +82,7 @@
   --r-input: 15px;
   --r-chip: 6px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --header-height: 58px;
 }
 
 /* Expose a couple of tokens to Tailwind's utility layer for convenience. */

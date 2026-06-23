@@ -215,7 +215,7 @@ export function HeroLauncher({ chatOpen = false, onAsk }: HeroLauncherProps) {
               <span>
                 grs@infra:~$ <span style={{ color: 'var(--ink-2)' }}>ask</span>
               </span>
-              <span>⌘↵ / Ctrl+↵ to send</span>
+              {/* <span>⌘↵ / Ctrl+↵ to send</span> */}
             </div>
             <motion.div
               layoutId={reduced ? undefined : 'ama-input'}
