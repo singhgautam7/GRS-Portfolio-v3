@@ -3,7 +3,7 @@ title: 'A Tour of Go'
 date: '2026-05-01'
 type: 'Personal'
 featured: true
-tech: ['Flutter', 'Go Playground']
+tech: ['Android', 'Flutter', 'Go Playground']
 external: 'https://play.google.com/store/apps/details?id=com.grs.tourgo'
 excerpt: 'Mobile-first Go learning companion: offline Tour + Go by Example, a live sandbox via the official Playground API, and instant search.'
 timeline: true

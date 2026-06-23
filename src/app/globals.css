@@ -452,6 +452,29 @@ body {
     display: none !important;
   }
 }
+
+/* Archive filter bar: full controls (Filters text button, count, segmented
+   SORT) on larger screens; compact icon controls (filter + sort dropdown) in
+   the search row on mobile. */
+.fb-desktop {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.fb-mobile {
+  display: none;
+  gap: 8px;
+  flex: none;
+}
+@media (max-width: 640px) {
+  .fb-desktop,
+  .fb-sort-desktop {
+    display: none !important;
+  }
+  .fb-mobile {
+    display: flex;
+  }
+}
 .grs-reveal {
   opacity: 0;
   transform: translateY(16px);

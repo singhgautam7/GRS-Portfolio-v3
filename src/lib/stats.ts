@@ -21,8 +21,11 @@ export function computeStats(now: Date = new Date()): SiteStats {
     p.tech.some((t) => t.toLowerCase() === 'pypi'),
   ).length;
 
-  const appsShipped = projects.filter((p) =>
-    (p.external ?? '').includes('play.google.com'),
+  // Apps shipped: live, deployed applications. Anything with a live `external`
+  // URL (web app or app-store listing), excluding OSS packages/modules (which
+  // are libraries, not apps) and the portfolio sites themselves.
+  const appsShipped = projects.filter(
+    (p) => Boolean(p.external) && p.type !== 'OSS' && !p.slug.startsWith('portfolio'),
   ).length;
 
   return {

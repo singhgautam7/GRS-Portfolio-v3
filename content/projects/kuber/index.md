@@ -3,7 +3,7 @@ title: 'Kuber: Money Manager'
 date: '2026-03-18'
 type: 'Personal'
 featured: true
-tech: ['Flutter', 'Isar']
+tech: ['Android', 'Flutter', 'Isar']
 external: 'https://play.google.com/store/apps/details?id=com.grs.kuber'
 excerpt: 'Offline-first expense manager: smart transactions, budgets with live progress, recurring automation and CSV/PDF export. All on-device.'
 timeline: true

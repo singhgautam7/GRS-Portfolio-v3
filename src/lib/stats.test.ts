@@ -17,8 +17,8 @@ describe('computeStats', () => {
   it('derives 4 PyPI packages', () => {
     expect(s.pypiPackages).toBe(4);
   });
-  it('derives 2 Play Store apps', () => {
-    expect(s.appsShipped).toBe(2);
+  it('derives live deployed apps (external, non-OSS, non-portfolio)', () => {
+    expect(s.appsShipped).toBe(7);
   });
   it('exposes a 7+ experience label', () => {
     expect(s.experienceLabel).toBe('7+');
