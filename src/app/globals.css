@@ -514,3 +514,15 @@ body {
     transform: none !important;
   }
 }
+
+/* Experience section responsive layout overrides */
+@media (max-width: 640px) {
+  .grs-exp-content-wrapper {
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+  .grs-exp-date {
+    min-width: auto !important;
+    padding-top: 0 !important;
+  }
+}

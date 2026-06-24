@@ -49,7 +49,7 @@ export function Footer() {
           >
             Built with Next.js, TypeScript &amp; an on-device assistant.
             <br />
-            No tracking. Runs offline.
+            No tracking.
           </div>
         </div>
 

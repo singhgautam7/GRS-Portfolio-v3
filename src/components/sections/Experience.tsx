@@ -99,7 +99,7 @@ function ExperienceRow({ job, open, onToggle }: { job: Job; open: boolean; onTog
         style={{
           display: 'flex',
           width: '100%',
-          alignItems: 'flex-start',
+          alignItems: 'center',
           gap: 16,
           padding: '20px 22px',
           background: 'none',
@@ -109,45 +109,42 @@ function ExperienceRow({ job, open, onToggle }: { job: Job; open: boolean; onTog
           color: 'var(--ink)',
         }}
       >
-        <span
+        <div
+          className="grs-exp-content-wrapper"
           style={{
-            fontFamily: mono,
-            fontSize: 12,
-            color: 'var(--ink-3)',
-            paddingTop: 4,
-            whiteSpace: 'nowrap',
-            minWidth: 116,
+            display: 'flex',
+            flex: 1,
+            minWidth: 0,
+            alignItems: 'flex-start',
+            gap: 16,
           }}
         >
-          {job.range}
-        </span>
-        <span style={{ flex: 1, minWidth: 0 }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 17, fontWeight: 600 }}>{job.title}</span>
-            {job.current && (
-              <span
-                style={{
-                  fontFamily: mono,
-                  fontSize: 10,
-                  letterSpacing: '0.08em',
-                  color: 'var(--accent-ink)',
-                  background: 'var(--accent)',
-                  borderRadius: 5,
-                  padding: '2px 7px',
-                }}
-              >
-                CURRENT
-              </span>
-            )}
+          <span
+            className="grs-exp-date"
+            style={{
+              fontFamily: mono,
+              fontSize: 12,
+              color: 'var(--ink-3)',
+              paddingTop: 4,
+              whiteSpace: 'nowrap',
+              minWidth: 116,
+            }}
+          >
+            {job.range}
           </span>
-          <span style={{ display: 'block', color: 'var(--accent)', fontSize: 13.5, marginTop: 3 }}>
-            {job.company}
+          <span className="grs-exp-details" style={{ flex: 1, minWidth: 0 }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 17, fontWeight: 600 }}>{job.title}</span>
+            </span>
+            <span style={{ display: 'block', color: 'var(--accent)', fontSize: 13.5, marginTop: 3 }}>
+              {job.company}
+            </span>
           </span>
-        </span>
+        </div>
         <motion.span
           animate={{ rotate: open ? 90 : 0 }}
           transition={{ duration: reduced ? 0 : 0.22, ease: [0.2, 0.7, 0.2, 1] }}
-          style={{ color: 'var(--ink-3)', alignSelf: 'center', display: 'inline-flex' }}
+          style={{ color: 'var(--ink-3)', alignSelf: 'center', display: 'inline-flex', flex: 'none' }}
         >
           <ChevronRight size={18} />
         </motion.span>
