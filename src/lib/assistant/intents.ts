@@ -146,6 +146,22 @@ export const intents: Intent[] = [
       ),
   },
   {
+    id: 'orientation',
+    examples: ['are you gay?', 'are you straight?', 'are you bi?', 'are you asexual?', 'are you pansexual?', 'are you aromantic?', 'are you demisexual?', 'are you non-binary?'],
+    keywords: ['orientation', 'gender', 'sexual preference', 'gay', 'straight', 'bi', 'asexual', 'pansexual', 'aromantic', 'demisexual', 'non-binary'],
+    handler: () =>
+      r(
+        {
+          text: "Well, that's a bit personal. I'm a software engineer and I'm all about building reliable systems and shipping code that makes a difference. :)",
+          buttons: [
+            { label: 'Ask about my work', kind: 'ghost', action: 'ask', value: 'What do you work on?' },
+            { label: 'Contact me', kind: 'primary', action: 'mailto' }
+          ],
+        },
+        'orientation',
+      ),
+  },
+  {
     id: 'news',
     examples: ['what is the news?', 'any news today?', 'what is the latest news?'],
     keywords: ['the news', 'news today', 'latest news', 'current events'],
