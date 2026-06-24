@@ -1,6 +1,6 @@
 import { Reveal } from '@/components/ui/Reveal';
 import { Section, SectionEyebrow } from './SectionEyebrow';
-import { stats, aboutStatCells } from '@/lib/stats';
+import { stats } from '@/lib/stats';
 
 const mono = 'var(--font-mono)';
 
@@ -22,7 +22,6 @@ const statCard = (label: string, body: React.ReactNode) => (
 );
 
 export function About() {
-  const cells = aboutStatCells();
   return (
     <Section id="about" first>
       <SectionEyebrow index="01" label="ABOUT" />
@@ -79,6 +78,18 @@ export function About() {
             </div>,
           )}
           {statCard(
+            'PyPI PACKAGES',
+            <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-0.02em' }}>
+              {stats.pypiPackages}
+            </div>,
+          )}
+          {statCard(
+            'APPS SHIPPED',
+            <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: '-0.02em' }}>
+              {stats.appsShipped}
+            </div>,
+          )}
+          {statCard(
             'NOW',
             <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.3, marginTop: 5 }}>
               HVD clusters
@@ -91,40 +102,7 @@ export function About() {
         </Reveal>
       </div>
 
-      <Reveal
-        style={{
-          marginTop: 'clamp(24px,4vw,36px)',
-          display: 'flex',
-          flexWrap: 'wrap',
-          alignItems: 'stretch',
-          border: '1px solid var(--line)',
-          borderRadius: 14,
-          overflow: 'hidden',
-          background: 'var(--surface)',
-        }}
-      >
-        {cells.map((st) => (
-          <div
-            key={st.label}
-            style={{
-              flex: '1 1 140px',
-              padding: '18px 20px',
-              borderRight: '1px solid var(--line)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 5,
-            }}
-          >
-            <div style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1 }}>
-              {st.num}
-              <span style={{ color: 'var(--accent)', fontSize: 15, marginLeft: 2 }}>{st.unit}</span>
-            </div>
-            <div style={{ fontFamily: mono, fontSize: 10.5, letterSpacing: '0.12em', color: 'var(--ink-3)' }}>
-              {st.label}
-            </div>
-          </div>
-        ))}
-      </Reveal>
+
     </Section>
   );
 }
