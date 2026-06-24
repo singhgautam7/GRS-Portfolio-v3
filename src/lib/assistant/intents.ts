@@ -17,6 +17,43 @@ const r = (resp: Omit<AssistantResponse, 'source'>, intentId: string): Assistant
 });
 
 export const intents: Intent[] = [
+  // ----- guardrails (profanity) -----
+  {
+    id: 'profanity',
+    examples: [
+      'cunt',
+      'fuck',
+      'shit',
+      'bitch',
+      'asshole',
+      'dick',
+      'bastard',
+      'wanker',
+    ],
+    keywords: [
+      'cunt',
+      'fuck',
+      'shit',
+      'bitch',
+      'asshole',
+      'dick',
+      'bastard',
+      'wanker',
+      'motherfucker',
+      'crap',
+    ],
+    handler: () =>
+      r(
+        {
+          text: "Whoa, watch the language! Let's keep it clean, cowboy.",
+          buttons: [
+            { label: 'Featured projects', kind: 'ghost', action: 'ask', value: 'Show me your best projects' },
+            { label: 'How to contact', kind: 'ghost', action: 'ask', value: 'How do I contact you?' },
+          ],
+        },
+        'profanity',
+      ),
+  },
   // ----- easter eggs (terminal personality) -----
   {
     id: 'egg-whoami',

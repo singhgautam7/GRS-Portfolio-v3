@@ -34,6 +34,8 @@ describe('matchIntent (Layer 1)', () => {
     ['fix my code', 'do-my-work'],
     ['how is it going', 'how-are-you'],
     ['how are you doing today', 'how-are-you'],
+    ['is gautam singh a cunt?', 'profanity'],
+    ['fuck this', 'profanity'],
   ];
 
   for (const [query, expected] of cases) {
