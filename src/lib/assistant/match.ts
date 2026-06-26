@@ -32,7 +32,14 @@ const fuse = new Fuse(fuseEntries, {
 function keywordMatch(query: string): MatchResult | null {
   const q = query.toLowerCase();
   for (const intent of intents) {
-    if (intent.keywords.some((k) => q.includes(k))) {
+    if (
+      intent.keywords.some((k) => {
+        const keyword = k.trim();
+        const escaped = keyword.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+        const regex = new RegExp(`\\b${escaped}\\b`, 'i');
+        return regex.test(q);
+      })
+    ) {
       return { intent, confidence: 1, via: 'keyword' };
     }
   }

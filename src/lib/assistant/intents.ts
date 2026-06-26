@@ -140,6 +140,22 @@ export const intents: Intent[] = [
       ),
   },
   {
+    id: 'kiss',
+    examples: ['wanna kiss', 'kiss me', 'can I kiss you', 'give me a kiss', 'kiss'],
+    keywords: ['kiss'],
+    handler: () =>
+      r(
+        {
+          text: "I'm flattered, but I only have feelings for clean code and compilation success. Let's stick to talking about my experience or projects!",
+          buttons: [
+            { label: 'Featured projects', kind: 'ghost', action: 'ask', value: 'Show me your best projects' },
+            { label: 'See experience', kind: 'ghost', action: 'route', value: 'Experience' },
+          ],
+        },
+        'kiss',
+      ),
+  },
+  {
     id: 'how-are-you',
     examples: [
       'how are you',
@@ -869,12 +885,36 @@ export const intents: Intent[] = [
   },
   {
     id: 'greeting',
-    examples: ['hello', 'hi there', 'hey', 'yo', 'namaste', 'good morning'],
-    keywords: ['hello', 'hi ', 'hey', 'yo ', 'sup', 'namaste'],
+    examples: [
+      'hello',
+      'hi',
+      'hi there',
+      'hey',
+      'yo',
+      'namaste',
+      'good morning',
+      'good evening',
+      'good day',
+      'good night',
+      'goodnight',
+    ],
+    keywords: [
+      'hello',
+      'hi',
+      'hey',
+      'yo',
+      'sup',
+      'namaste',
+      'good morning',
+      'good evening',
+      'good day',
+      'good night',
+      'goodnight',
+    ],
     handler: () =>
       r(
         {
-          text: "Hey! I'm Gautam's on-device assistant, everything I answer runs right here in your browser. Ask about my experience, what I'm working on, my projects, or how to get in touch.",
+          text: "Hey! I'm Gautam. This is my on-device assistant, and everything it answers runs right here in your browser. Ask me about my experience, what I'm working on, my projects, or how to get in touch.",
           buttons: [
             { label: 'Best projects', kind: 'ghost', action: 'ask', value: 'Show me your best projects' },
             { label: 'Contact', kind: 'ghost', action: 'ask', value: 'How do I contact you?' },

@@ -36,6 +36,11 @@ describe('matchIntent (Layer 1)', () => {
     ['how are you doing today', 'how-are-you'],
     ['is gautam singh a cunt?', 'profanity'],
     ['fuck this', 'profanity'],
+    ['hi', 'greeting'],
+    ['Namaste', 'greeting'],
+    ['good morning', 'greeting'],
+    ['Wanna kiss?', 'kiss'],
+    ['kiss me', 'kiss'],
   ];
 
   for (const [query, expected] of cases) {
@@ -102,6 +107,8 @@ describe('answerLayer1', () => {
       'what is the news',
       'can you write a program',
       'how is it going',
+      'Wanna kiss?',
+      'cunt',
     ];
     for (const q of queries) {
       const res = answerLayer1(q, ctx);
