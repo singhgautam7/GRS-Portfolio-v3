@@ -4,7 +4,7 @@ date: '2026-03-18'
 type: 'Personal'
 featured: true
 tech: ['Android', 'Flutter', 'Isar']
-external: 'https://play.google.com/store/apps/details?id=com.grs.kuber'
+external: 'https://kuber.pages.dev/'
 excerpt: 'Offline-first expense manager: smart transactions, budgets with live progress, recurring automation and CSV/PDF export. All on-device.'
 points:
   - 'Built a fully offline-first expense manager, no backend, no accounts, all data stored locally on device using Isar.'

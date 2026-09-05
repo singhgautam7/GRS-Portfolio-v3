@@ -5,8 +5,8 @@ import { buildChips, CHIP_POOL } from './chips';
 describe('computeStats', () => {
   const s = computeStats(new Date('2026-06-22T12:00:00+05:30'));
 
-  it('counts 19 projects from content', () => {
-    expect(s.projectCount).toBe(19);
+  it('counts 23 projects from content', () => {
+    expect(s.projectCount).toBe(23);
   });
   it('counts 6 roles from content', () => {
     expect(s.roleCount).toBe(6);
@@ -14,11 +14,11 @@ describe('computeStats', () => {
   it('counts 1 published post', () => {
     expect(s.postCount).toBe(1);
   });
-  it('derives 4 PyPI packages', () => {
-    expect(s.pypiPackages).toBe(4);
+  it('derives 5 PyPI packages', () => {
+    expect(s.pypiPackages).toBe(5);
   });
   it('derives live deployed apps (external, non-OSS, non-portfolio)', () => {
-    expect(s.appsShipped).toBe(7);
+    expect(s.appsShipped).toBe(9);
   });
   it('exposes a 7+ experience label', () => {
     expect(s.experienceLabel).toBe('7+');
@@ -30,7 +30,7 @@ describe('aboutStatCells', () => {
     const cells = aboutStatCells(computeStats(new Date('2026-06-22T12:00:00+05:30')));
     expect(cells).toHaveLength(5);
     expect(cells[0]!.label).toBe('EXPERIENCE');
-    expect(cells[1]!.num).toBe('19');
+    expect(cells[1]!.num).toBe('23');
   });
 });
 
