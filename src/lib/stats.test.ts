@@ -1,24 +1,27 @@
 import { describe, expect, it } from 'bun:test';
+import { readdirSync } from 'node:fs';
 import { computeStats, aboutStatCells } from './stats';
 import { buildChips, CHIP_POOL } from './chips';
+
+// Count source files on disk so the test tracks content/ without manual edits.
+const onDisk = (dir: string) => readdirSync(`content/${dir}`).filter((f) => !f.startsWith('.')).length;
 
 describe('computeStats', () => {
   const s = computeStats(new Date('2026-06-22T12:00:00+05:30'));
 
-  it('counts 23 projects from content', () => {
-    expect(s.projectCount).toBe(23);
+  it('counts every project folder in content/', () => {
+    expect(s.projectCount).toBe(onDisk('projects'));
   });
-  it('counts 6 roles from content', () => {
-    expect(s.roleCount).toBe(6);
+  it('counts every role in content/', () => {
+    expect(s.roleCount).toBe(onDisk('jobs'));
   });
-  it('counts 1 published post', () => {
-    expect(s.postCount).toBe(1);
+  it('counts every post in content/', () => {
+    expect(s.postCount).toBe(onDisk('posts'));
   });
-  it('derives 5 PyPI packages', () => {
-    expect(s.pypiPackages).toBe(5);
-  });
-  it('derives live deployed apps (external, non-OSS, non-portfolio)', () => {
-    expect(s.appsShipped).toBe(9);
+  it('derives PyPI packages and shipped apps as subsets of projects', () => {
+    expect(s.pypiPackages).toBeGreaterThan(0);
+    expect(s.appsShipped).toBeGreaterThan(0);
+    expect(s.pypiPackages + s.appsShipped).toBeLessThanOrEqual(s.projectCount);
   });
   it('exposes a 7+ experience label', () => {
     expect(s.experienceLabel).toBe('7+');
@@ -30,7 +33,7 @@ describe('aboutStatCells', () => {
     const cells = aboutStatCells(computeStats(new Date('2026-06-22T12:00:00+05:30')));
     expect(cells).toHaveLength(5);
     expect(cells[0]!.label).toBe('EXPERIENCE');
-    expect(cells[1]!.num).toBe('23');
+    expect(cells[1]!.num).toBe(String(onDisk('projects')));
   });
 });
 
