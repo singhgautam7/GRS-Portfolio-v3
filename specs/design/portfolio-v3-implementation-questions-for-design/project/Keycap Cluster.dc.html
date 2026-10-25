@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&amp;family=Martian+Mono:wdth,wght@75..112.5,300..700&amp;family=Press+Start+2P&amp;display=swap">
+<link rel="stylesheet" href="tokens.css">
+</helmet>
+<div data-theme="{{ theme }}" style="width:390px;padding:{{ outerPad }};box-sizing:border-box;background:{{ outerBg }};font-family:var(--font-sans);color:var(--ink)">
+  <div data-kb="{{ variant }}" style="display:flex;flex-direction:column;gap:14px">
+    <div style="position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;padding:{{ deckPad }};border-radius:{{ deckR }};background:{{ deckBg }};box-shadow:{{ deckSh }}">
+      <sc-for list="{{ rivets }}" as="rv" hint-placeholder-count="0">
+        <span style="position:absolute;left:{{ rv.x }};top:{{ rv.y }};width:9px;height:9px;border-radius:50%;background:var(--kb-trim);box-shadow:inset 0 -1px 0 rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.3)"></span>
+      </sc-for>
+      <button style="height:112px;border:none;border-radius:{{ r }};padding:14px 18px 18px;display:flex;flex-direction:column;justify-content:space-between;align-items:{{ align }};background:{{ a.bg }};color:{{ a.fg }};box-shadow:{{ a.sh }};transform:{{ a.tf }};cursor:pointer;transition:transform 70ms cubic-bezier(.2,.9,.3,1),box-shadow 70ms" style-active="transform:translateY(6px)">
+        <span style="font-family:{{ legFont }};font-size:{{ legSize }};opacity:.75;text-shadow:{{ legGlow }}">P</span>
+        <span style="font-size:17px;font-weight:600;white-space:nowrap;text-shadow:{{ legGlow }}">Projects <span style="font-family:var(--font-mono);font-size:13px">→</span></span>
+      </button>
+      <button style="height:112px;border:none;border-radius:{{ r }};padding:14px 18px 18px;display:flex;flex-direction:column;justify-content:space-between;align-items:{{ align }};background:{{ m.bg }};color:{{ m.fg }};box-shadow:{{ m.sh }};cursor:pointer;transition:transform 70ms cubic-bezier(.2,.9,.3,1),box-shadow 70ms" style-active="transform:translateY(6px)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+        <span style="font-size:17px;font-weight:600">Resume</span>
+      </button>
+      <button style="grid-column:span 2;height:96px;border:none;border-radius:{{ r }};padding:14px 22px 18px;display:flex;justify-content:space-between;align-items:flex-end;background:{{ c.bg }};color:var(--kb-legend-accent);box-shadow:{{ c.sh }};cursor:pointer;transition:transform 70ms cubic-bezier(.2,.9,.3,1),box-shadow 70ms" style-active="transform:translateY(6px)">
+        <span style="display:flex;flex-direction:column;align-items:flex-start;gap:4px"><span style="font-family:{{ legFont }};font-size:11px;opacity:.75">run</span><span style="font-size:19px;font-weight:600">Open the playground</span></span>
+        <span style="font-family:var(--font-mono);font-size:26px;line-height:1">↵</span>
+      </button>
+    </div>
+    <sc-if value="{{ showRow }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;gap:8px">
+          <span role="button" aria-haspopup="listbox" aria-label="Keyboard: {{ name }}" style="flex:1;display:flex;align-items:center;gap:10px;height:44px;padding:0 14px 0 8px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:14.5px;font-weight:500;box-shadow:var(--shadow-1)"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:30px;padding:0 6px;box-sizing:border-box;border-radius:7px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ variant }}</span><span style="flex:1">{{ name }}</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ink-3)"><path d="m6 9 6 6 6-6"></path></svg></span>
+          <span role="button" aria-label="{{ muteLabel }}" style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:{{ muteBg }};color:{{ muteFg }};box-shadow:{{ muteSh }}">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="{{ w1 }}"></path><path d="{{ w2 }}"></path></svg>
+          </span>
+        </div>
+        <span style="font-size:12.5px;color:var(--ink-3)">{{ sub }} · opens a bottom sheet with all six</span>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:420},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;thk&quot;,&quot;tik&quot;,&quot;clk&quot;,&quot;pop&quot;,&quot;pew&quot;,&quot;8bt&quot;],&quot;default&quot;:&quot;thk&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;muted&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;pressed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showRow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;framed&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const v = this.props.variant ?? 'thk', theme = this.props.theme ?? 'light', dark = theme === 'dark', muted = this.props.muted ?? true, pressed = !!this.props.pressed;
+    const drop = 'rgba(0,0,0,.35)';
+    const KB = {
+      thk: { name: 'Mechanical', sub: 'Deep, tactile switch', r: '16px', align: 'flex-start', deck: ['0', '0', 'transparent', 'none'],
+        a: ['var(--kb-cap)', 'var(--kb-legend)', `inset 0 2px 0 rgba(255,255,255,.5),inset 0 -4px 0 rgba(0,0,0,.05),0 7px 0 var(--kb-cap-mod),0 16px 22px -10px ${drop}`],
+        m: ['var(--kb-cap-mod)', 'var(--kb-legend-mod)', `inset 0 2px 0 rgba(255,255,255,.35),inset 0 -4px 0 rgba(0,0,0,.06),0 7px 0 var(--kb-plate),0 16px 22px -10px ${drop}`],
+        c: ['var(--kb-cap-accent)', `inset 0 2px 0 rgba(255,255,255,.35),inset 0 -4px 0 rgba(0,0,0,.08),0 7px 0 var(--accent-text),0 18px 26px -10px var(--accent-soft),0 16px 22px -10px rgba(0,0,0,.3)`] },
+      tik: { name: 'Laptop', sub: 'Soft, low-travel click', r: '12px', align: 'flex-start', deck: ['14px', '22px', 'linear-gradient(160deg,rgba(255,255,255,.35),transparent 40%),var(--kb-metal)', 'inset 0 1px 0 rgba(255,255,255,.5),0 1px 0 rgba(0,0,0,.08),0 18px 30px -18px rgba(0,0,0,.4)'],
+        a: ['var(--kb-cap)', 'var(--kb-legend)', '0 0 0 3px var(--kb-plate),0 2px 0 3px var(--kb-plate)'],
+        m: ['var(--kb-cap-mod)', 'var(--kb-legend-mod)', '0 0 0 3px var(--kb-plate),0 2px 0 3px var(--kb-plate)'],
+        c: ['var(--kb-cap-accent)', '0 0 0 3px var(--kb-plate),0 2px 0 3px var(--kb-plate),0 0 24px -6px var(--accent)'] },
+      clk: { name: 'Typewriter', sub: 'Clack, with a bell on Enter', r: '999px', align: 'center', deck: ['18px 16px', '28px', 'linear-gradient(180deg,rgba(255,255,255,.28),transparent 35%),var(--kb-case)', `inset 0 1px 0 rgba(255,255,255,.4),0 18px 30px -16px ${drop}`],
+        a: ['radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.5),transparent 55%),var(--kb-cap)', 'var(--kb-legend)', `0 0 0 4px var(--kb-metal),0 0 0 5px rgba(0,0,0,.25),0 10px 0 2px rgba(0,0,0,.14),0 18px 20px -10px ${drop}`],
+        m: ['radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.4),transparent 55%),var(--kb-cap-mod)', 'var(--kb-legend-mod)', `0 0 0 4px var(--kb-metal),0 0 0 5px rgba(0,0,0,.25),0 10px 0 2px rgba(0,0,0,.14),0 18px 20px -10px ${drop}`],
+        c: ['radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.4),transparent 55%),var(--kb-cap-accent)', `0 0 0 4px var(--kb-metal),0 0 0 5px rgba(0,0,0,.25),0 10px 0 2px rgba(0,0,0,.14),0 18px 20px -10px ${drop}`] },
+      pop: { name: 'Bubble', sub: 'Soft pops', r: '999px', align: 'center', deck: ['16px', '34px', 'var(--kb-case)', `inset 0 4px 0 rgba(255,255,255,.35),inset 0 -6px 0 rgba(0,0,0,.06),0 18px 30px -16px ${drop}`],
+        a: ['var(--kb-cap-2)', 'var(--kb-legend)', `inset 0 5px 0 rgba(255,255,255,.45),inset 0 -7px 0 rgba(0,0,0,.08),0 6px 0 rgba(0,0,0,.12),0 14px 20px -8px rgba(0,0,0,.3)`],
+        m: ['var(--kb-cap-3)', 'var(--kb-legend)', `inset 0 5px 0 rgba(255,255,255,.45),inset 0 -7px 0 rgba(0,0,0,.08),0 6px 0 rgba(0,0,0,.12),0 14px 20px -8px rgba(0,0,0,.3)`],
+        c: ['var(--kb-cap-accent)', `inset 0 5px 0 rgba(255,255,255,.4),inset 0 -7px 0 rgba(0,0,0,.1),0 6px 0 rgba(0,0,0,.14),0 14px 20px -8px rgba(0,0,0,.3)`] },
+      pew: { name: 'Bullet', sub: 'Pew. Pew pew.', r: '8px', align: 'flex-start', deck: ['24px 16px 16px', '12px', 'linear-gradient(180deg,rgba(255,255,255,.12),transparent 30%),var(--kb-case)', `inset 0 0 0 2px var(--kb-metal),inset 0 3px 0 rgba(255,255,255,.18),0 18px 30px -16px ${drop}`], rivets: true,
+        a: ['radial-gradient(circle at 26px 26px,transparent 0 12px,rgba(0,0,0,.24) 13px 15px,transparent 16px),linear-gradient(180deg,rgba(255,255,255,.28),transparent 42%),var(--kb-cap)', 'var(--kb-legend)', 'inset 0 2px 0 rgba(255,255,255,.35),0 8px 0 var(--kb-plate),0 18px 22px -10px rgba(0,0,0,.45)'],
+        m: ['linear-gradient(180deg,rgba(255,255,255,.14),transparent 40%),var(--kb-cap-mod)', 'var(--kb-legend-mod)', 'inset 0 2px 0 rgba(255,255,255,.2),0 8px 0 var(--kb-plate),0 18px 22px -10px rgba(0,0,0,.45)'],
+        c: ['var(--kb-cap-accent)', 'inset 0 2px 0 rgba(255,255,255,.3),0 8px 0 var(--kb-plate),0 18px 22px -10px rgba(0,0,0,.45)'] },
+      '8bt': { name: 'Arcade', sub: 'Chiptune blips', r: '999px', align: 'center', deck: ['18px 16px', '20px', 'var(--kb-case)', `inset 0 0 0 2px var(--kb-plate),inset 0 -4px 0 var(--kb-trim),0 18px 30px -16px ${drop}`], pixel: true,
+        a: ['radial-gradient(circle at 35% 28%,rgba(255,255,255,.6),transparent 42%),var(--kb-cap)', 'var(--kb-legend)', `0 0 0 5px var(--kb-metal),0 7px 0 4px rgba(0,0,0,.24),0 16px 22px -8px rgba(0,0,0,.35)${dark ? ',0 0 30px -2px var(--kb-cap)' : ''}`],
+        m: ['radial-gradient(circle at 35% 28%,rgba(255,255,255,.6),transparent 42%),var(--kb-cap-2)', 'var(--kb-legend)', `0 0 0 5px var(--kb-metal),0 7px 0 4px rgba(0,0,0,.24),0 16px 22px -8px rgba(0,0,0,.35)${dark ? ',0 0 30px -2px var(--kb-cap-2)' : ''}`],
+        c: ['radial-gradient(circle at 35% 28%,rgba(255,255,255,.55),transparent 42%),var(--kb-cap-accent)', `0 0 0 5px var(--kb-metal),0 7px 0 4px rgba(0,0,0,.24),0 16px 22px -8px rgba(0,0,0,.35)${dark ? ',0 0 30px -2px var(--accent)' : ''}`] },
+    };
+    const K = KB[v] || KB.thk;
+    const pressSh = `inset 0 3px 6px rgba(0,0,0,.2),0 1px 0 var(--kb-plate),0 0 0 6px var(--accent-soft)`;
+    const ids = ['thk', 'tik', 'clk', 'pop', 'pew', '8bt'];
+    return {
+      theme, variant: v, name: K.name, sub: K.sub, r: K.r, align: K.align,
+      outerPad: this.props.framed ? '28px 22px' : '0 22px', outerBg: this.props.framed ? 'var(--bg)' : 'transparent',
+      deckPad: K.deck[0], deckR: K.deck[1], deckBg: K.deck[2], deckSh: K.deck[3],
+      rivets: K.rivets ? [{ x: '10px', y: '8px' }, { x: 'calc(50% - 4px)', y: '8px' }, { x: 'calc(100% - 19px)', y: '8px' }] : [],
+      a: { bg: K.a[0], fg: K.a[1], sh: pressed ? pressSh : K.a[2], tf: pressed ? 'translateY(6px)' : 'none' },
+      m: { bg: K.m[0], fg: K.m[1], sh: K.m[2] }, c: { bg: K.c[0], sh: K.c[1] },
+      legFont: K.pixel ? 'var(--font-pixel)' : 'var(--font-mono)', legSize: K.pixel ? '10px' : '12px',
+      legGlow: v === 'tik' && dark ? '0 0 10px var(--accent)' : 'none',
+      showRow: this.props.showRow ?? true,
+      chips: ids.map(id => { const on = id === v; return { id, on: String(on), bg: on ? 'var(--surface-2)' : 'var(--cap-ui-bg)', fg: on ? 'var(--ink)' : 'var(--cap-ui-ink)', sh: on ? 'var(--cap-ui-pressed)' : 'var(--cap-ui-shadow),0 2px 0 var(--line-2)', tf: on ? 'translateY(1px)' : 'none' }; }),
+      muteLabel: muted ? 'Turn sound on' : 'Mute', muteBg: muted ? 'var(--cap-ui-bg)' : 'var(--surface-2)', muteFg: muted ? 'var(--ink-2)' : 'var(--accent-text)', muteSh: muted ? 'var(--cap-ui-shadow),0 2px 0 var(--line-2)' : 'var(--cap-ui-pressed)',
+      w1: muted ? 'M22 9l-6 6' : 'M15.54 8.46a5 5 0 0 1 0 7.07', w2: muted ? 'M16 9l6 6' : 'M19.07 4.93a10 10 0 0 1 0 14.14',
+    };
+  }
+}
+</script>
+</body>
+</html>

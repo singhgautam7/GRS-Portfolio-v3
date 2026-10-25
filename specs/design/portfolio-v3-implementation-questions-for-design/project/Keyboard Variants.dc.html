@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&amp;family=Martian+Mono:wdth,wght@75..112.5,300..700&amp;family=Young+Serif&amp;family=Special+Elite&amp;family=Press+Start+2P&amp;display=swap">
+<link rel="stylesheet" href="tokens.css">
+</helmet>
+<div style="display:flex;flex-direction:column;gap:96px;font-family:'Host Grotesk',system-ui,sans-serif;color:#22201C">
+
+  <!-- 6a–6f · one block per keyboard -->
+  <sc-for list="{{ variants }}" as="vr" hint-placeholder-count="6">
+    <div id="{{ vr.id }}" style="display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+        <span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">{{ vr.id }}</span>
+        <span style="font-size:22px;font-weight:600;letter-spacing:-0.02em;white-space:nowrap">{{ vr.name }}</span>
+        <span style="font-family:'Martian Mono',monospace;font-size:12px;color:#6A645B">{{ vr.v }} · {{ vr.sub }}</span>
+        <span style="font-size:14px;color:#5E5850;max-width:900px">{{ vr.note }}</span>
+      </div>
+      <sc-for list="{{ vr.rows }}" as="row" hint-placeholder-count="2">
+        <div style="display:flex;gap:40px">
+          <sc-for list="{{ row }}" as="f" hint-placeholder-count="3">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-family:'Martian Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:#6A645B">{{ f.caption }}</span>
+              <div data-theme="{{ f.theme }}" style="position:relative;width:1440px;height:900px;overflow:hidden;border-radius:16px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);box-shadow:0 40px 90px -50px rgba(0,0,0,.45)">
+                <x-import component-from-global-scope="hero-keyboard" from="./keyboard3d.js" still="{{ f.pose }}" variant="{{ f.v }}" theme="{{ f.theme }}" os="mac" ab="{{ f.ab }}" autoplay="false" style="position:absolute;left:0;top:0;width:1440px;height:900px" hint-size="1440px,900px"></x-import>
+                <div style="position:absolute;left:0;right:0;top:0;height:76px;padding:0 48px 0 56px;display:flex;align-items:center;justify-content:space-between;z-index:3;pointer-events:none">
+                  <span style="display:flex;align-items:center;gap:12px"><span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--cap-ui-bg);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10.5px;font-weight:600">GRS</span><span style="font-family:var(--font-display);font-size:19px;line-height:1;white-space:nowrap">Gautam Rajeev Singh</span></span>
+                  <span style="display:flex;align-items:center;gap:8px">
+                    <span style="display:flex;align-items:center;gap:24px;height:38px;padding:0 7px 0 16px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);font-size:14px">Search<span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">⌘</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">K</span></span></span>
+                    <span style="position:relative;display:flex;align-items:center;gap:2px;height:38px;padding:3px;box-sizing:border-box;border-radius:999px;border:1px solid var(--line-2);background:var(--surface-2)"><span style="position:absolute;left:3px;top:3px;width:30px;height:30px;border-radius:999px;background:var(--surface);box-shadow:var(--cap-ui-shadow);transform:translateX({{ f.thumbX }})"></span><span style="position:relative;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:{{ f.sunC }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg></span><span style="position:relative;width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:{{ f.moonC }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></span></span>
+                    <span style="display:flex;align-items:center;height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line-2);font-size:14px;font-weight:500">Resume</span>
+                  </span>
+                </div>
+                <div style="position:absolute;left:96px;top:0;bottom:0;width:560px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-top:40px;z-index:2;pointer-events:none">
+                  <span style="display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 16px 0 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line-2);font-family:var(--font-mono);font-size:12.5px;white-space:nowrap"><span style="width:8px;height:8px;border-radius:50%;background:var(--ok)"></span>Senior Software Engineer · HashiCorp (IBM)</span>
+                  <h1 style="margin:26px 0 22px;font-size:68px;line-height:1.02;letter-spacing:-0.04em;font-weight:600;text-wrap:balance">I build systems that stay up.</h1>
+                  <p style="margin:0;max-width:440px;font-size:19px;line-height:1.55;color:var(--ink-2)">7.5+ years across backend, cloud infrastructure and AI systems. Go, Kubernetes and Terraform by day; local-first apps by night.</p>
+                  <div style="display:flex;gap:12px;margin-top:38px"><span style="display:flex;align-items:center;height:52px;padding:0 24px;border-radius:10px;background:var(--ink);color:var(--bg);font-size:16px;font-weight:500">View projects →</span><span style="display:flex;align-items:center;gap:16px;height:52px;padding:0 12px 0 20px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);font-size:16px;font-weight:500">Try the playground<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:5px;background:var(--accent);color:var(--accent-ink);font-family:var(--font-mono);font-size:12px">↵</span></span></div>
+                </div>
+                <div style="position:absolute;left:640px;right:240px;top:766px;display:flex;justify-content:center;z-index:2;font-family:var(--font-mono);font-size:12px;color:var(--ink-3)">{{ f.hint }}</div>
+                <div style="position:absolute;left:600px;right:200px;top:800px;display:flex;justify-content:center;z-index:3">
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px 0 6px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);box-shadow:{{ f.sel.btnSh }};font-size:14px;font-weight:500"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:28px;padding:0 6px;box-sizing:border-box;border-radius:6px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ f.sel.key }}</span><span style="white-space:nowrap">{{ f.sel.name }}</span><span style="display:flex;color:var(--ink-3);transform:{{ f.sel.chev }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg></span></span>
+                    <span style="position:relative;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:{{ f.sel.muteBg }};color:{{ f.sel.muteFg }};box-shadow:{{ f.sel.muteSh }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="{{ f.sel.w1 }}"></path><path d="{{ f.sel.w2 }}"></path></svg></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </sc-for>
+
+  <!-- 7a tokens -->
+  <div id="7a" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:12px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">7a</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">Tokens · two modes</span><span style="font-family:'Martian Mono',monospace;font-size:12px;color:#6A645B">tokens.css · [data-theme] × [data-kb]</span></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <sc-for list="{{ modes }}" as="md" hint-placeholder-count="2">
+        <div data-theme="{{ md.t }}" style="width:1100px;box-sizing:border-box;padding:28px;border-radius:18px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);display:flex;flex-direction:column;gap:22px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:20px;font-weight:600;letter-spacing:-0.02em">{{ md.name }}</span><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-3)">{{ md.sel }}</span></div>
+          <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px">
+            <sc-for list="{{ core }}" as="sw" hint-placeholder-count="12">
+              <div style="display:flex;flex-direction:column;gap:6px"><span style="height:44px;border-radius:9px;background:var({{ sw }});box-shadow:inset 0 0 0 1px var(--line-2)"></span><span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-2)">{{ sw }}</span></div>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-radius:12px;background:var(--surface)">
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 7px;border-radius:6px;background:var(--accent);color:var(--accent-ink);font-family:var(--font-mono);font-size:12px">↵</span>
+            <span style="font-size:14px;color:var(--accent-text)">accent-text on surface</span>
+            <span style="margin-left:auto;width:120px;height:30px;border-radius:8px;background:var(--surface);box-shadow:var(--focus-ring)"></span>
+            <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3)">focus ring</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3)">KEYBOARD MATERIALS</span>
+            <sc-for list="{{ kbRows }}" as="kr" hint-placeholder-count="6">
+              <div data-kb="{{ kr.v }}" style="display:grid;grid-template-columns:150px repeat(9,minmax(0,1fr));gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)">
+                <span style="font-size:13.5px;font-weight:600">{{ kr.name }} <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:400;color:var(--ink-3)">{{ kr.v }}</span></span>
+                <sc-for list="{{ kbSw }}" as="ks" hint-placeholder-count="9">
+                  <span style="display:flex;flex-direction:column;gap:4px"><span style="height:26px;border-radius:6px;background:var({{ ks }});box-shadow:inset 0 0 0 1px var(--line-2)"></span><span style="font-family:var(--font-mono);font-size:9px;color:var(--ink-3)">{{ ks }}</span></span>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 7b component sheet -->
+  <div id="7b" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:12px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">7b</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">Variant component sheet · keycap states</span><span style="font-size:14px;color:#5E5850">highlighted = live key in the mode accent on every variant</span></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <sc-for list="{{ sheets }}" as="sh" hint-placeholder-count="2">
+        <div data-theme="{{ sh.t }}" style="width:1100px;box-sizing:border-box;padding:28px 32px;border-radius:18px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:140px repeat(6,minmax(0,1fr));gap:12px;padding-bottom:10px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-3)"><span>{{ sh.name }}</span><sc-for list="{{ stateNames }}" as="sn" hint-placeholder-count="6"><span style="text-align:center">{{ sn }}</span></sc-for></div>
+          <sc-for list="{{ sh.rows }}" as="r" hint-placeholder-count="6">
+            <div data-kb="{{ r.v }}" style="display:grid;grid-template-columns:140px repeat(6,minmax(0,1fr));gap:12px;align-items:center;padding:30px 0 16px;border-top:1px solid var(--line)">
+              <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:14px;font-weight:600">{{ r.name }}</span><span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3)">{{ r.v }}</span></span>
+              <sc-for list="{{ r.caps }}" as="cp" hint-placeholder-count="6">
+                <div style="position:relative;height:104px;display:flex;align-items:center;justify-content:center">
+                  <sc-if value="{{ cp.label }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:5px;white-space:nowrap;font-family:var(--font-mono);font-size:10px;background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:4px 9px 4px 7px;box-shadow:var(--shadow-1);z-index:2"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent)"></span>Search</span></sc-if>
+                  <span style="position:absolute;left:50%;bottom:4px;width:84px;height:16px;margin-left:-42px;border-radius:50%;background:{{ cp.glow }};filter:blur(8px)"></span>
+                  <sc-if value="{{ cp.ring }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:50%;width:96px;height:96px;margin:-58px 0 0 -48px;border-radius:50%;border:2px solid var(--kb-cap);opacity:.6"></span></sc-if>
+                  <span style="position:relative;width:76px;height:76px;border-radius:{{ cp.r }};display:flex;align-items:center;justify-content:center;font-family:{{ cp.font }};font-size:{{ cp.fs }};font-weight:500;background:{{ cp.bg }};color:{{ cp.fg }};box-shadow:{{ cp.sh }};transform:{{ cp.tf }};filter:{{ cp.filter }};text-shadow:{{ cp.ts }}">K</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 7c motion -->
+  <div id="7c" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:12px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">7c</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">Motion spec per variant · swap key frames</span></div>
+    <div data-theme="light" style="width:2224px;box-sizing:border-box;padding:24px 28px;border-radius:18px;background:var(--surface);color:var(--ink);font-family:var(--font-sans)">
+      <div style="display:grid;grid-template-columns:150px repeat(4,minmax(0,1fr));gap:20px;padding:8px 0;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-3);border-bottom:1px solid var(--line-2)"><span>VARIANT</span><span>PRESS</span><span>RELEASE</span><span>FEEDBACK</span><span>SPECIAL MOMENTS</span></div>
+      <sc-for list="{{ motion }}" as="mo" hint-placeholder-count="7">
+        <div style="display:grid;grid-template-columns:150px repeat(4,minmax(0,1fr));gap:20px;padding:12px 0;font-size:13.5px;line-height:1.5;border-bottom:1px solid var(--line)">
+          <span style="font-weight:600">{{ mo.name }} <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:400;color:var(--ink-3)">{{ mo.v }}</span></span>
+          <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--ink-2)">{{ mo.press }}</span>
+          <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--ink-2)">{{ mo.release }}</span>
+          <span style="color:var(--ink-2)">{{ mo.feedback }}</span>
+          <span style="color:var(--ink-2)">{{ mo.special }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;gap:16px">
+      <sc-for list="{{ swapFrames }}" as="sf" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div data-theme="light" style="position:relative;width:360px;height:225px;overflow:hidden;border-radius:12px;background:var(--bg)">
+            <x-import component-from-global-scope="hero-keyboard" from="./keyboard3d.js" still="{{ sf.pose }}" variant="{{ sf.v }}" theme="light" os="mac" ab="{{ sf.ab }}" autoplay="false" style="position:absolute;left:-180px;top:-112px;width:720px;height:450px" hint-size="720px,450px"></x-import>
+          </div>
+          <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#6A645B"><span style="color:#22201C;font-weight:500">{{ sf.t }}</span> · {{ sf.d }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 7d selector -->
+  <div id="7d" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:12px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">7d</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">Keyboard selector</span><span style="font-size:14px;color:#5E5850;max-width:1100px">A compact dropdown plus a separate mute key. Recommended: below the keyboard, next to the hint line; it reads as part of the object and opens upward over empty desk. Above the keyboard competes with the nav.</span></div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+      <sc-for list="{{ modes }}" as="md" hint-placeholder-count="2">
+        <div data-theme="{{ md.t }}" style="width:760px;box-sizing:border-box;padding:24px 28px;border-radius:18px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);display:flex;flex-direction:column;gap:6px">
+          <sc-for list="{{ selStates }}" as="ss" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:170px 1fr;gap:16px;align-items:center;padding:22px 0 18px;border-top:1px solid var(--line)">
+              <span style="display:flex;flex-direction:column;gap:3px"><span style="font-size:14px;font-weight:600">{{ ss.name }}</span><span style="font-size:12px;color:var(--ink-3);line-height:1.4">{{ ss.note }}</span></span>
+              <div style="position:relative;display:flex">
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <sc-if value="{{ ss.open }}" hint-placeholder-val="{{ false }}">
+                    <div style="width:300px;padding:6px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-overlay)">
+                      <div style="padding:8px 10px 6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--ink-3)">KEYBOARD</div>
+                      <sc-for list="{{ ss.sel.opts }}" as="o" hint-placeholder-count="6">
+                        <div style="display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:9px;background:{{ o.bg }}"><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:28px;flex:none;border-radius:6px;background:{{ o.capBg }};color:{{ o.capFg }};box-shadow:{{ o.capSh }};font-family:var(--font-mono);font-size:10.5px">{{ o.key }}</span><span style="display:flex;flex-direction:column;gap:1px;flex:1"><span style="font-size:14px;font-weight:500">{{ o.name }}</span><span style="font-size:11.5px;color:var(--ink-3)">{{ o.sub }}</span></span><span style="font-family:var(--font-mono);font-size:12px;color:var(--accent-text)">{{ o.check }}</span></div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px 0 6px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);box-shadow:{{ ss.sel.btnSh }};font-size:14px;font-weight:500"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:28px;padding:0 6px;box-sizing:border-box;border-radius:6px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ ss.sel.key }}</span><span style="white-space:nowrap">{{ ss.sel.name }}</span><span style="display:flex;color:var(--ink-3);transform:{{ ss.sel.chev }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg></span></span>
+                    <span style="position:relative;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:{{ ss.sel.muteBg }};color:{{ ss.sel.muteFg }};box-shadow:{{ ss.sel.muteSh }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="{{ ss.sel.w1 }}"></path><path d="{{ ss.sel.w2 }}"></path></svg><sc-if value="{{ ss.nudge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:-6px;bottom:50px;display:flex;align-items:center;height:34px;padding:0 12px;border-radius:9px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:500;white-space:nowrap;box-shadow:var(--shadow-2)">Sound is off. Tap to hear it.<span style="position:absolute;right:20px;bottom:-5px;width:10px;height:10px;background:var(--ink);transform:rotate(45deg)"></span></span></sc-if></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:'Martian Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:#6A645B">ALTERNATIVE · ROW ABOVE THE KEYBOARD (not recommended)</span>
+        <div data-theme="light" style="position:relative;width:1440px;height:900px;overflow:hidden;border-radius:16px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);box-shadow:0 40px 90px -50px rgba(0,0,0,.45)">
+          <x-import component-from-global-scope="hero-keyboard" from="./keyboard3d.js" still="rest" variant="thk" theme="light" os="mac" ab="still-alt" autoplay="false" style="position:absolute;left:0;top:0;width:1440px;height:900px" hint-size="1440px,900px"></x-import>
+          <div style="position:absolute;left:0;right:0;top:0;height:76px;padding:0 48px 0 56px;display:flex;align-items:center;justify-content:space-between;z-index:3">
+            <span style="display:flex;align-items:center;gap:12px"><span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--cap-ui-bg);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10.5px;font-weight:600">GRS</span><span style="font-family:var(--font-display);font-size:19px;line-height:1">Gautam Rajeev Singh</span></span>
+            <span style="display:flex;align-items:center;height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line-2);font-size:14px;font-weight:500">Resume</span>
+          </div>
+          <div style="position:absolute;left:96px;top:0;bottom:0;width:560px;display:flex;flex-direction:column;justify-content:center;padding-top:40px;z-index:2">
+            <h1 style="margin:0 0 22px;font-size:68px;line-height:1.02;letter-spacing:-0.04em;font-weight:600">I build systems that stay up.</h1>
+            <p style="margin:0;max-width:440px;font-size:19px;line-height:1.55;color:var(--ink-2)">7.5+ years across backend, cloud infrastructure and AI systems.</p>
+          </div>
+          <div style="position:absolute;left:600px;right:200px;top:176px;display:flex;justify-content:center;z-index:3">
+            <div style="display:flex;align-items:center;gap:8px">
+                    <span style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px 0 6px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);box-shadow:{{ altSel.btnSh }};font-size:14px;font-weight:500"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:28px;padding:0 6px;box-sizing:border-box;border-radius:6px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ altSel.key }}</span><span style="white-space:nowrap">{{ altSel.name }}</span><span style="display:flex;color:var(--ink-3);transform:{{ altSel.chev }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg></span></span>
+                    <span style="position:relative;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;background:{{ altSel.muteBg }};color:{{ altSel.muteFg }};box-shadow:{{ altSel.muteSh }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="{{ altSel.w1 }}"></path><path d="{{ altSel.w2 }}"></path></svg></span>
+                  </div>
+          </div>
+          <div style="position:absolute;left:640px;right:240px;top:800px;display:flex;justify-content:center;z-index:2;font-family:var(--font-mono);font-size:12px;color:var(--ink-3)">Go on, press a key. Hold ⌘ to see what it can do.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7e mobile -->
+  <div id="7e" style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:12px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">7e</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">Mobile 390 · keycap cluster per variant</span><span style="font-size:14px;color:#5E5850">the cluster takes the active keyboard’s caps; selector is a 44px chip row with the same mute key</span></div>
+    <div style="display:grid;grid-template-columns:repeat(6,390px);gap:24px">
+      <sc-for list="{{ mobile }}" as="mb" hint-placeholder-count="12">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:'Martian Mono',monospace;font-size:11px;color:#6A645B">{{ mb.cap }}</span>
+          <div style="border-radius:24px;overflow:hidden;box-shadow:0 24px 50px -30px rgba(0,0,0,.4)">
+            <dc-import name="Keycap Cluster" variant="{{ mb.v }}" theme="{{ mb.t }}" muted="{{ mb.muted }}" framed="{{ true }}" hint-size="390px,420px"></dc-import>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  sel(active, o = {}) {
+    const N = { thk: ['Mechanical', 'Deep, tactile switch (default)'], tik: ['Laptop', 'Soft, low-travel click'], clk: ['Typewriter', 'Clack, with a bell on Enter'], pop: ['Bubble', 'Soft pops'], pew: ['Bullet', 'Pew. Pew pew.'], '8bt': ['Arcade', 'Chiptune blips'] };
+    const muted = o.muted ?? true;
+    return {
+      key: active, name: N[active][0], chev: o.open ? 'rotate(0deg)' : 'rotate(180deg)',
+      btnSh: o.focus ? 'var(--shadow-1),0 0 0 2px var(--bg),0 0 0 4px var(--accent)' : 'var(--shadow-1)',
+      opts: Object.keys(N).map(k => { const on = k === active, hv = k === o.hover; return { key: k, name: N[k][0], sub: N[k][1], check: on ? '✓' : '', bg: on || hv ? 'var(--surface-2)' : 'transparent', capBg: on ? 'var(--surface-2)' : 'var(--cap-ui-bg)', capFg: on ? 'var(--ink)' : 'var(--cap-ui-ink)', capSh: on ? 'var(--cap-ui-pressed)' : 'var(--cap-ui-shadow)' }; }),
+      muteBg: muted ? 'var(--cap-ui-bg)' : 'var(--surface-2)', muteFg: muted ? 'var(--ink-2)' : 'var(--accent-text)',
+      muteSh: muted ? (o.nudge ? 'var(--cap-ui-shadow),0 2px 0 var(--line-2),0 0 0 4px var(--accent-soft)' : 'var(--cap-ui-shadow),0 2px 0 var(--line-2)') : 'var(--cap-ui-pressed)',
+      w1: muted ? 'M22 9l-6 6' : 'M15.54 8.46a5 5 0 0 1 0 7.07', w2: muted ? 'M16 9l6 6' : 'M19.07 4.93a10 10 0 0 1 0 14.14',
+    };
+  }
+  cap(v, s, dark) {
+    const capBg = v === 'pop' ? 'var(--kb-cap-2)' : 'var(--kb-cap)';
+    const hi = { clk: 'radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.5),transparent 55%),', '8bt': 'radial-gradient(circle at 35% 28%,rgba(255,255,255,.6),transparent 42%),', pew: 'radial-gradient(circle at 50% 50%,transparent 0 24px,rgba(0,0,0,.24) 25px 27px,transparent 28px),linear-gradient(180deg,rgba(255,255,255,.28),transparent 42%),' }[v] || '';
+    const B = {
+      thk: { r: '14px', sh: 'inset 0 2px 0 rgba(255,255,255,.45),inset 0 -5px 0 rgba(0,0,0,.05),0 6px 0 var(--kb-cap-mod),0 12px 16px -8px rgba(0,0,0,.3)', shP: 'inset 0 2px 0 rgba(255,255,255,.35),0 1px 0 var(--kb-cap-mod),0 0 0 6px var(--accent-soft)', tP: 'translateY(5px)' },
+      tik: { r: '10px', sh: '0 0 0 3px var(--kb-plate),0 2px 0 3px var(--kb-plate)', shP: '0 0 0 3px var(--kb-plate)', tP: 'translateY(2px)' },
+      clk: { r: '50%', sh: '0 0 0 4px var(--kb-metal),0 0 0 5px rgba(0,0,0,.25),0 10px 0 1px rgba(0,0,0,.14),0 16px 16px -8px rgba(0,0,0,.35)', shP: '0 0 0 4px var(--kb-metal),0 0 0 5px rgba(0,0,0,.25),0 1px 0 1px rgba(0,0,0,.14)', tP: 'translateY(9px)' },
+      pop: { r: '50%', sh: 'inset 0 4px 0 rgba(255,255,255,.45),inset 0 -6px 0 rgba(0,0,0,.08),0 6px 0 rgba(0,0,0,.12),0 12px 16px -8px rgba(0,0,0,.3)', shP: 'inset 0 4px 0 rgba(255,255,255,.4),inset 0 -3px 0 rgba(0,0,0,.08),0 1px 0 rgba(0,0,0,.12)', tP: 'translateY(4px) scale(1.1,.84)' },
+      pew: { r: '8px', sh: 'inset 0 2px 0 rgba(255,255,255,.35),0 7px 0 var(--kb-plate),0 14px 18px -8px rgba(0,0,0,.4)', shP: 'inset 0 2px 6px rgba(0,0,0,.3),0 1px 0 var(--kb-plate)', tP: 'translateY(7px)' },
+      '8bt': { r: '50%', sh: '0 0 0 5px var(--kb-metal),0 6px 0 4px rgba(0,0,0,.24)', shP: '0 0 0 5px var(--kb-metal),0 2px 0 4px rgba(0,0,0,.24),inset 0 0 22px rgba(255,255,255,.75),0 0 30px var(--kb-cap)', tP: 'translateY(3px)' },
+    }[v];
+    const o = { r: B.r, bg: hi + capBg, fg: 'var(--kb-legend)', sh: B.sh, tf: 'none', glow: 'transparent', filter: 'none', ts: 'none', label: false, ring: false, font: v === '8bt' ? 'var(--font-pixel)' : 'var(--font-mono)', fs: v === '8bt' ? '17px' : '24px' };
+    if (s === 'hover') o.tf = 'translateY(-2px)';
+    if (s === 'pressed') { o.sh = B.shP; o.tf = B.tP; o.glow = v === 'tik' || v === 'clk' ? 'transparent' : 'var(--accent)'; o.fg = v === '8bt' ? 'var(--kb-legend)' : 'var(--accent-text)'; o.ring = v === 'pop'; if (v === 'tik') o.ts = dark ? '0 0 12px var(--accent)' : 'none'; }
+    if (s === 'highlighted') { o.bg = hi + 'var(--kb-cap-accent)'; o.fg = 'var(--kb-legend-accent)'; o.tf = 'translateY(-8px)'; o.label = true; o.glow = 'var(--accent-soft)'; if (v === 'thk' || v === 'pew') o.sh = 'inset 0 2px 0 rgba(255,255,255,.35),0 6px 0 var(--accent-text),0 18px 22px -10px rgba(0,0,0,.35)'; if (v === '8bt' && dark) o.sh = B.sh + ',0 0 30px var(--accent)'; }
+    if (s === 'ghost') { o.tf = 'translateY(2px)'; o.glow = 'var(--accent-soft)'; }
+    if (s === 'dimmed') { o.filter = dark ? 'brightness(.6)' : 'brightness(.88)'; o.tf = 'translateY(1px)'; o.fg = 'var(--ink-3)'; }
+    return o;
+  }
+  renderVals() {
+    const V = [
+      { id: '6a', v: 'thk', name: 'Mechanical', sub: 'Deep, tactile switch (default)', note: 'The current board, unchanged: sculpted caps, under-key bloom and ripple. Now with a light sheen that drifts along the front edge as the board sways.', press: 'Press · bloom + ripple' },
+      { id: '6b', v: 'tik', name: 'Laptop', sub: 'Soft, low-travel click', note: 'Cropped aluminium deck with chiclet keys in machined wells and a glass trackpad whose sheen follows the cursor. Feedback is a backlight through the legends: strong in dark, a shade shift in light.', press: 'Press · backlight through legends' },
+      { id: '6c', v: 'clk', name: 'Typewriter', sub: 'Clack, with a bell on Enter', note: 'Glass-topped keys with nickel rims on stems, stepped rows, a typebar basket and a carriage. Typed characters print on the paper; the carriage steps per character and returns on Enter.', press: 'Press · typebar strike, prints on paper' },
+      { id: '6d', v: 'pop', name: 'Bubble', sub: 'Soft pops', note: 'A pillowy body with round caps in mixed pastels (candy in dark). Presses squash and stretch on a bouncy spring; a bubble ring pops off the key and fades.', press: 'Press · squash + bubble ring' },
+      { id: '6e', v: 'pew', name: 'Bullet', sub: 'Pew. Pew pew.', note: 'Field-equipment body with knurled grips, a riveted rail, hex screws and a flip-up guard over Esc. Brass primer-ring alphas recoil; a casing ejects from the side port. Enter fires a three-shot burst.', press: 'Press · recoil + casing eject' },
+      { id: '6f', v: '8bt', name: 'Arcade', sub: 'Chiptune blips', note: 'Control deck with candy arcade buttons, a joystick (arrow keys) and a coin slot. Typed characters scroll on the pixel marquee. ↑↑↓↓←→←→BA and “gautam” are easter eggs.', press: 'Press · lit from inside, marquee' },
+    ];
+    const T = { light: 'Light', dark: 'Dark' };
+    const frame = (vr, t, pose, cap) => ({ v: vr.v, theme: t, pose, ab: `still-${vr.v}-${t}-${pose}`, caption: `${T[t].toUpperCase()} · ${cap}`, thumbX: t === 'dark' ? '32px' : '0px', sunC: t === 'dark' ? 'var(--ink-3)' : 'var(--ink)', moonC: t === 'dark' ? 'var(--ink)' : 'var(--ink-3)', hint: pose === 'rest' ? 'Go on, press a key. Hold ⌘ to see what it can do.' : 'There you go.', sel: this.sel(vr.v, { muted: pose !== 'press' }) });
+    const variants = V.map(vr => Object.assign({}, vr, { rows: ['light', 'dark'].map(t => [frame(vr, t, 'rest', 'HERO REST'), frame(vr, t, 'mod', 'MODIFIER HELD (⌘)'), frame(vr, t, 'press', vr.press.toUpperCase())]) }));
+    const states = ['rest', 'hover', 'pressed', 'highlighted', 'ghost', 'dimmed'];
+    const sheets = ['light', 'dark'].map(t => ({ t, name: t.toUpperCase(), rows: V.map(vr => ({ v: vr.v, name: vr.name, caps: states.map(s => this.cap(vr.v, s, t === 'dark')) })) }));
+    return {
+      variants, sheets, stateNames: states.map(s => s.toUpperCase()),
+      modes: [{ t: 'light', name: 'Light · warm ceramic + signal orange', sel: '[data-theme="light"] (default)' }, { t: 'dark', name: 'Dark · graphite + neon phosphor green', sel: '[data-theme="dark"]' }],
+      core: ['--bg', '--surface', '--surface-2', '--ink', '--ink-2', '--ink-3', '--accent', '--accent-text', '--accent-soft', '--ok', '--warn', '--danger'],
+      kbRows: V.map(vr => ({ v: vr.v, name: vr.name })),
+      kbSw: ['--kb-case', '--kb-plate', '--kb-cap', '--kb-cap-2', '--kb-cap-3', '--kb-cap-4', '--kb-cap-mod', '--kb-metal', '--kb-trim'],
+      motion: [
+        { name: 'Mechanical', v: 'thk', press: 'spring k2400 c98 · −0.13u · ~70ms', release: 'k900 c40 · ζ≈0.67, ~5% overshoot', feedback: 'Under-key bloom + ripple, 30ms per 1u, 500ms decay.', special: 'Entrance light sweep; Enter breathes on a 3.2s loop; front-edge sheen tracks yaw.' },
+        { name: 'Laptop', v: 'tik', press: 'k2400 c98 · −0.065u (half travel) · ~50ms', release: 'k900 c40', feedback: 'No bloom. Backlight through legends: dark lerps to neon at up to 1.5× brightness; light shifts 45% toward accent-text.', special: 'Trackpad sheen offset follows cursor parallax (±0.32 x, ±0.22 y).' },
+        { name: 'Typewriter', v: 'clk', press: 'k1500 c72 · −0.24u deep dip · ~110ms', release: 'k900 c40', feedback: 'Typebar swings 55ms up, 115ms back. Character prints with ink jitter; carriage steps one column (τ 28ms).', special: 'Enter: carriage returns (τ 120ms), lever swings (200ms), bell. Paper scrolls a line; a new sheet after 6 lines.' },
+        { name: 'Bubble', v: 'pop', press: 'k2400 c98 · −0.12u · squash y −26%, x/z +10%', release: 'k700 c13 (bouncy) · stretch on the overshoot', feedback: 'Ring pops off the cap: rises 0.6u, scales 1 → 2.1, fades over 440ms ease-out. Soft bloom at 0.8×.', special: 'Ghost presses pop a fainter ring.' },
+        { name: 'Bullet', v: 'pew', press: 'k2400 c98 · −0.18u + body kick 0.06u (τ 90ms)', release: 'k900 c40', feedback: 'Brass casing ejects from the side port at ≈(5, 6.5, ±1.3)u/s, gravity 24, tumbling out of frame in 1.6s.', special: 'Enter: three-shot burst at 0 / 95 / 190ms. Esc guard stays flipped up and nudges on press.' },
+        { name: 'Arcade', v: '8bt', press: 'k2400 c98 · −0.08u dip', release: 'k900 c40', feedback: 'Button lights from inside in its own colour (live keys in the accent). Bloom 1×.', special: 'Marquee prints typed characters. ↑↑↓↓←→←→BA → pixel confetti + 1UP (1.4s). “gautam” → HIGH SCORE (2.6s). Joystick tilts ±0.38 rad.' },
+        { name: 'Swap', v: 'all', press: 'out 240ms · sink 1.25u (ease-in-out), fade, contact shadow → 55%', release: 'in 440ms · rise 0.45u; caps drop row by row (30ms + 34ms/row + 6ms/u), k460 c22', feedback: 'Repeated switching retargets: during “out” only the destination changes; during “in” it reverses from the current level. Nothing queues.', special: 'Reduced motion: 140ms fade out, 180ms fade in, no movement. Plays the new keyboard’s swap sound.' },
+      ],
+      swapFrames: [
+        { pose: 'sink:0', v: 'thk', ab: 'sw1', t: '0ms', d: 'click tik' }, { pose: 'sink:0.5', v: 'thk', ab: 'sw2', t: '120ms', d: 'sinking, fading' }, { pose: 'sink:0.92', v: 'thk', ab: 'sw3', t: '220ms', d: 'shadow at 55%' },
+        { pose: 'rise:0.3', v: 'tik', ab: 'sw4', t: '370ms', d: 'deck rises, rows drop' }, { pose: 'rise:0.6', v: 'tik', ab: 'sw5', t: '500ms', d: 'rows settling' }, { pose: 'rise:1', v: 'tik', ab: 'sw6', t: '680ms', d: 'settled' },
+      ],
+      selStates: [
+        { name: 'Default', note: 'current keyboard + separate mute key', sel: this.sel('thk') },
+        { name: 'Open', note: 'opens upward; hover row highlights', sel: this.sel('thk', { open: true, hover: 'pop' }), open: true },
+        { name: 'Focus', note: 'keyboard focus ring; ↑↓ moves, ↵ picks', sel: this.sel('tik', { focus: true }) },
+        { name: 'Muted', note: 'default on first visit', sel: this.sel('clk') },
+        { name: 'Unmuted', note: 'pressed in, accent waves', sel: this.sel('clk', { muted: false }) },
+        { name: 'Nudge', note: 'once, after the first real key press', sel: this.sel('8bt', { nudge: true }), nudge: true },
+      ],
+      altSel: this.sel('thk'),
+      mobile: ['light', 'dark'].flatMap(t => V.map(vr => ({ v: vr.v, t, muted: true, cap: `${vr.name} · ${t}` }))),
+    };
+  }
+}
+</script>
+</body>
+</html>

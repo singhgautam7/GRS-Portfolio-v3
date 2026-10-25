@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&amp;family=Martian+Mono:wdth,wght@75..112.5,300..700&amp;display=swap">
+<link rel="stylesheet" href="tokens.css">
+</helmet>
+<div style="display:flex;flex-wrap:wrap;gap:56px 48px;align-items:flex-start;max-width:2980px;font-family:'Host Grotesk',system-ui,sans-serif;color:#22201C">
+  <sc-for list="{{ frames }}" as="fr" hint-placeholder-count="8">
+    <div id="{{ fr.id }}" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">{{ fr.id }}</span>
+        <span style="font-size:18px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap">{{ fr.title }}</span>
+        <span style="font-size:14px;color:#5E5850">{{ fr.note }}</span>
+      </div>
+      <div data-theme="{{ theme }}" style="position:relative;width:1440px;height:900px;overflow:hidden;border-radius:16px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);box-shadow:0 40px 90px -50px rgba(0,0,0,.45)">
+
+        <!-- scene -->
+        <div style="position:absolute;left:132px;top:84px;width:940px;height:660px;opacity:{{ fr.sceneOp }}">
+          <dc-import name="Iso Scene" state="{{ fr.state }}" selected="{{ fr.selected }}" servers="{{ fr.servers }}" failed="{{ fr.failed }}" labels="{{ fr.labels }}" connect="{{ fr.connect }}" theme="{{ theme }}" unit="{{ 48 }}" style="width:100%;height:100%" hint-size="940px,660px"></dc-import>
+        </div>
+
+        <!-- top bar -->
+        <div style="position:absolute;left:0;right:0;top:0;height:68px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)">
+          <button style="display:flex;align-items:center;gap:12px;height:40px;padding:0 8px 0 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:14px;cursor:pointer">
+            <span style="white-space:nowrap">← Back to portfolio</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">esc</span>
+          </button>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+            <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 05 · PLAYGROUND</span>
+            <span style="font-size:16px;font-weight:600;white-space:nowrap">{{ fr.scenario }}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;border:1px solid {{ fr.breakBorder }};background:{{ fr.breakBg }};color:var(--ink);font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:var(--danger)"></span>Break something <span style="font-size:11px;color:var(--ink-3)">▾</span></button>
+            <button style="height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);font-size:14px;cursor:pointer">Reset</button>
+          </div>
+        </div>
+
+        <!-- left rail: component palette + tools -->
+        <div style="position:absolute;left:16px;top:84px;width:104px;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;padding:10px 8px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow-1);z-index:4">
+          <sc-for list="{{ fr.railGroups }}" as="rg" hint-placeholder-count="5">
+            <span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;color:var(--ink-3);padding:4px 2px 0">{{ rg.t }}</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+              <sc-for list="{{ rg.items }}" as="rk" hint-placeholder-count="2">
+                <span title="{{ rk.tip }}" style="display:inline-flex;align-items:center;justify-content:center;height:36px;border-radius:7px;background:{{ rk.bg }};color:{{ rk.fg }};box-shadow:{{ rk.sh }};font-family:var(--font-mono);font-size:10px;font-weight:500">{{ rk.k }}</span>
+              </sc-for>
+            </div>
+          </sc-for>
+          <span style="font-family:var(--font-mono);font-size:9px;color:var(--ink-3);text-align:center;line-height:1.35;padding-top:2px">drag to add</span>
+        </div>
+        <sc-if value="{{ fr.connectTip }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:130px;top:{{ fr.connectTip }};display:flex;align-items:center;gap:10px;height:36px;padding:0 12px;border-radius:9px;background:var(--ink);color:var(--bg);font-size:13px;white-space:nowrap;z-index:5">Connect · drag from one block to another<span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:rgba(255,255,255,.16);font-family:var(--font-mono);font-size:10px">A</span></div>
+        </sc-if>
+
+        <!-- right column -->
+        <sc-if value="{{ fr.showSide }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;right:24px;top:92px;width:330px;display:flex;flex-direction:column;gap:10px">
+            <div style="padding:16px 18px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-2);display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3)">GOAL</span>
+                <span style="font-family:var(--font-mono);font-size:10.5px;color:{{ fr.goalColor }}">{{ fr.goalStatus }}</span>
+              </div>
+              <span style="font-size:14px;line-height:1.45;color:var(--ink-2)">Handle 10k requests/sec. Keep it fast (under 200ms) and drop under 1%.</span>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ fr.checks }}" as="ck" hint-placeholder-count="3">
+                  <div style="display:flex;align-items:center;gap:9px;font-size:13px">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:5px;background:{{ ck.bg }};color:{{ ck.fg }};font-family:var(--font-mono);font-size:10px;font-weight:600">{{ ck.mark }}</span>
+                    <span style="flex:1">{{ ck.label }}</span>
+                    <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--ink-2)">{{ ck.val }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden"><div style="height:100%;width:{{ fr.progress }};background:var(--ok);border-radius:3px"></div></div>
+              <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3)">{{ fr.progressText }}</span>
+            </div>
+            <sc-for list="{{ fr.metrics }}" as="m" hint-placeholder-count="4">
+              <div style="padding:13px 16px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center">
+                <span style="font-size:13.5px;font-weight:600">{{ m.label }}</span>
+                <span style="grid-row:span 2;color:{{ m.color }}">
+                  <svg width="92" height="30" viewBox="0 0 92 30" style="display:block"><path d="{{ m.spark }}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </span>
+                <span style="font-size:11.5px;color:var(--ink-3)">{{ m.sub }}</span>
+                <span style="display:flex;align-items:baseline;gap:8px;margin-top:4px">
+                  <span style="font-size:24px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums">{{ m.value }}</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;color:{{ m.color }};white-space:nowrap">{{ m.delta }}</span>
+                </span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- inspector -->
+        <sc-if value="{{ fr.inspector }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:{{ fr.inspX }};top:{{ fr.inspY }};width:330px;box-sizing:border-box;padding:18px;border-radius:var(--r-xl);background:var(--surface);border:1px solid var(--accent);box-shadow:var(--shadow-2);display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--accent-text)">{{ fr.inspector.tag }}</span>
+                <span style="font-size:18px;font-weight:600;letter-spacing:-0.01em">{{ fr.inspector.name }}</span>
+                <span style="font-size:13px;line-height:1.45;color:var(--ink-2)">{{ fr.inspector.desc }}</span>
+              </div>
+              <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">esc</span>
+            </div>
+            <sc-for list="{{ fr.inspector.controls }}" as="c" hint-placeholder-count="2">
+              <div style="display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--line)">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:13.5px;font-weight:500">{{ c.label }}</span>
+                  <sc-if value="{{ c.stepper }}" hint-placeholder-val="{{ false }}">
+                    <span style="display:flex;align-items:center;border:1px solid var(--line-2);border-radius:9px;overflow:hidden">
+                      <span style="width:32px;height:30px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink-2);border-right:1px solid var(--line)">−</span>
+                      <span style="width:40px;text-align:center;font-family:var(--font-mono);font-size:13px">{{ c.value }}</span>
+                      <span style="width:32px;height:30px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink);border-left:1px solid var(--line);background:var(--surface-2)">+</span>
+                    </span>
+                  </sc-if>
+                  <sc-if value="{{ c.valueText }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-family:var(--font-mono);font-size:13px;white-space:nowrap">{{ c.valueText }}</span>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ c.tiers }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:3px;border-radius:10px;background:var(--surface-2)">
+                    <sc-for list="{{ c.tiers }}" as="tr" hint-placeholder-count="4">
+                      <span style="height:30px;display:flex;align-items:center;justify-content:center;border-radius:7px;font-family:var(--font-mono);font-size:12px;background:{{ tr.bg }};color:{{ tr.fg }};box-shadow:{{ tr.sh }}">{{ tr.t }}</span>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ c.slider }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;height:22px;display:flex;align-items:center">
+                    <div style="position:absolute;left:0;right:0;height:6px;border-radius:3px;background:var(--surface-2)"></div>
+                    <div style="position:absolute;left:0;width:{{ c.slider }};height:6px;border-radius:3px;background:var(--accent)"></div>
+                    <div style="position:absolute;left:{{ c.slider }};width:20px;height:20px;margin-left:-10px;border-radius:50%;background:var(--surface);box-shadow:0 0 0 1px var(--line-2),var(--shadow-1)"></div>
+                  </div>
+                </sc-if>
+                <span style="font-family:var(--font-mono);font-size:11px;line-height:1.5;color:var(--ink-3)">{{ c.effect }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- break menu -->
+        <sc-if value="{{ fr.breakMenu }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;right:104px;top:62px;width:330px;padding:6px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-overlay);z-index:5">
+            <sc-for list="{{ breakItems }}" as="bi" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:3px;padding:11px 12px;border-radius:9px;background:{{ bi.bg }}">
+                <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500"><span style="width:7px;height:7px;border-radius:50%;background:var(--danger)"></span>{{ bi.label }}</span>
+                <span style="font-size:12.5px;color:var(--ink-3);padding-left:15px">{{ bi.sub }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="position:absolute;left:50%;transform:translateX(-50%);margin-left:-170px;bottom:146px;display:flex;align-items:center;gap:0;padding:6px;border-radius:999px;background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-2)">
+            <sc-for list="{{ incident }}" as="ev" hint-placeholder-count="4">
+              <span style="display:flex;align-items:center;gap:8px;padding:6px 12px;font-size:12.5px;white-space:nowrap">
+                <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3)">{{ ev.t }}</span>
+                <span style="width:7px;height:7px;border-radius:50%;background:{{ ev.c }}"></span>
+                <span>{{ ev.label }}</span>
+              </span>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- traffic slider -->
+        <sc-if value="{{ fr.showSlider }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;left:104px;right:378px;bottom:24px;height:104px;padding:16px 24px;border-radius:var(--r-xl);background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-1);display:flex;align-items:center;gap:22px">
+            <span style="flex:none;width:56px;height:56px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:18px">{{ fr.playIcon }}</span>
+            <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline">
+                <span style="font-size:14px;font-weight:600;white-space:nowrap">Traffic <span style="font-weight:400;color:var(--ink-3)">· people hitting your site each second</span></span>
+                <span style="font-size:22px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;white-space:nowrap">{{ fr.rps }} <span style="font-family:var(--font-mono);font-size:11px;font-weight:400;color:var(--ink-3)">req/s</span></span>
+              </div>
+              <div style="position:relative;height:28px;display:flex;align-items:center">
+                <div style="position:absolute;left:0;right:0;height:8px;border-radius:4px;background:var(--surface-2)"></div>
+                <div style="position:absolute;left:50%;top:2px;bottom:2px;width:2px;background:var(--line-2)"></div>
+                <div style="position:absolute;left:0;width:{{ fr.slider }};height:8px;border-radius:4px;background:{{ fr.sliderColor }}"></div>
+                <div style="position:absolute;left:{{ fr.slider }};width:28px;height:28px;margin-left:-14px;border-radius:8px;background:var(--cap-ui-bg);box-shadow:var(--cap-ui-shadow),var(--shadow-1)"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--ink-3)"><span>0</span><span>5k</span><span style="color:var(--ink-2)">10k · goal</span><span>15k</span><span>20k</span></div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- scenario picker -->
+        <sc-if value="{{ fr.picker }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:68px 0 0 0;background:var(--scrim)"></div>
+          <div style="position:absolute;left:50%;top:150px;transform:translateX(-50%);width:1040px;display:flex;flex-direction:column;gap:22px;align-items:center">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
+              <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--ink-2);background:var(--surface);padding:6px 12px;border-radius:999px">PICK A SCENARIO</span>
+              <span style="font-size:44px;font-weight:600;letter-spacing:-0.035em;line-height:1.05;color:var(--ink);background:var(--bg);padding:6px 18px;border-radius:12px">Push traffic through a system and see what breaks.</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;width:100%">
+              <sc-for list="{{ scenarios }}" as="sc" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:10px;padding:24px 26px;border-radius:var(--r-xl);background:var(--surface);border:1px solid {{ sc.border }};box-shadow:var(--shadow-2)">
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;color:var(--accent-text)">{{ sc.tag }}</span>
+                    <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3)">{{ sc.meta }}</span>
+                  </div>
+                  <span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">{{ sc.title }}</span>
+                  <span style="font-size:15px;line-height:1.5;color:var(--ink-2)">{{ sc.goal }}</span>
+                  <span style="display:flex;align-items:center;gap:8px;margin-top:6px;font-size:14px;font-weight:500">Start <span style="font-family:var(--font-mono)">→</span></span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- result card -->
+        <sc-if value="{{ fr.result }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:68px 0 0 0;background:var(--scrim)"></div>
+          <div style="position:absolute;left:50%;top:160px;transform:translateX(-50%);width:600px;padding:32px 34px;border-radius:24px;background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-overlay);display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="width:10px;height:10px;border-radius:50%;background:{{ fr.result.dot }}"></span>
+              <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--ink-2)">{{ fr.result.tag }}</span>
+            </div>
+            <span style="font-size:34px;font-weight:600;letter-spacing:-0.03em;line-height:1.08;text-wrap:balance">{{ fr.result.title }}</span>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+              <sc-for list="{{ fr.result.stats }}" as="rs" hint-placeholder-count="3">
+                <div style="padding:12px 14px;border-radius:12px;background:var(--surface-2);display:flex;flex-direction:column;gap:3px">
+                  <span style="font-size:11.5px;color:var(--ink-3)">{{ rs.label }}</span>
+                  <span style="font-size:20px;font-weight:600;letter-spacing:-0.02em;color:{{ rs.color }}">{{ rs.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3)">{{ fr.result.listTitle }}</span>
+              <sc-for list="{{ fr.result.points }}" as="pt" hint-placeholder-count="2">
+                <div style="display:flex;gap:10px;font-size:15px;line-height:1.5;color:var(--ink-2)"><span style="font-family:var(--font-mono);color:var(--accent-text)">→</span><span>{{ pt }}</span></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:4px">
+              <span style="display:flex;align-items:center;height:48px;padding:0 22px;border-radius:var(--r-md);background:var(--ink);color:var(--bg);font-size:15px;font-weight:500">{{ fr.result.primary }}</span>
+              <span style="display:flex;align-items:center;height:48px;padding:0 22px;border-radius:var(--r-md);border:1px solid var(--line-2);color:var(--ink);font-size:15px;font-weight:500">{{ fr.result.secondary }}</span>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;palette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;],&quot;default&quot;:&quot;a&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  spark(kind) {
+    const N = 24, ys = [];
+    for (let i = 0; i < N; i++) {
+      const x = i / (N - 1); let y;
+      switch (kind) {
+        case 'rise': y = 0.15 + x * 0.6 + Math.sin(i * 1.3) * 0.04; break;
+        case 'flat': y = 0.3 + Math.sin(i * 1.7) * 0.05; break;
+        case 'climb': y = 0.15 + Math.pow(x, 2.2) * 0.8 + Math.sin(i) * 0.03; break;
+        case 'spike': y = 0.2 + (i > 12 && i < 18 ? 0.7 - Math.abs(i - 14.5) * 0.12 : 0) + Math.sin(i * 1.9) * 0.03; break;
+        case 'down': y = 0.75 - x * 0.45 + Math.sin(i * 1.4) * 0.04; break;
+        case 'zero': y = 0.06 + Math.abs(Math.sin(i * 2.1)) * 0.03; break;
+        case 'step': y = i < 10 ? 0.35 : 0.6; break;
+        default: y = 0.4;
+      }
+      ys.push(y);
+    }
+    return 'M' + ys.map((y, i) => `${(i / (N - 1) * 90 + 1).toFixed(1)} ${(29 - Math.max(0, Math.min(1, y)) * 27).toFixed(1)}`).join(' L');
+  }
+  renderVals() {
+    const C = { ok: 'var(--ok)', warn: 'var(--warn)', bad: 'var(--danger)', ink: 'var(--ink-3)' };
+    const M = (label, sub, value, delta, color, sp) => ({ label, sub, value, delta, color: C[color], spark: this.spark(sp) });
+    const ck = (label, val, pass) => ({ label, val, mark: pass ? '✓' : '×', bg: pass ? 'var(--ok)' : 'var(--surface-2)', fg: pass ? 'var(--bg)' : 'var(--ink-3)' });
+    const metrics = (thr, p95, err, cost) => [
+      M('Throughput', 'requests answered each second', thr[0], thr[1], thr[2], thr[3]),
+      M('Response time · p95', 'how fast people get a response', p95[0], p95[1], p95[2], p95[3]),
+      M('Errors', 'requests that never got an answer', err[0], err[1], err[2], err[3]),
+      M('Monthly cost', 'what this setup costs to run', cost[0], cost[1], 'ink', cost[2]),
+    ];
+    const tiers = act => ['S', 'M', 'L', 'XL'].map(t => ({ t, bg: t === act ? 'var(--surface)' : 'transparent', fg: t === act ? 'var(--ink)' : 'var(--ink-3)', sh: t === act ? 'var(--shadow-1)' : 'none' }));
+    const base = { state: 'healthy', selected: '', servers: 3, failed: '', labels: true, connect: false, connectTip: null, tool: 'select', sceneOp: 1, showSide: true, showSlider: true, inspector: null, breakMenu: false, picker: false, result: null, railOp: 0.55, playIcon: '❚❚', breakBg: 'var(--surface)', breakBorder: 'var(--line-2)', inspX: '0px', inspY: '0px' };
+    const F = o => Object.assign({}, base, o);
+    const frames = [
+      F({ id: '3a', title: 'Entry · scenario picker', note: 'lands here after the ⌘↵ morph', scenario: 'Choose a scenario', state: 'idle', labels: false, showSide: false, showSlider: false, picker: true, sceneOp: 0.9 }),
+      F({ id: '3b', title: 'Simulator · healthy', note: 'guided scenario, palette collapsed', scenario: 'Your app goes viral', rps: '4,000', slider: '20%', sliderColor: 'var(--ok)', goalStatus: 'warming up', goalColor: 'var(--ink-3)', checks: [ck('10k requests/sec', '4.0k', false), ck('p95 under 200ms', '84ms', true), ck('Drop under 1%', '0.0%', true)], progress: '0%', progressText: 'Push traffic to 10k to start the 30s clock',
+        metrics: metrics(['4.0k', '+12%', 'ok', 'rise'], ['84 ms', 'steady', 'ok', 'flat'], ['0.0%', 'none', 'ok', 'zero'], ['$1,240', '3 servers · 1 DB', 'flat']) }),
+      F({ id: '3c', title: 'Component inspector', note: 'click a block to tune it', scenario: 'Your app goes viral', selected: 'app', rps: '4,000', slider: '20%', sliderColor: 'var(--ok)', showSide: false, inspX: '1086px', inspY: '92px',
+        inspector: { tag: 'SELECTED', name: 'App servers', desc: 'Run your code. More of them answer more requests at once.', controls: [
+          { label: 'Instances', stepper: true, value: '3', effect: '+1 server → +1,100 req/s capacity · +$140/mo' },
+          { label: 'Size per server', tiers: tiers('M'), effect: 'M: 1,100 req/s each · $140/mo. L doubles capacity for 2.2× cost.' },
+          { label: 'Capacity now', valueText: '3,300 req/s', effect: 'At 4,000 req/s you’re at 121% → the load balancer queues the rest.' },
+        ] } }),
+      F({ id: '3d', title: 'Stressed', note: 'amber heat, slow particles', scenario: 'Your app goes viral', state: 'stressed', selected: 'cache', rps: '8,500', slider: '42.5%', sliderColor: 'var(--warn)', showSide: true, goalStatus: 'not yet', goalColor: 'var(--warn)', checks: [ck('10k requests/sec', '8.5k', false), ck('p95 under 200ms', '238ms', false), ck('Drop under 1%', '0.6%', true)], progress: '0%', progressText: 'Response time is over 200ms',
+        metrics: metrics(['8.5k', '+112%', 'ok', 'rise'], ['238 ms', '+183%', 'warn', 'climb'], ['0.6%', 'rising', 'warn', 'rise'], ['$1,240', '3 servers · 1 DB', 'flat']),
+        inspector: { tag: 'SELECTED', name: 'Cache', desc: 'Keeps popular answers in memory so the database doesn’t have to look them up again.', controls: [
+          { label: 'Hit ratio', valueText: '82%', slider: '82%', effect: '82% of reads never reach the database → DB load −82% · +$90/mo' },
+        ] }, inspX: '690px', inspY: '470px' }),
+      F({ id: '3e', title: 'Overloaded', note: 'red heat + pulse, dropped requests fall off', scenario: 'Your app goes viral', state: 'overloaded', rps: '12,000', slider: '60%', sliderColor: 'var(--danger)', goalStatus: 'failing', goalColor: 'var(--danger)', checks: [ck('10k requests/sec', '10.3k', true), ck('p95 under 200ms', '1.84s', false), ck('Drop under 1%', '14.2%', false)], progress: '0%', progressText: 'Servers at 100%. Requests are being dropped',
+        metrics: metrics(['10.3k', 'capped', 'warn', 'step'], ['1.84 s', '×22', 'bad', 'climb'], ['14.2%', '1,700/s lost', 'bad', 'climb'], ['$1,240', '3 servers · 1 DB', 'flat']) }),
+      F({ id: '3f', title: 'Failure injection', note: '“Fail the database primary” → reroute → recover', scenario: 'The database goes down', state: 'failure', servers: 4, rps: '10,000', slider: '50%', sliderColor: 'var(--warn)', breakMenu: true, breakBg: 'var(--surface-2)', breakBorder: 'var(--danger)', goalStatus: 'recovering', goalColor: 'var(--warn)', checks: [ck('Fail over to a replica', '00:04', true), ck('Recover under 30s', '00:11…', false), ck('Drop under 1%', '2.1%', false)], progress: '36%', progressText: 'Replica promoted · traffic rerouting',
+        metrics: metrics(['9.1k', '−9%', 'warn', 'spike'], ['612 ms', 'spike', 'bad', 'spike'], ['2.1%', 'falling', 'warn', 'spike'], ['$1,520', '4 servers · 3 DB', 'flat']) }),
+      F({ id: '3g', title: 'Goal met', note: 'tasteful result + what worked', scenario: 'Your app goes viral', state: 'recovered', servers: 5, rps: '10,000', slider: '50%', sliderColor: 'var(--ok)', showSide: true, sceneOp: 1, goalStatus: 'goal met', goalColor: 'var(--ok)', checks: [ck('10k requests/sec', '10.0k', true), ck('p95 under 200ms', '142ms', true), ck('Drop under 1%', '0.2%', true)], progress: '100%', progressText: 'Held for 30s',
+        metrics: metrics(['10.0k', 'goal', 'ok', 'rise'], ['142 ms', 'steady', 'ok', 'flat'], ['0.2%', 'ok', 'ok', 'zero'], ['$1,790', '5 servers · cache', 'step']),
+        result: { dot: 'var(--ok)', tag: 'GOAL MET · 2:14', title: 'Your app survived going viral.', listTitle: 'WHAT WORKED',
+          stats: [{ label: 'Throughput', value: '10.0k/s', color: 'var(--ink)' }, { label: 'p95', value: '142 ms', color: 'var(--ink)' }, { label: 'Dropped', value: '0.2%', color: 'var(--ink)' }],
+          points: ['Adding a cache cut database load by 80%.', 'Five M servers gave 5,500 req/s of headroom over the cache.', 'Cost went up 44%, to $1,790 a month.'], primary: 'Try another scenario', secondary: 'Keep playing' } }),
+      F({ id: '3h', title: 'Goal failed', note: 'plain-language reason + one next step', scenario: 'Black Friday spike', state: 'overloaded', rps: '15,000', slider: '75%', sliderColor: 'var(--danger)', goalStatus: 'failed', goalColor: 'var(--danger)', checks: [ck('Survive 5× burst', '0:38', false), ck('No dropped orders', '14%', false), ck('p95 under 200ms', '1.9s', false)], progress: '63%', progressText: 'Held for 38s of 60s',
+        metrics: metrics(['10.3k', 'capped', 'warn', 'step'], ['1.9 s', '×23', 'bad', 'climb'], ['14.0%', 'lost', 'bad', 'climb'], ['$1,240', '3 servers · 1 DB', 'flat']),
+        result: { dot: 'var(--danger)', tag: 'NOT QUITE · HELD 38s OF 60s', title: '14% of orders were dropped at the peak.', listTitle: 'WHAT BROKE · WHAT TO TRY',
+          stats: [{ label: 'Peak traffic', value: '15k/s', color: 'var(--ink)' }, { label: 'p95', value: '1.9 s', color: 'var(--danger)' }, { label: 'Dropped', value: '14%', color: 'var(--danger)' }],
+          points: ['App servers hit 100% at 10,300 req/s and started dropping requests.', 'Try: add a queue so the burst waits instead of failing, or add 3 servers.'], primary: 'Try again', secondary: 'Try another scenario' } }),
+    ];
+    frames.splice(2, 0, F({ id: '3i', title: 'Connect tool · drawing an arrow', note: 'drop a new block, drag an arrow to wire it in', scenario: 'Free build', tool: 'connect', connect: true, connectTip: '548px', rps: '4,000', slider: '20%', sliderColor: 'var(--ok)', showSide: false }));
+    const rk = (k, tip, on) => ({ k, tip, bg: on ? 'var(--accent)' : 'var(--cap-ui-bg)', fg: on ? 'var(--accent-ink)' : 'var(--cap-ui-ink)', sh: on ? 'inset 0 -2px 0 rgba(0,0,0,.16)' : 'var(--cap-ui-shadow)' });
+    frames.forEach(f => { f.railGroups = [
+      { t: 'EDGE', items: [rk('DNS', 'DNS'), rk('CDN', 'CDN'), rk('GW', 'API gateway'), rk('LB', 'Load balancer')] },
+      { t: 'COMPUTE', items: [rk('APP', 'App server'), rk('λ', 'Function'), rk('WRK', 'Workers')] },
+      { t: 'DATA', items: [rk('$', 'Cache'), rk('DB', 'Database'), rk('REP', 'Read replica'), rk('OBJ', 'Object storage')] },
+      { t: 'ASYNC', items: [rk('Q', 'Queue'), rk('PUB', 'Pub/sub')] },
+      { t: 'TOOLS', items: [rk('↖', 'Select (V)', f.tool === 'select'), rk('↗', 'Connect: draw an arrow (A)', f.tool === 'connect'), rk('✋', 'Pan (H)'), rk('⌫', 'Delete')] },
+    ]; });
+    return {
+      frames,
+      theme: this.props.theme ?? 'light',
+      railKeys: [],
+      breakItems: [
+        { label: 'Kill a server', sub: 'One app server stops. The rest take its load.', bg: 'transparent' },
+        { label: 'Take the cache offline', sub: 'Every read goes to the database.', bg: 'transparent' },
+        { label: 'Fail the database primary', sub: 'Writes stop until a replica takes over.', bg: 'var(--surface-2)' },
+      ],
+      incident: [
+        { t: '00:00', label: 'Primary database failed', c: 'var(--danger)' },
+        { t: '00:04', label: 'Replica promoted', c: 'var(--warn)' },
+        { t: '00:07', label: 'Traffic rerouted', c: 'var(--warn)' },
+        { t: '00:11', label: 'Recovering…', c: 'var(--ok)' },
+      ],
+      scenarios: [
+        { tag: 'SCENARIO 01', meta: 'guided · ~3 min', title: 'Your app goes viral', goal: 'Handle 10k requests/sec. Keep it fast (under 200ms) and drop under 1%.', border: 'var(--accent)' },
+        { tag: 'SCENARIO 02', meta: 'guided · ~3 min', title: 'Black Friday spike', goal: 'Survive a 5× burst for 60 seconds without dropping orders.', border: 'var(--line-2)' },
+        { tag: 'SCENARIO 03', meta: 'guided · ~2 min', title: 'The database goes down', goal: 'Fail over to a replica and recover in under 30 seconds.', border: 'var(--line-2)' },
+        { tag: 'FREE BUILD', meta: 'open-ended', title: 'Free build', goal: 'No goal. Add components and push traffic until something breaks.', border: 'var(--line-2)' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

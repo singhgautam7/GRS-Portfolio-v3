@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&amp;family=Martian+Mono:wdth,wght@75..112.5,300..700&amp;display=swap">
+<link rel="stylesheet" href="tokens.css">
+</helmet>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;font-family:'Host Grotesk',system-ui,sans-serif;color:#22201C">
+
+  <!-- m1 hero -->
+  <div id="4a" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">4a</span><span style="font-size:16px;font-weight:600;white-space:nowrap">Hero · keycap buttons</span></div>
+    <div data-theme="{{ theme }}" style="position:relative;width:390px;height:844px;overflow:hidden;border-radius:44px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);box-shadow:0 0 0 10px #1B1A18,0 40px 80px -30px rgba(0,0,0,.5)">
+      <div style="height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 32px;font-size:15px;font-weight:600"><span>9:41</span><span style="width:110px;height:30px;border-radius:20px;background:#000"></span><span style="font-family:var(--font-mono);font-size:11px">5G ▮</span></div>
+      <div style="height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 22px">
+        <span style="display:flex;align-items:center;gap:10px"><span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--cap-ui-bg);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10.5px;font-weight:600">GRS</span><span style="font-family:var(--font-display);font-size:18px;line-height:1;white-space:nowrap">Gautam Rajeev Singh</span></span>
+        <span style="display:flex;gap:6px">
+          <span style="width:44px;height:44px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></span>
+          <span style="width:44px;height:44px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></span>
+        </span>
+      </div>
+      <div style="padding:22px 22px 0;display:flex;flex-direction:column;align-items:flex-start">
+        <span style="display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px 0 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line-2);font-family:var(--font-mono);font-size:10.5px;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:var(--ok)"></span>Senior Software Engineer · HashiCorp (IBM)</span>
+        <h1 style="margin:20px 0 14px;font-size:44px;line-height:1.02;letter-spacing:-0.04em;font-weight:600">I build systems that stay up.</h1>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:var(--ink-2)">7.5+ years across backend, cloud infrastructure and AI systems. Go, Kubernetes and Terraform by day; local-first apps by night.</p>
+      </div>
+      <div style="padding-top:26px"><dc-import name="Keycap Cluster" variant="{{ variant }}" theme="{{ theme }}" muted="{{ muted }}" hint-size="390px,300px"></dc-import></div>
+      <div style="margin:18px 22px 0;padding-top:14px;border-top:1px solid var(--line-2);display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+        <sc-for list="{{ kpis }}" as="kp" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:22px;font-weight:600;letter-spacing:-0.03em">{{ kp.n }}</span><span style="font-size:11px;color:var(--ink-2);line-height:1.25">{{ kp.l }}</span></div>
+        </sc-for>
+      </div>
+      <span style="position:absolute;right:18px;bottom:30px;display:flex;align-items:center;gap:8px;height:48px;padding:0 18px 0 15px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:14.5px;font-weight:500;box-shadow:var(--shadow-2);white-space:nowrap"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>Ask about me</span>
+      <span style="position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:var(--ink);opacity:.85"></span>
+    </div>
+    <span style="font-size:13px;color:#5E5850;max-width:390px;line-height:1.5">The cluster takes the active keyboard’s caps. The selector becomes a 44px chip row with the same mute key; no keyboard hints on touch.</span>
+  </div>
+
+  <!-- m2 palette -->
+  <div id="4b" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">4b</span><span style="font-size:16px;font-weight:600;white-space:nowrap">Search · from the top-bar icon</span></div>
+    <div data-theme="{{ theme }}" style="position:relative;width:390px;height:844px;overflow:hidden;border-radius:44px;background:var(--surface);color:var(--ink);font-family:var(--font-sans);box-shadow:0 0 0 10px #1B1A18,0 40px 80px -30px rgba(0,0,0,.5)">
+      <div style="height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 32px;font-size:15px;font-weight:600"><span>9:41</span><span style="width:110px;height:30px;border-radius:20px;background:#000"></span><span style="font-family:var(--font-mono);font-size:11px">5G ▮</span></div>
+      <div style="display:flex;align-items:center;gap:10px;margin:8px 16px 0">
+        <span role="button" aria-label="Back" style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:var(--cap-ui-bg);color:var(--ink);box-shadow:var(--cap-ui-shadow),0 2px 0 var(--line-2)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></span>
+        <div style="flex:1;min-width:0;display:flex;align-items:center;gap:10px;height:48px;padding:0 6px 0 14px;border-radius:14px;background:var(--bg);border:1px solid var(--accent);box-shadow:0 0 0 4px var(--accent-soft)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;color:var(--ink-3)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <span style="flex:1;font-size:17px">flu<span style="display:inline-block;width:2px;height:20px;background:var(--accent);vertical-align:-4px;margin-left:1px"></span></span>
+          <span role="button" aria-label="Clear" style="flex:none;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;color:var(--ink-3)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+        </div>
+      </div>
+      <div style="padding:14px 10px 0">
+        <div style="padding:10px 12px 6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--ink-3)">PROJECTS · 5</div>
+        <sc-for list="{{ mProjects }}" as="mp" hint-placeholder-count="5">
+          <div style="display:flex;flex-direction:column;gap:2px;padding:12px 12px;border-radius:10px;background:{{ mp.bg }}"><span style="font-size:16px;font-weight:500">{{ mp.t }}</span><span style="font-size:13px;color:var(--ink-3)">{{ mp.m }}</span></div>
+        </sc-for>
+        <div style="padding:16px 12px 6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--ink-3)">ACTIONS</div>
+        <div style="display:flex;flex-direction:column;gap:2px;padding:12px;border-radius:10px"><span style="font-size:16px;font-weight:500">Open the playground</span><span style="font-size:13px;color:var(--ink-3)">Push traffic through a system</span></div>
+      </div>
+    </div>
+    <span style="font-size:13px;color:#5E5850;max-width:390px;line-height:1.5">Full-height sheet. Typing filters projects by name or tech (here: Flutter).</span>
+  </div>
+
+  <!-- m3 ask -->
+  <div id="4c" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">4c</span><span style="font-size:16px;font-weight:600;white-space:nowrap">Ask about me · bottom sheet</span></div>
+    <div data-theme="{{ theme }}" style="position:relative;width:390px;height:844px;overflow:hidden;border-radius:44px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);box-shadow:0 0 0 10px #1B1A18,0 40px 80px -30px rgba(0,0,0,.5)">
+      <div style="height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 32px;font-size:15px;font-weight:600"><span>9:41</span><span style="width:110px;height:30px;border-radius:20px;background:#000"></span><span style="font-family:var(--font-mono);font-size:11px">5G ▮</span></div>
+      <div style="padding:40px 22px;opacity:.5"><h1 style="margin:0;font-size:44px;line-height:1.02;letter-spacing:-0.04em;font-weight:600">I build systems that stay up.</h1></div>
+      <div style="position:absolute;inset:0;background:var(--scrim)"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:610px;border-radius:28px 28px 0 0;background:var(--surface);box-shadow:var(--shadow-overlay);display:flex;flex-direction:column">
+        <span style="align-self:center;width:40px;height:5px;border-radius:3px;background:var(--line-2);margin-top:10px"></span>
+        <div style="padding:16px 22px 12px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line)">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:20px;font-weight:600;letter-spacing:-0.02em">Ask about me</span><span style="font-size:13.5px;color:var(--ink-3)">Tap a question. Quick answers about my work.</span></div>
+          <span style="width:36px;height:36px;border-radius:50%;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink-2)">×</span>
+        </div>
+        <div style="flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:10px;overflow:hidden">
+          <div style="align-self:flex-end;max-width:85%;white-space:nowrap;padding:9px 13px;border-radius:14px 14px 4px 14px;background:var(--surface-2);font-size:14.5px">Show me your apps</div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:14px;border:1px solid var(--line);background:var(--bg)">
+            <span style="font-size:15px;line-height:1.5;color:var(--ink-2)">12 shipped so far, mostly local-first Android apps in Flutter: Perch, Mull, HeadShorts, Dally, Kuber and A Tour of Go.</span>
+            <span style="align-self:flex-start;display:flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-radius:10px;background:var(--ink);color:var(--bg);font-size:14.5px;font-weight:500;white-space:nowrap">View projects →</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+            <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
+              <span style="height:44px;padding:0 16px;display:flex;align-items:center;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);font-size:14px;white-space:nowrap">{{ ch }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 12px 30px 20px;border-top:1px solid var(--line);background:var(--surface-2)">
+          <span style="flex:1;font-size:15px;color:var(--ink-3)">Or type a question…</span>
+          <span style="height:44px;padding:0 18px;display:flex;align-items:center;border-radius:10px;background:var(--ink);color:var(--bg);font-size:14.5px;font-weight:500">Ask</span>
+        </div>
+      </div>
+    </div>
+    <span style="font-size:13px;color:#5E5850;max-width:390px;line-height:1.5">Chips first, free text last. Answers are matched by keyword; unmatched questions get “I don’t know that one yet” plus the chips.</span>
+  </div>
+
+  <!-- m4 playground -->
+  <div id="4d" style="display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">4d</span><span style="font-size:16px;font-weight:600;white-space:nowrap">Playground · scenario on mobile</span></div>
+    <div data-theme="{{ theme }}" style="position:relative;width:390px;height:844px;overflow:hidden;border-radius:44px;background:var(--bg);color:var(--ink);font-family:var(--font-sans);box-shadow:0 0 0 10px #1B1A18,0 40px 80px -30px rgba(0,0,0,.5)">
+      <div style="height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 32px;font-size:15px;font-weight:600"><span>9:41</span><span style="width:110px;height:30px;border-radius:20px;background:#000"></span><span style="font-family:var(--font-mono);font-size:11px">5G ▮</span></div>
+      <div style="height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
+        <span style="height:44px;padding:0 14px;display:flex;align-items:center;gap:6px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);font-size:14px">← Portfolio</span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;gap:1px"><span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;color:var(--ink-3)">SCENARIO 01</span><span style="font-size:15px;font-weight:600">Your app goes viral</span></span>
+      </div>
+      <div style="display:flex;gap:6px;padding:8px 16px 0;overflow:hidden">
+        <sc-for list="{{ mMetrics }}" as="mm" hint-placeholder-count="4">
+          <div style="flex:none;display:flex;flex-direction:column;gap:2px;padding:8px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line)"><span style="font-size:10.5px;color:var(--ink-3);white-space:nowrap">{{ mm.l }}</span><span style="font-size:17px;font-weight:600;color:{{ mm.c }};white-space:nowrap">{{ mm.v }}</span></div>
+        </sc-for>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:186px;height:330px">
+        <dc-import name="Iso Scene" state="stressed" labels="{{ false }}" unit="{{ 24 }}" pad="{{ 8 }}" theme="{{ theme }}" palette="{{ palette }}" style="width:100%;height:100%" hint-size="390px,330px"></dc-import>
+      </div>
+      <div style="position:absolute;left:16px;right:16px;top:528px;display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line)">
+        <span style="width:8px;height:8px;border-radius:50%;background:var(--warn)"></span>
+        <span style="flex:1;font-size:13.5px;line-height:1.4">Response time is over 200ms. Tap the app servers to add more.</span>
+      </div>
+      <div style="position:absolute;left:16px;right:16px;bottom:28px;display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:22px;background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-1)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:14px;font-weight:600">Traffic</span><span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">8,500 <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:400;color:var(--ink-3)">req/s</span></span></div>
+        <div style="position:relative;height:36px;display:flex;align-items:center">
+          <div style="position:absolute;left:0;right:0;height:10px;border-radius:5px;background:var(--surface-2)"></div>
+          <div style="position:absolute;left:0;width:42%;height:10px;border-radius:5px;background:var(--warn)"></div>
+          <div style="position:absolute;left:42%;width:36px;height:36px;margin-left:-18px;border-radius:10px;background:var(--cap-ui-bg);box-shadow:var(--cap-ui-shadow),var(--shadow-1)"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:56px 1fr;gap:10px">
+          <span style="height:48px;border-radius:12px;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:15px">❚❚</span>
+          <span style="height:48px;border-radius:12px;border:1px solid var(--danger);display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:500"><span style="width:7px;height:7px;border-radius:50%;background:var(--danger)"></span>Break something</span>
+        </div>
+      </div>
+    </div>
+    <span style="font-size:13px;color:#5E5850;max-width:390px;line-height:1.5">Guided scenarios only: fixed camera, traffic slider and “Break something”. Free build is marked “Best on desktop” in the picker.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;palette&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;],&quot;default&quot;:&quot;a&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;light&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      theme: this.props.theme ?? 'light', variant: this.props.variant ?? 'thk', muted: this.props.muted ?? true,
+      kpis: [{ n: '7.5+', l: 'years' }, { n: '12', l: 'apps shipped' }, { n: '5', l: 'PyPI packages' }, { n: '26', l: 'projects' }],
+      mProjects: [
+        { t: 'Mull', m: 'Flutter · SQLite · Python · Android', bg: 'var(--surface-2)' },
+        { t: 'HeadShorts', m: 'Flutter · RSS · Android', bg: 'transparent' },
+        { t: 'Perch', m: 'Flutter · Riverpod · Drift · Android', bg: 'transparent' },
+        { t: 'Dally', m: 'Flutter · Dart · Android', bg: 'transparent' },
+        { t: 'A Tour of Go', m: 'Flutter · Go Playground', bg: 'transparent' },
+      ],
+      chips: ['What do you work on?', 'What’s your tech stack?', 'Are you open to roles?', 'How do I contact you?'],
+      mMetrics: [{ l: 'Throughput', v: '8.5k/s', c: 'var(--ink)' }, { l: 'p95', v: '238ms', c: 'var(--warn)' }, { l: 'Dropped', v: '0.6%', c: 'var(--ink)' }, { l: 'Cost', v: '$1,240', c: 'var(--ink)' }],
+    };
+  }
+}
+</script>
+</body>
+</html>

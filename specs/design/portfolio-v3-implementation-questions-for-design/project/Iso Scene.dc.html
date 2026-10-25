@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="stylesheet" href="tokens.css"></helmet>
+<svg ref="{{ svgRef }}" viewBox="{{ vb }}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;overflow:visible">
+  <defs>
+    <linearGradient id="{{ gid.top }}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:#fff;stop-opacity:{{ ga.top }}"></stop><stop offset=".55" style="stop-color:#fff;stop-opacity:0"></stop><stop offset="1" style="stop-color:#000;stop-opacity:.07"></stop></linearGradient>
+    <linearGradient id="{{ gid.side }}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:#fff;stop-opacity:{{ ga.side }}"></stop><stop offset=".55" style="stop-color:#000;stop-opacity:0"></stop><stop offset="1" style="stop-color:#000;stop-opacity:{{ ga.ao }}"></stop></linearGradient>
+    <linearGradient id="{{ gid.cyl }}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" style="stop-color:#000;stop-opacity:.16"></stop><stop offset=".28" style="stop-color:#fff;stop-opacity:{{ ga.spec }}"></stop><stop offset=".42" style="stop-color:#fff;stop-opacity:0"></stop><stop offset="1" style="stop-color:#000;stop-opacity:.32"></stop></linearGradient>
+    <filter id="{{ gid.blur }}" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="{{ blurSd }}"></feGaussianBlur></filter>
+  </defs>
+  <g filter="{{ blurUrl }}">
+    <sc-for list="{{ shadows }}" as="sh" hint-placeholder-count="0">
+      <path d="{{ sh.d }}" style="{{ sh.style }}"></path>
+    </sc-for>
+  </g>
+  <sc-for list="{{ lines }}" as="l" hint-placeholder-count="0">
+    <path d="{{ l.d }}" style="{{ l.style }}"></path>
+  </sc-for>
+  <sc-for list="{{ arrows }}" as="ar" hint-placeholder-count="0">
+    <path d="{{ ar.d }}" style="{{ ar.style }}"></path>
+  </sc-for>
+  <sc-for list="{{ particles }}" as="p" hint-placeholder-count="0">
+    <circle cx="{{ p.x }}" cy="{{ p.y }}" r="{{ p.r }}" style="{{ p.style }}"></circle>
+  </sc-for>
+  <sc-for list="{{ shapes }}" as="s" hint-placeholder-count="0">
+    <path d="{{ s.d }}" style="{{ s.style }}"></path>
+  </sc-for>
+  <sc-for list="{{ labels }}" as="lb" hint-placeholder-count="0">
+    <g transform="{{ lb.tf }}">
+      <foreignObject x="{{ lb.rx }}" y="-34" width="{{ lb.w }}" height="40" style="overflow:visible">
+        <div style="{{ lb.box }}">
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--ink);white-space:nowrap;line-height:1.3">{{ lb.name }}</div>
+          <div style="{{ lb.subStyle }}">{{ lb.sub }}</div>
+        </div>
+      </foreignObject>
+    </g>
+  </sc-for>
+</svg>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:620},&quot;state&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;idle&quot;,&quot;healthy&quot;,&quot;stressed&quot;,&quot;overloaded&quot;,&quot;failure&quot;,&quot;recovered&quot;],&quot;default&quot;:&quot;healthy&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;animate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;selected&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;lb&quot;,&quot;app&quot;,&quot;cache&quot;,&quot;db&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;servers&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:1,&quot;max&quot;:6,&quot;tsType&quot;:&quot;number&quot;},&quot;tier&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;S&quot;,&quot;M&quot;,&quot;L&quot;,&quot;XL&quot;],&quot;default&quot;:&quot;M&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;failed&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;server&quot;,&quot;cache&quot;,&quot;db&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;labels&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;unit&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:48,&quot;tsType&quot;:&quot;number&quot;},&quot;pad&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:30,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  state = { t: 0.37, cv: 0 };
+  uid = 'iso' + Math.random().toString(36).slice(2, 8);
+  svgRef = el => { this.svg = el; };
+  readCols() {
+    if (!this.svg) return; const cs = getComputedStyle(this.svg), o = {};
+    ['--kb-cap', '--kb-cap-mod', '--surface', '--surface-sunk', '--line-2', '--ink', '--ink-3', '--warn', '--danger', '--ok', '--accent', '--font-mono'].forEach(n => o[n] = cs.getPropertyValue(n).trim());
+    const key = JSON.stringify(o); if (key !== this.colKey) { this.colKey = key; this.cols = o; this.setState({ cv: this.state.cv + 1 }); }
+  }
+  componentDidMount() { this.sync(); this.readCols(); setTimeout(() => this.readCols(), 400); setTimeout(() => this.readCols(), 1500); }
+  componentDidUpdate(pp) { this.sync(); if (pp.theme !== this.props.theme || pp.palette !== this.props.palette) requestAnimationFrame(() => this.readCols()); }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); this.raf = null; }
+  sync() {
+    const want = !!this.props.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (want && !this.raf) {
+      const t0 = performance.now();
+      const f = () => { this.raf = requestAnimationFrame(f); const n = performance.now(); if (n - (this.lt || 0) > 33) { this.lt = n; this.setState({ t: (n - t0) / 1000 }); } };
+      this.raf = requestAnimationFrame(f);
+    } else if (!want && this.raf) { cancelAnimationFrame(this.raf); this.raf = null; }
+  }
+  renderVals() {
+    const P = this.props, st = P.state || 'healthy', sel = P.selected || '', u = P.unit ?? 48;
+    const servers = P.servers ?? 3, tier = P.tier || 'M', t = this.state.t, labelsOn = P.labels ?? true;
+    const failed = st === 'failure' ? 'db' : (P.failed || '');
+    const presets = {
+      idle: { lb: .15, app: .2, cache: .15, db: .15, rep: .1, cdn: .1, q: .1, dens: .35, slow: 0, drop: 0 },
+      healthy: { lb: .3, app: .42, cache: .3, db: .34, rep: .22, cdn: .2, q: .2, dens: .8, slow: .04, drop: 0 },
+      stressed: { lb: .55, app: .74, cache: .5, db: .68, rep: .45, cdn: .35, q: .5, dens: 1.25, slow: .4, drop: .04 },
+      overloaded: { lb: .78, app: .99, cache: .7, db: .94, rep: .7, cdn: .5, q: .9, dens: 1.7, slow: .35, drop: .3 },
+      failure: { lb: .5, app: .66, cache: .55, db: 0, rep: .82, cdn: .3, q: .6, dens: 1.1, slow: .45, drop: .1 },
+      recovered: { lb: .32, app: .4, cache: .45, db: .3, rep: .3, cdn: .25, q: .2, dens: 1.1, slow: .03, drop: 0 },
+    };
+    const H = presets[st] || presets.healthy;
+    const pr = (x, y, z) => [(x - y) * 0.866 * u, (x + y) * 0.5 * u - z * u];
+    const f1 = n => n.toFixed(1);
+    const pulse = P.animate ? 0.5 + 0.5 * Math.sin(t * 6) : 0.6;
+    const heatAR = h => [Math.min(1, Math.max(0, (h - 0.45) / 0.3)), Math.min(1, Math.max(0, (h - 0.75) / 0.2))];
+    const face = (d, depth, base, heat, shadeK, sk, dead, ov) => {
+      shapes.push({ depth, d, style: `fill:${base}` });
+      if (!dead && heat != null) { const [a, r] = heatAR(heat); if (a > 0) shapes.push({ depth, d, style: `fill:var(--warn);opacity:${(a * 0.88).toFixed(2)}` }); if (r > 0) shapes.push({ depth, d, style: `fill:var(--danger);opacity:${(r * 0.9).toFixed(2)}` }); }
+      if (shadeK) shapes.push({ depth, d, style: `fill:#000;opacity:${shadeK}` });
+      if (ov && !dead) shapes.push({ depth, d, style: `fill:url(#${U}-${ov})` });
+      shapes.push({ depth, d, style: `fill:none;stroke-linejoin:round;${sk}` });
+    };
+    const U = this.uid, dark = (P.theme || 'light') === 'dark', shadowsL = [], hlA = dark ? .22 : .6;
+    const castBox = (x, y, w, d, h) => { const sx = h * .7 + .12, sy = h * .28 + .06; shadowsL.push({ d: poly([pr(x, y, 0), pr(x + w, y, 0), pr(x + w + sx, y + sy, 0), pr(x + w + sx, y + d + sy, 0), pr(x + sx, y + d + sy, 0), pr(x, y + d, 0)]), style: `fill:#000;opacity:${dark ? .5 : .2}` }); };
+    const shapes = [], labels = [], pts = [];
+    const poly = ps => 'M' + ps.map(p => f1(p[0]) + ' ' + f1(p[1])).join(' L') + ' Z';
+    const strokeFor = (id, h, dead) => dead ? 'stroke:var(--danger);stroke-width:1.5;stroke-dasharray:4 3' : sel === id ? 'stroke:var(--accent);stroke-width:2.5' : h > 0.92 ? `stroke:var(--danger);stroke-width:${(1 + pulse * 1.5).toFixed(2)}` : 'stroke:var(--line-2);stroke-width:1';
+    const box = (id, x, y, w, d, h, heat, o = {}) => {
+      const z0 = o.z || 0, z1 = z0 + h, dead = o.dead;
+      const base = dead ? 'var(--surface-sunk)' : o.fill || 'var(--kb-cap)';
+      const hh = o.fill ? null : heat;
+      const sk = strokeFor(id, heat, dead);
+      const top = [pr(x, y, z1), pr(x + w, y, z1), pr(x + w, y + d, z1), pr(x, y + d, z1)];
+      const right = [pr(x + w, y, z0), pr(x + w, y + d, z0), pr(x + w, y + d, z1), pr(x + w, y, z1)];
+      const left = [pr(x, y + d, z0), pr(x + w, y + d, z0), pr(x + w, y + d, z1), pr(x, y + d, z1)];
+      const depth = x + w / 2 + y + d / 2 + z0 * 0.01;
+      if (!z0 && !o.ghost) castBox(x, y, w, d, h);
+      face(poly(right), depth, base, hh, 0.24, sk, dead, 'side');
+      face(poly(left), depth + 0.0001, base, hh, 0.12, sk, dead, 'side');
+      if (o.units) for (let i = 1; i < o.units; i++) { const zz = z0 + h * i / o.units; shapes.push({ depth: depth + 0.0002, d: `M${f1(pr(x, y + d, zz)[0])} ${f1(pr(x, y + d, zz)[1])} L${f1(pr(x + w, y + d, zz)[0])} ${f1(pr(x + w, y + d, zz)[1])} L${f1(pr(x + w, y, zz)[0])} ${f1(pr(x + w, y, zz)[1])}`, style: 'fill:none;stroke:var(--line-2);stroke-width:1' }); }
+      face(poly(top), depth + 0.0003, base, hh, 0, sk, dead, 'top');
+      if (!dead) shapes.push({ depth: depth + 0.0004, d: `M${f1(top[1][0])} ${f1(top[1][1])} L${f1(top[2][0])} ${f1(top[2][1])} L${f1(top[3][0])} ${f1(top[3][1])}`, style: `fill:none;stroke:#fff;opacity:${hlA};stroke-width:1.3;stroke-linejoin:round;stroke-linecap:round` });
+      top.concat(right, left).forEach(p => pts.push(p));
+      return { x: x + w / 2, y: y + d / 2, top: z1 };
+    };
+    const cyl = (id, cx, cy, r, h, heat, o = {}) => {
+      const dead = o.dead, base = dead ? 'var(--surface-sunk)' : 'var(--kb-cap)', sk = strokeFor(id, heat, dead);
+      const [px, pyB] = pr(cx, cy, 0), pyT = pyB - h * u, rx = 1.2247 * r * u, ry = 0.7071 * r * u;
+      const depth = cx + cy;
+      { const [sx0, sy0] = pr(cx + h * .32 + .1, cy + h * .14 + .05, 0); shadowsL.push({ d: `M${f1(sx0 - rx * 1.12)} ${f1(sy0)} A${f1(rx * 1.12)} ${f1(ry * 1.12)} 0 1 0 ${f1(sx0 + rx * 1.12)} ${f1(sy0)} A${f1(rx * 1.12)} ${f1(ry * 1.12)} 0 1 0 ${f1(sx0 - rx * 1.12)} ${f1(sy0)} Z`, style: `fill:#000;opacity:${dark ? .5 : .2}` }); }
+      face(`M${f1(px - rx)} ${f1(pyT)} L${f1(px - rx)} ${f1(pyB)} A${f1(rx)} ${f1(ry)} 0 0 0 ${f1(px + rx)} ${f1(pyB)} L${f1(px + rx)} ${f1(pyT)} Z`, depth, base, heat, 0.2, sk, dead, 'cyl');
+      [0.33, 0.66].forEach(k => { const yy = pyB - h * u * k; shapes.push({ depth: depth + 0.0001, d: `M${f1(px - rx)} ${f1(yy)} A${f1(rx)} ${f1(ry)} 0 0 0 ${f1(px + rx)} ${f1(yy)}`, style: 'fill:none;stroke:var(--line-2);stroke-width:1' }); });
+      face(`M${f1(px - rx)} ${f1(pyT)} A${f1(rx)} ${f1(ry)} 0 1 0 ${f1(px + rx)} ${f1(pyT)} A${f1(rx)} ${f1(ry)} 0 1 0 ${f1(px - rx)} ${f1(pyT)} Z`, depth + 0.0002, base, heat, 0, sk, dead, 'top');
+      if (!dead) shapes.push({ depth: depth + 0.0003, d: `M${f1(px - rx)} ${f1(pyT)} A${f1(rx)} ${f1(ry)} 0 0 0 ${f1(px + rx)} ${f1(pyT)}`, style: `fill:none;stroke:#fff;opacity:${hlA};stroke-width:1.3;stroke-linecap:round` });
+      pts.push([px - rx, pyT - ry], [px + rx, pyB + ry]);
+      return { x: cx, y: cy, top: h + r * 0.4 };
+    };
+    // components
+    const dev = [[0, 1.0], [0.75, 0.8], [0.2, 1.8], [0.95, 1.65], [0.4, 2.6], [1.15, 2.5]];
+    dev.forEach(([x, y], i) => box('users', x, y, 0.5, 0.36, i % 2 ? 0.08 : 0.16, 0, { fill: 'var(--kb-cap-mod)' }));
+    const users = { x: 0.8, y: 1.9, top: 0.5 };
+    box('cdn', 2.7, 1.1, 1.6, 1.6, 0.18, H.cdn);
+    const cdn = box('cdn', 3.2, 1.6, 0.6, 0.6, 0.55, H.cdn, { z: 0.18 });
+    const lb = box('lb', 5.9, 1.3, 1.2, 1.2, 0.85, H.lb);
+    const tierH = { S: 2, M: 3, L: 4, XL: 5 }[tier] || 3;
+    const apps = [];
+    for (let i = 0; i < servers; i++) {
+      const yy = 1.4 + (i - (servers - 1) / 2) * 1.35;
+      const dead = failed === 'server' && i === 0;
+      apps.push(box('app', 9, yy - 0.5, 1, 1, tierH * 0.3, dead ? 0 : H.app, { units: tierH, dead }));
+    }
+    const appMid = { x: 9.5, y: 1.4 };
+    const cacheDead = failed === 'cache';
+    const cache = box('cache', 12.4, -2.0, 1, 1, 0.45, cacheDead ? 0 : H.cache, { dead: cacheDead });
+    const db = cyl('db', 12.8, 2.2, 0.72, 1.15, H.db, { dead: failed === 'db' });
+    const r1 = cyl('rep', 15.2, 1.3, 0.5, 0.95, H.rep);
+    const r2 = cyl('rep', 15.4, 3.1, 0.5, 0.95, Math.max(0.15, H.rep - 0.15));
+    const q = box('queue', 10.2, 5.2, 3.4, 0.6, 0.16, H.q, { units: 1 });
+    for (let i = 0; i < 4; i++) shapes.push({ depth: 15.8 + i * 0.001, d: `M${f1(pr(10.2 + 0.68 * (i + 1), 5.2, 0.16)[0])} ${f1(pr(10.2 + 0.68 * (i + 1), 5.2, 0.16)[1])} L${f1(pr(10.2 + 0.68 * (i + 1), 5.8, 0.16)[0])} ${f1(pr(10.2 + 0.68 * (i + 1), 5.8, 0.16)[1])}`, style: 'fill:none;stroke:var(--line-2);stroke-width:1' });
+    const wk = [0, 1, 2].map(i => box('workers', 14.4 + i * 0.75, 5.15, 0.55, 0.55, 0.45, H.q));
+    // connect tool: a component being dropped, with the arrow being drawn to it
+    const ghost = P.connect ? { x: 6.1, y: -2.9, w: 1.2, d: 1.2, h: 0.55 } : null;
+    if (ghost) {
+      const g = ghost, gt = [pr(g.x, g.y, g.h), pr(g.x + g.w, g.y, g.h), pr(g.x + g.w, g.y + g.d, g.h), pr(g.x, g.y + g.d, g.h)];
+      const gr = [pr(g.x + g.w, g.y, 0), pr(g.x + g.w, g.y + g.d, 0), pr(g.x + g.w, g.y + g.d, g.h), pr(g.x + g.w, g.y, g.h)], gl = [pr(g.x, g.y + g.d, 0), pr(g.x + g.w, g.y + g.d, 0), pr(g.x + g.w, g.y + g.d, g.h), pr(g.x, g.y + g.d, g.h)];
+      const gs = 'stroke:var(--accent);stroke-width:1.6;stroke-dasharray:5 4;stroke-linejoin:round';
+      [gr, gl, gt].forEach((pp, i) => shapes.push({ depth: 99 + i * .001, d: poly(pp), style: `fill:var(--surface);opacity:.82;${gs}` }));
+      gt.concat(gr, gl).forEach(p => pts.push(p));
+    }
+    shapes.sort((a, b) => a.depth - b.depth);
+    // lines
+    const seg = (a, b, status, o = {}) => ({ a: pr(a.x, a.y, 0), b: pr(b.x, b.y, 0), status, o });
+    const L = [seg(users, cdn, 'ok'), seg(cdn, lb, H.drop > .2 ? 'drop' : 'ok')];
+    apps.forEach(a => L.push(seg(lb, a, H.drop > .2 ? 'drop' : H.slow > .3 ? 'slow' : 'ok')));
+    if (!cacheDead) L.push(seg(appMid, cache, 'ok'));
+    if (failed === 'db') { L.push(seg(appMid, r1, 'slow', { reroute: true })); L.push(seg(db, r1, 'none', { dashed: true })); }
+    else { L.push(seg(appMid, db, H.drop > .2 ? 'drop' : H.slow > .3 ? 'slow' : 'ok')); L.push(seg(db, r1, 'ok', { dashed: true, thin: true })); }
+    L.push(seg(db, r2, 'ok', { dashed: true, thin: true }));
+    L.push(seg(appMid, { x: 10.2, y: 5.5 }, 'ok')); L.push(seg({ x: 13.6, y: 5.5 }, wk[0], H.q > .8 ? 'slow' : 'ok'));
+    const lines = L.map(l => ({ d: `M${f1(l.a[0])} ${f1(l.a[1])} L${f1(l.b[0])} ${f1(l.b[1])}`, style: `fill:none;stroke:${l.o.reroute ? 'var(--accent)' : 'var(--line-2)'};stroke-width:${l.o.thin ? 1.2 : 2};${l.o.dashed || l.o.reroute ? 'stroke-dasharray:5 5;' : ''}stroke-linecap:round` }));
+    const arrows = [];
+    const head = (a, b, at, col, sz) => { const dx = b[0] - a[0], dy = b[1] - a[1], ln = Math.hypot(dx, dy) || 1, ux = dx / ln, uy = dy / ln, mx = a[0] + dx * at, my = a[1] + dy * at, s = sz || 5; arrows.push({ d: `M${f1(mx + ux * s)} ${f1(my + uy * s)} L${f1(mx - ux * s - uy * s * .9)} ${f1(my - uy * s + ux * s * .9)} L${f1(mx - ux * s * .45)} ${f1(my - uy * s * .45)} L${f1(mx - ux * s + uy * s * .9)} ${f1(my - uy * s - ux * s * .9)} Z`, style: `fill:${col};stroke:none` }); };
+    L.forEach(l => { if (l.status !== 'none' && !l.o.thin) head(l.a, l.b, .5, l.o.reroute ? 'var(--accent)' : 'var(--ink-3)'); });
+    if (ghost) {
+      const a = pr(appMid.x - .4, appMid.y - .9, 0), b = pr(ghost.x + ghost.w / 2, ghost.y + ghost.d / 2 + .5, 0);
+      lines.push({ d: `M${f1(a[0])} ${f1(a[1])} L${f1(b[0])} ${f1(b[1])}`, style: 'fill:none;stroke:var(--accent);stroke-width:2.5;stroke-dasharray:6 5;stroke-linecap:round' });
+      head(a, b, 1, 'var(--accent)', 7);
+      const c = pr(ghost.x + ghost.w / 2, ghost.y + ghost.d / 2, 0), pulseR = 1 + (P.animate ? 0.12 * Math.sin(t * 5) : 0);
+      lines.push({ d: `M${f1(c[0] - 1.35 * u * pulseR)} ${f1(c[1])} A${f1(1.35 * u * pulseR)} ${f1(.78 * u * pulseR)} 0 1 0 ${f1(c[0] + 1.35 * u * pulseR)} ${f1(c[1])} A${f1(1.35 * u * pulseR)} ${f1(.78 * u * pulseR)} 0 1 0 ${f1(c[0] - 1.35 * u * pulseR)} ${f1(c[1])} Z`, style: 'fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.2;opacity:.9' });
+    }
+    // particles
+    const rnd = (i, j) => { const s = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return s - Math.floor(s); };
+    const particles = [];
+    L.forEach((l, j) => {
+      if (l.status === 'none' || l.o.thin) return;
+      const len = Math.hypot(l.b[0] - l.a[0], l.b[1] - l.a[1]); const n = Math.max(2, Math.round(len / u * H.dens * 1.6));
+      for (let i = 0; i < n; i++) {
+        const f = ((i + rnd(i, j) * 0.6) / n + t * (60 / len)) % 1;
+        let x = l.a[0] + (l.b[0] - l.a[0]) * f, y = l.a[1] + (l.b[1] - l.a[1]) * f, op = 1, c = 'var(--ok)';
+        const r = rnd(i + 7, j + 3);
+        if (l.status === 'drop' && r < H.drop * 1.6) { c = 'var(--danger)'; if (f > 0.55) { const k = (f - 0.55) / 0.45; y += k * k * 70; x += k * 10; op = 1 - k; } }
+        else if ((l.status === 'slow' || l.status === 'drop') && r < H.slow + H.drop * 1.6 + 0.2) c = 'var(--warn)';
+        else if (r < H.slow * 0.5) c = 'var(--warn)';
+        particles.push({ x: f1(x), y: f1(y - 3), r: 3, style: `fill:${c};opacity:${op.toFixed(2)}` });
+      }
+    });
+    // labels
+    const pct = h => Math.round(h * 100) + '%';
+    const L2 = [
+      [users, 'Users', 'visitors'],
+      [cdn, 'CDN', 'edge cache'],
+      [lb, 'Load balancer', pct(H.lb)],
+      [{ x: 9.5, y: 1.4 - (servers - 1) / 2 * 1.35 - 0.6, top: tierH * 0.3 + 0.2 }, 'App servers', `${servers} × ${tier} · ${pct(H.app)}`, 'app'],
+      [cache, 'Cache', cacheDead ? 'offline' : '82% hit · ' + pct(H.cache), 'cache'],
+      [db, 'Database', failed === 'db' ? 'primary down' : 'primary · ' + pct(H.db), 'db'],
+      [{ x: 15.3, y: 2.2, top: 1.6 }, failed === 'db' ? 'Replica → primary' : 'Read replicas', failed === 'db' ? 'promoting… ' + pct(H.rep) : '2 · ' + pct(H.rep)],
+      [{ x: 11.9, y: 5.5, top: 0.35 }, 'Queue', st === 'overloaded' ? 'backlog 4.2k' : 'backlog 12'],
+      [{ x: 15.2, y: 5.4, top: 0.7 }, 'Workers', '3'],
+    ];
+    if (ghost) L2.push([{ x: ghost.x + ghost.w / 2, y: ghost.y + ghost.d / 2, top: ghost.h }, 'Object storage', 'drop to connect', 'ghost']);
+    const labs = labelsOn ? L2.map(([p, name, sub, id]) => {
+      const [sx, sy] = pr(p.x, p.y, p.top + 0.35); const w = Math.max(name.length, sub.length) * 7 + 20;
+      const bad = /down|offline/.test(sub) || (id && (id === 'app' ? H.app : id === 'db' ? H.db : 0) > .92);
+      pts.push([sx - w / 2, sy - 32]);
+      return { tf: `translate(${f1(sx)} ${f1(sy)})`, rx: f1(-w / 2), w: f1(w), h: 36, name, sub, box: `box-sizing:border-box;height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border:${sel === id || id === 'ghost' ? '1.5px solid var(--accent)' : '1px solid var(--line-2)'};border-radius:8px;box-shadow:0 6px 14px -8px rgba(0,0,0,.35)`, subStyle: `font-family:var(--font-mono);font-size:10px;line-height:1.3;white-space:nowrap;color:${bad ? 'var(--danger)' : id === 'ghost' ? 'var(--accent-text)' : 'var(--ink-3)'}` };
+    }) : [];
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    pts.forEach(([x, y]) => { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); });
+    const pad = P.pad ?? 30;
+    const cols = this.cols || {};
+    const rv = str => str.replace(/var\((--[\w-]+)\)/g, (m, n) => cols[n] || m);
+    const so = s => { s = rv(s); const o = {}; s.split(';').forEach(kv => { const i = kv.indexOf(':'); if (i < 0) return; const k = kv.slice(0, i).trim().replace(/-([a-z])/g, (m, c) => c.toUpperCase()); o[k] = kv.slice(i + 1).trim(); }); return o; };
+    shapes.forEach(s => s.style = so(s.style)); lines.forEach(s => s.style = so(s.style)); particles.forEach(s => s.style = so(s.style)); arrows.forEach(s => s.style = so(s.style)); shadowsL.forEach(s => s.style = so(s.style));
+    labs.forEach(l => { l.box = so(l.box); l.subStyle = so(l.subStyle); });
+    return { svgRef: this.svgRef, vb: `${f1(x0 - pad)} ${f1(y0 - pad)} ${f1(x1 - x0 + pad * 2)} ${f1(y1 - y0 + pad * 2 + 40)}`, shapes, lines, particles, labels: labs, arrows, shadows: shadowsL,
+      gid: { top: U + '-top', side: U + '-side', cyl: U + '-cyl', blur: U + '-blur' }, blurUrl: `url(#${U}-blur)`, blurSd: (u * .16).toFixed(1),
+      ga: { top: dark ? .16 : .55, side: dark ? .05 : .14, ao: dark ? .35 : .2, spec: dark ? .14 : .4 } };
+  }
+}
+</script>
+</body>
+</html>

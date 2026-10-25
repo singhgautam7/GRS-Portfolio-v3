@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;500;600;700&amp;family=Martian+Mono:wdth,wght@75..112.5,300..700&amp;family=Young+Serif&amp;family=Special+Elite&amp;family=Press+Start+2P&amp;display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+body{margin:0;background:#DAD7D1;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration-color:currentColor}
+a:hover{color:inherit;opacity:.8}
+input::placeholder{color:var(--ink-3)}
+button{font:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:none;box-shadow:var(--focus-ring)}
+@keyframes grsPulse{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+</style>
+</helmet>
+<div style="min-height:100vh;padding:72px 80px 160px;background:#DAD7D1;font-family:'Host Grotesk',system-ui,sans-serif;color:#22201C;display:flex;flex-direction:column;gap:72px">
+
+  <section id="turn-3" style="display:flex;flex-direction:column;gap:48px">
+    <header style="display:flex;flex-direction:column;gap:10px;max-width:920px">
+      <span style="font-family:'Martian Mono',monospace;font-size:12px;letter-spacing:.14em;color:#6A645B">// TURN 3 · ONE KEYBOARD PER SOUND · TWO MODES · ASK PAGE</span>
+      <h1 style="margin:0;font-size:40px;line-height:1.05;letter-spacing:-0.03em;font-weight:600">Six keyboards on the same desk</h1>
+      <p style="margin:0;font-size:16px;line-height:1.55;color:#4E4942;text-wrap:pretty">Light (signal orange) and dark (neon phosphor) only. Each keyboard brings its own body, feedback and sound set; live keys stay in the mode accent on all of them. The working prototype is <a href="#2a" style="color:#B83A0B">2a</a> below: pick a keyboard under the board, sound starts muted. Selector placement is compared in <a href="#7d" style="color:#B83A0B">7d</a>.</p>
+    </header>
+    <div id="8a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">8a</span>
+        <span style="font-size:18px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap">/askme · Ask Me Anything page</span>
+        <span style="font-size:14px;color:#5E5850">interactive · follows 2a’s mode · built from the repo’s Assistant surface</span>
+      </div>
+      <dc-import name="Ask Page" theme="{{ theme }}" os="{{ os }}" hint-size="1440px,900px"></dc-import>
+    </div>
+    <dc-import name="Keyboard Variants" hint-size="4480px,12000px"></dc-import>
+  </section>
+
+  <section id="turn-2" style="display:flex;flex-direction:column;gap:40px">
+    <header style="display:flex;gap:56px;align-items:flex-start;flex-wrap:wrap;max-width:2980px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:600px">
+        <span style="font-family:'Martian Mono',monospace;font-size:12px;letter-spacing:.14em;color:#6A645B">// TURN 2 · FULL LANDING, PLAYGROUND, MOBILE, COMPONENT SHEET</span>
+        <h1 style="margin:0;font-size:40px;line-height:1.05;letter-spacing:-0.03em;font-weight:600">singhgautam.com v3</h1>
+        <p style="margin:0;font-size:16px;line-height:1.55;color:#4E4942;text-wrap:pretty">One live landing page: light/dark, six keyboards with their own sound sets (muted until you turn sound on). Hover the page to give it the keyboard, then type, or use the buttons below to play each interaction.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:30px">
+        <span style="font-family:'Martian Mono',monospace;font-size:11px;letter-spacing:.12em;color:#6A645B">PLAY AN INTERACTION ON 2a</span>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;max-width:640px">
+          <sc-for list="{{ demos }}" as="dm" hint-placeholder-count="5">
+            <button onClick="{{ dm.run }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(40,30,20,.18);background:#F4F1EB;color:#22201C;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap">{{ dm.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </header>
+
+    <!-- 2a landing desktop -->
+    <div id="2a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:12px">
+        <span style="font-family:'Martian Mono',monospace;font-size:12px;font-weight:500;background:#22201C;color:#F2EFE9;padding:4px 9px;border-radius:6px">2a</span>
+        <span style="font-size:18px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap">Landing · desktop 1440</span>
+        <span style="font-size:14px;color:#5E5850">{{ variantName }} · {{ theme }} · live</span>
+      </div>
+
+      <div data-artboard="main" data-theme="{{ theme }}" style="position:relative;width:1440px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--font-sans);border-radius:16px;box-shadow:0 40px 90px -50px rgba(0,0,0,.45);transition:background-color 380ms cubic-bezier(.16,1,.3,1)">
+
+        <!-- ============ HERO ============ -->
+        <div style="position:relative;height:900px">
+          <x-import component-from-global-scope="hero-keyboard" from="./keyboard3d.js" ab="main" theme="{{ theme }}" os="{{ os }}" variant="{{ variant }}" muted="{{ mutedStr }}" reduced="{{ reducedStr }}" autoplay="{{ autoplayStr }}" style="position:absolute;left:0;top:0;width:1440px;height:900px" hint-size="1440px,900px"></x-import>
+
+          <!-- top bar -->
+          <div style="position:absolute;left:0;right:0;top:0;height:76px;padding:0 48px 0 56px;display:flex;align-items:center;justify-content:space-between;z-index:30;pointer-events:none;opacity:{{ chromeOp }};transition:opacity 260ms cubic-bezier(.16,1,.3,1)">
+            <a href="#" style="pointer-events:auto;display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--cap-ui-bg);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:var(--ink)">GRS</span>
+              <span style="font-family:var(--font-display);font-size:19px;font-weight:400;letter-spacing:-0.005em;line-height:1;white-space:nowrap" data-comment-anchor="a2141f98e6-span">Gautam Rajeev Singh</span>
+            </a>
+            <div style="pointer-events:auto;display:flex;align-items:center;gap:8px">
+              <button onClick="{{ openSearch }}" style="display:flex;align-items:center;gap:24px;height:38px;padding:0 7px 0 16px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);font-size:14px;cursor:pointer">
+                <span>Search</span>
+                <span style="display:flex;gap:3px">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">{{ mod }}</span>
+                  <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">K</span>
+                </span>
+              </button>
+
+              <!-- mode switch (radio) -->
+              <div role="radiogroup" aria-label="Colour mode" style="position:relative;display:flex;align-items:center;gap:2px;height:38px;padding:3px;box-sizing:border-box;border-radius:999px;border:1px solid var(--line-2);background:var(--surface-2)">
+                <span ref="{{ thumbRef }}" style="position:absolute;left:3px;top:3px;width:30px;height:30px;border-radius:999px;background:var(--surface);box-shadow:var(--cap-ui-shadow),0 2px 6px -2px rgba(0,0,0,.28);transform:translateX({{ thumbX }})"></span>
+                <button role="radio" aria-checked="{{ lightChecked }}" aria-label="Light mode" title="Light" onClick="{{ setLight }}" style="position:relative;z-index:1;width:30px;height:30px;padding:0;border:none;border-radius:999px;background:transparent;color:{{ sunC }};display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color 240ms">
+                  <span style="display:flex;transform:{{ sunT }};transition:transform 560ms cubic-bezier(.34,1.56,.64,1)" data-comment-anchor="4c2469daa7-span"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></span>
+                </button>
+                <button role="radio" aria-checked="{{ darkChecked }}" aria-label="Dark mode" title="Dark" onClick="{{ setDark }}" style="position:relative;z-index:1;width:30px;height:30px;padding:0;border:none;border-radius:999px;background:transparent;color:{{ moonC }};display:flex;align-items:center;justify-content:center;cursor:pointer;transition:color 240ms">
+                  <span style="display:flex;transform:{{ moonT }};transition:transform 560ms cubic-bezier(.34,1.56,.64,1)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg></span>
+                </button>
+              </div>
+
+              <a href="#" title="Download resume" style="display:flex;align-items:center;gap:8px;height:38px;padding:0 16px 0 14px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                Resume
+              </a>
+            </div>
+          </div>
+
+          <!-- left column -->
+          <div style="position:absolute;left:96px;top:0;bottom:0;width:560px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding-top:40px;z-index:2;pointer-events:none;opacity:{{ chromeOp }};transform:translateX({{ leftShift }});transition:opacity 300ms cubic-bezier(.16,1,.3,1),transform 500ms cubic-bezier(.16,1,.3,1)">
+            <span style="display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 16px 0 13px;border-radius:999px;background:var(--surface);border:1px solid var(--line-2);font-family:var(--font-mono);font-size:12.5px;color:var(--ink);white-space:nowrap">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--ok);animation:grsPulse 2.4s ease-in-out infinite"></span>
+              Senior Software Engineer · HashiCorp (IBM)
+            </span>
+            <h1 style="margin:26px 0 22px;font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--tr-display);font-weight:600;text-wrap:balance">I build systems that stay up.</h1>
+            <p style="margin:0;max-width:440px;font-size:var(--fs-lead);line-height:var(--lh-body);color:var(--ink-2);text-wrap:pretty">7.5+ years across backend, cloud infrastructure and AI systems. Go, Kubernetes and Terraform by day; local-first apps by night.</p>
+            <div style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;margin-top:38px;pointer-events:auto">
+              <div style="display:flex;gap:12px">
+                <a href="#projects" style="display:flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:var(--r-md);background:var(--ink);color:var(--bg);text-decoration:none;font-size:16px;font-weight:500;white-space:nowrap">View projects <span style="font-family:var(--font-mono);font-size:14px">→</span></a>
+                <button onClick="{{ openPlay }}" style="display:flex;align-items:center;gap:16px;height:52px;padding:0 12px 0 20px;border-radius:var(--r-md);border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:16px;font-weight:500;cursor:pointer">
+                  <span style="white-space:nowrap">Try the playground</span>
+                  <span style="display:flex;gap:3px">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">{{ mod }}</span>
+                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:5px;background:var(--accent);color:var(--accent-ink);box-shadow:inset 0 -2px 0 rgba(0,0,0,.16);font-family:var(--font-mono);font-size:12px;line-height:1">↵</span>
+                  </span>
+                </button>
+              </div>
+              <a href="#" style="display:flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 18px;border-radius:var(--r-md);border:1px solid var(--line-2);background:transparent;color:var(--ink);text-decoration:none;font-size:15px;font-weight:500;white-space:nowrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
+                Download resume <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-3)">.docx</span>
+              </a>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,auto);margin-top:52px;border-top:1px solid var(--line-2)">
+              <sc-for list="{{ kpis }}" as="kp" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:4px;padding:16px 28px 0 0;margin-right:28px;border-right:{{ kp.div }}">
+                  <span style="font-size:30px;font-weight:600;letter-spacing:-0.03em;line-height:1;color:var(--ink);white-space:nowrap">{{ kp.n }}</span>
+                  <span style="font-size:13px;color:var(--ink-2);white-space:nowrap">{{ kp.l }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- hint line -->
+          <div style="position:absolute;left:640px;right:240px;top:766px;display:flex;justify-content:center;z-index:2;pointer-events:none;font-family:var(--font-mono);font-size:12px;color:var(--ink-3);opacity:{{ chromeOp }};transition:opacity 260ms">
+            <sc-if value="{{ notReal }}" hint-placeholder-val="{{ true }}">
+              <span style="display:flex;align-items:center;gap:8px;white-space:nowrap">Go on, press a key. Hold <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">{{ mod }}</span> to see what it can do.</span>
+            </sc-if>
+            <sc-if value="{{ real }}" hint-placeholder-val="{{ false }}">
+              <span style="display:flex;align-items:center;gap:8px;color:var(--ink-2)"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>There you go.</span>
+            </sc-if>
+          </div>
+
+          <!-- keyboard selector (below the board): dropdown + separate mute key -->
+          <sc-if value="{{ kbMenu }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ closeKbMenu }}" style="position:absolute;inset:0;z-index:34"></div>
+          </sc-if>
+          <div style="position:absolute;left:600px;right:200px;top:800px;display:flex;justify-content:center;z-index:35;opacity:{{ chromeOp }};pointer-events:{{ selPE }};transition:opacity 260ms">
+            <div style="position:relative;display:flex;align-items:center;gap:8px">
+              <button onClick="{{ toggleKbMenu }}" aria-haspopup="listbox" aria-expanded="{{ kbMenuStr }}" aria-label="Keyboard: {{ variantName }}" title="Change keyboard" style="display:flex;align-items:center;gap:10px;height:40px;padding:0 12px 0 6px;border-radius:10px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:14px;font-weight:500;cursor:pointer;box-shadow:var(--shadow-1)" data-comment-anchor="33ae5989d5-button">
+                <span style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:28px;padding:0 6px;box-sizing:border-box;border-radius:6px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ variant }}</span>
+                <span style="white-space:nowrap">{{ variantName }}</span>
+                <span style="display:flex;color:var(--ink-3);transform:{{ kbChev }};transition:transform 220ms cubic-bezier(.16,1,.3,1)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"></path></svg></span>
+              </button>
+              <span style="position:relative;display:flex">
+                <button ref="{{ muteRef }}" onClick="{{ toggleMute }}" aria-pressed="{{ soundOnStr }}" aria-label="{{ muteLabel }}" title="{{ muteLabel }}" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:none;border-radius:10px;background:{{ muteBg }};color:{{ muteFg }};box-shadow:{{ muteSh }};transform:{{ muteTf }};cursor:pointer;transition:background-color 160ms,box-shadow 160ms,transform 90ms cubic-bezier(.2,.9,.3,1)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="{{ soundWave1 }}"></path><path d="{{ soundWave2 }}"></path></svg>
+                </button>
+                <sc-if value="{{ nudge }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute;right:-6px;bottom:50px;display:flex;align-items:center;height:34px;padding:0 12px;border-radius:9px;background:var(--ink);color:var(--bg);font-size:13px;font-weight:500;white-space:nowrap;box-shadow:var(--shadow-2)">Sound is off. Tap to hear it.<span style="position:absolute;right:20px;bottom:-5px;width:10px;height:10px;background:var(--ink);transform:rotate(45deg)"></span></span>
+                </sc-if>
+              </span>
+              <sc-if value="{{ kbMenu }}" hint-placeholder-val="{{ false }}">
+                <div role="listbox" aria-label="Keyboard" style="position:absolute;left:0;bottom:50px;width:300px;padding:6px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-overlay);z-index:60">
+                  <div style="padding:8px 10px 6px;font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--ink-3)">KEYBOARD</div>
+                  <sc-for list="{{ kbOpts }}" as="o" hint-placeholder-count="6">
+                    <button role="option" aria-selected="{{ o.on }}" onClick="{{ o.pick }}" style="width:100%;display:flex;align-items:center;gap:12px;padding:8px 10px;border:none;border-radius:9px;background:{{ o.bg }};color:var(--ink);cursor:pointer;text-align:left" style-hover="background:var(--surface-2)">
+                      <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:28px;flex:none;border-radius:6px;background:{{ o.capBg }};color:{{ o.capFg }};box-shadow:{{ o.capSh }};font-family:var(--font-mono);font-size:10.5px">{{ o.key }}</span>
+                      <span style="display:flex;flex-direction:column;gap:1px;flex:1;min-width:0"><span style="font-size:14px;font-weight:500">{{ o.name }}</span><span style="font-size:11.5px;color:var(--ink-3)">{{ o.sub }}</span></span>
+                      <span style="font-family:var(--font-mono);font-size:12px;color:var(--accent-text)">{{ o.check }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+
+          <!-- ask about me -->
+          <div style="position:absolute;right:32px;top:820px;z-index:40;opacity:{{ chromeOp }}">
+            <button onClick="{{ toggleAsk }}" style="display:flex;align-items:center;gap:9px;height:46px;padding:0 18px 0 15px;border-radius:999px;border:1px solid var(--line-2);background:{{ askBtnBg }};color:{{ askBtnFg }};font-size:14.5px;font-weight:500;cursor:pointer;box-shadow:var(--shadow-2);white-space:nowrap" data-comment-anchor="302d1427c2-button">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+              {{ askBtnLabel }}
+            </button>
+          </div>
+          <sc-if value="{{ askOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;right:32px;top:{{ askTop }};width:392px;z-index:41;border-radius:var(--r-xl);background:var(--surface);border:1px solid var(--line-2);box-shadow:var(--shadow-overlay);display:flex;flex-direction:column;overflow:hidden">
+              <div style="padding:18px 16px 14px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;border-bottom:1px solid var(--line)">
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <span style="font-size:17px;font-weight:600;letter-spacing:-0.01em">Ask about me</span>
+                  <span style="font-size:13px;color:var(--ink-3)">Tap a question. Quick answers about my work.</span>
+                </div>
+                <a href="#8a" style="display:flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:8px;border:1px solid var(--line-2);color:var(--ink-2);text-decoration:none;font-family:var(--font-mono);font-size:11px;white-space:nowrap">full page ↗</a>
+              </div>
+              <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;max-height:330px;overflow:auto">
+                <sc-for list="{{ askThread }}" as="th" hint-placeholder-count="0">
+                  <div style="align-self:flex-end;max-width:85%;padding:8px 12px;border-radius:12px 12px 4px 12px;background:var(--surface-2);font-size:13.5px">{{ th.q }}</div>
+                  <div style="display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:12px;border:1px solid var(--line);background:var(--bg)">
+                    <span style="font-size:14px;line-height:1.5;color:var(--ink-2);text-wrap:pretty">{{ th.a }}</span>
+                    <sc-if value="{{ th.cta }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ th.run }}" style="align-self:flex-start;display:flex;align-items:center;gap:8px;height:34px;padding:0 12px;border-radius:8px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap">{{ th.cta }} <span style="font-family:var(--font-mono);font-size:12px">→</span></button>
+                    </sc-if>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ askFallback }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:12.5px;color:var(--ink-3)">Try one of these instead:</span>
+                </sc-if>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <sc-for list="{{ askChips }}" as="ch" hint-placeholder-count="5">
+                    <button onClick="{{ ch.run }}" style="height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:13px;cursor:pointer;white-space:nowrap">{{ ch.q }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:10px 10px 10px 16px;border-top:1px solid var(--line);background:var(--surface-2)">
+                <input value="{{ askInput }}" onChange="{{ onAskInput }}" onKeyDown="{{ onAskKey }}" placeholder="Or type a question…" style="flex:1;min-width:0;height:36px;border:none;background:transparent;outline:none;color:var(--ink);font-family:var(--font-sans);font-size:14px;box-shadow:none">
+                <button onClick="{{ askSubmit }}" style="height:34px;padding:0 14px;border-radius:8px;border:none;background:var(--ink);color:var(--bg);font-size:13px;font-weight:500;cursor:pointer">Ask</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- toast -->
+          <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;left:50%;top:700px;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:10px;height:40px;padding:0 18px;border-radius:999px;background:var(--ink);color:var(--bg);font-family:var(--font-mono);font-size:12px;box-shadow:var(--shadow-2);white-space:nowrap">{{ toast }}</div>
+          </sc-if>
+
+          <!-- playground entry -->
+          <sc-if value="{{ play }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;inset:0;z-index:4;pointer-events:none;opacity:{{ playOp }};transition:opacity 320ms cubic-bezier(.16,1,.3,1)">
+              <div style="position:absolute;left:0;right:0;top:0;height:76px;padding:0 40px;display:flex;align-items:center;justify-content:space-between">
+                <button onClick="{{ exitPlay }}" style="pointer-events:auto;display:flex;align-items:center;gap:12px;height:40px;padding:0 8px 0 14px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);font-size:14px;cursor:pointer">
+                  <span style="white-space:nowrap">← Back to portfolio</span>
+                  <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">esc</span>
+                </button>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+                  <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 05 · PLAYGROUND</span>
+                  <span style="font-size:17px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap">System Design Playground</span>
+                </div>
+                <div style="width:196px"></div>
+              </div>
+              <div style="position:absolute;left:40px;right:40px;bottom:36px;display:flex;flex-direction:column;gap:14px">
+                <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--ink-3)">PICK A SCENARIO</span>
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+                  <sc-for list="{{ scenarios }}" as="sc" hint-placeholder-count="4">
+                    <button style="pointer-events:auto;text-align:left;display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:var(--r-lg);border:1px solid var(--line-2);background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:var(--shadow-1)">
+                      <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;color:var(--accent-text)">{{ sc.tag }}</span>
+                      <span style="font-size:17px;font-weight:600;letter-spacing:-0.01em">{{ sc.title }}</span>
+                      <span style="font-size:13.5px;line-height:1.45;color:var(--ink-2);text-wrap:pretty">{{ sc.goal }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <!-- ============ SECTIONS ============ -->
+        <div style="position:relative;padding:40px 130px 0;display:flex;flex-direction:column;gap:128px">
+
+          <!-- 01 ABOUT -->
+          <section id="about" style="display:flex;flex-direction:column;gap:36px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 01 · ABOUT</span><span style="flex:1;height:1px;background:var(--line-2)"></span><span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">G</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">A</span></span></div>
+            <div style="display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:72px;align-items:start">
+              <div style="display:flex;flex-direction:column;gap:18px">
+                <h2 style="margin:0 0 6px;font-size:44px;line-height:1.06;letter-spacing:-0.035em;font-weight:600;text-wrap:balance">I build systems that stay up, and tools that make teams faster.</h2>
+                <p style="margin:0;font-size:17px;line-height:1.65;color:var(--ink-2);text-wrap:pretty">7.5+ years across backend development, cloud infrastructure and scalable systems. At HashiCorp (IBM) I engineer and operate high-availability HVD clusters in Go, automate operations with Terraform and Kubernetes, and build developer tooling that drives efficiency.</p>
+                <p style="margin:0;font-size:17px;line-height:1.65;color:var(--ink-2);text-wrap:pretty">I care about practical impact: reducing operational risk, improving performance, and making infrastructure safer so products ship with confidence.</p>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <sc-for list="{{ aboutStats }}" as="as" hint-placeholder-count="6">
+                  <div style="padding:20px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:10px;min-height:96px">
+                    <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3)">{{ as.label }}</span>
+                    <span style="font-size:{{ as.size }};font-weight:600;letter-spacing:-0.03em;line-height:1.1">{{ as.value }}<span style="color:var(--accent-text);font-size:17px;letter-spacing:0">{{ as.unit }}</span></span>
+                    <span style="font-size:12.5px;color:var(--ink-3);margin-top:-6px">{{ as.sub }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </section>
+
+          <!-- 02 SKILLS -->
+          <section id="skills" style="display:flex;flex-direction:column;gap:36px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 02 · SKILLS</span><span style="flex:1;height:1px;background:var(--line-2)"></span></div>
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+              <sc-for list="{{ skills }}" as="sg" hint-placeholder-count="4">
+                <div style="padding:22px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:16px">
+                  <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--accent-text)">{{ sg.label }}</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    <sc-for list="{{ sg.items }}" as="si" hint-placeholder-count="5">
+                      <span style="font-family:var(--font-mono);font-size:12px;color:var(--ink);background:var(--cap-ui-bg);box-shadow:var(--cap-ui-shadow);border-radius:7px;padding:6px 10px 7px">{{ si }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <!-- 03 EXPERIENCE -->
+          <section id="experience" style="display:flex;flex-direction:column;gap:30px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 03 · EXPERIENCE</span><span style="flex:1;height:1px;background:var(--line-2)"></span><span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">G</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">E</span></span></div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <h2 style="margin:0;font-size:38px;letter-spacing:-0.03em;font-weight:600">A few places I’ve grown.</h2>
+              <div style="display:flex;gap:18px;font-family:var(--font-mono);font-size:12.5px">
+                <button onClick="{{ expandAll }}" style="border:none;background:none;padding:0;color:var(--accent-text);cursor:pointer;font-family:var(--font-mono);font-size:12.5px">expand all</button>
+                <button onClick="{{ collapseAll }}" style="border:none;background:none;padding:0;color:var(--accent-text);cursor:pointer;font-family:var(--font-mono);font-size:12.5px">collapse all</button>
+              </div>
+            </div>
+            <div style="position:relative;display:flex;flex-direction:column;gap:10px;padding-left:36px">
+              <div style="position:absolute;left:9px;top:28px;bottom:28px;width:2px;background:var(--line-2);border-radius:1px"></div>
+              <sc-for list="{{ jobs }}" as="jb" hint-placeholder-count="6">
+                <div style="position:relative;border-radius:var(--r-lg);background:var(--surface);border:1px solid {{ jb.border }}">
+                  <span style="position:absolute;left:-33px;top:26px;width:14px;height:14px;border-radius:50%;background:{{ jb.dot }};box-shadow:0 0 0 4px var(--bg)"></span>
+                  <button onClick="{{ jb.toggle }}" style="width:100%;display:flex;align-items:center;gap:20px;padding:20px 24px;border:none;background:none;color:var(--ink);cursor:pointer;text-align:left">
+                    <span style="font-family:var(--font-mono);font-size:12px;color:var(--ink-3);min-width:180px;white-space:nowrap">{{ jb.range }}</span>
+                    <span style="flex:1;display:flex;flex-direction:column;gap:3px">
+                      <span style="display:flex;align-items:center;gap:10px"><span style="font-size:18px;font-weight:600;letter-spacing:-0.01em">{{ jb.title }}</span><sc-if value="{{ jb.current }}" hint-placeholder-val="{{ false }}"><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;color:var(--ok);border:1px solid var(--ok);border-radius:999px;padding:2px 8px">NOW</span></sc-if></span>
+                      <span style="font-size:14px;color:var(--accent-text)">{{ jb.company }}</span>
+                    </span>
+                    <span style="font-family:var(--font-mono);font-size:14px;color:var(--ink-3);transform:{{ jb.chev }};transition:transform 220ms cubic-bezier(.16,1,.3,1)">›</span>
+                  </button>
+                  <sc-if value="{{ jb.open }}" hint-placeholder-val="{{ false }}">
+                    <div style="padding:0 24px 22px 224px;display:flex;flex-direction:column;gap:14px">
+                      <div style="height:1px;background:var(--line);margin-left:-200px"></div>
+                      <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-3)">{{ jb.location }}</span>
+                      <div style="display:flex;flex-direction:column;gap:9px">
+                        <sc-for list="{{ jb.points }}" as="pt" hint-placeholder-count="3">
+                          <div style="display:flex;gap:11px;font-size:15px;line-height:1.55;color:var(--ink-2)"><span style="font-family:var(--font-mono);color:var(--accent-text);flex:none">→</span><span>{{ pt }}</span></div>
+                        </sc-for>
+                      </div>
+                      <div style="display:flex;flex-wrap:wrap;gap:6px">
+                        <sc-for list="{{ jb.stack }}" as="sk" hint-placeholder-count="4">
+                          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-2);border:1px solid var(--line-2);border-radius:6px;padding:4px 9px">{{ sk }}</span>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <!-- 04 PROJECTS -->
+          <section id="projects" style="display:flex;flex-direction:column;gap:30px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 04 · PROJECTS</span><span style="flex:1;height:1px;background:var(--line-2)"></span><span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">G</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">P</span></span></div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <h2 style="margin:0;font-size:38px;letter-spacing:-0.03em;font-weight:600">A few things I’ve shipped.</h2>
+              <a href="#" style="font-family:var(--font-mono);font-size:13px;color:var(--accent-text);text-decoration:none;white-space:nowrap">view all 26 →</a>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+              <sc-for list="{{ projects }}" as="pj" hint-placeholder-count="6">
+                <div style="display:flex;flex-direction:column;gap:12px;padding:22px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);min-height:250px">
+                  <div style="display:flex;justify-content:space-between;align-items:center">
+                    <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:var(--ink-2);border:1px solid var(--line-2);border-radius:5px;padding:3px 7px">{{ pj.type }}</span>
+                    <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-3)">{{ pj.year }}</span>
+                  </div>
+                  <span style="font-size:20px;font-weight:600;letter-spacing:-0.02em">{{ pj.title }}</span>
+                  <span style="font-size:14.5px;line-height:1.55;color:var(--ink-2);flex:1;text-wrap:pretty">{{ pj.excerpt }}</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px">
+                    <sc-for list="{{ pj.tech }}" as="tc" hint-placeholder-count="3">
+                      <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);background:var(--surface-2);border-radius:5px;padding:3px 8px">{{ tc }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;gap:16px;padding-top:12px;border-top:1px solid var(--line);font-family:var(--font-mono);font-size:12px">
+                    <a href="#" style="color:var(--accent-text);text-decoration:none">live ↗</a>
+                    <sc-if value="{{ pj.code }}" hint-placeholder-val="{{ true }}"><a href="#" style="color:var(--ink-2);text-decoration:none">code ↗</a></sc-if>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <!-- 05 PLAYGROUND teaser -->
+          <section id="playground" style="display:flex;flex-direction:column;gap:30px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 05 · PLAYGROUND</span><span style="flex:1;height:1px;background:var(--line-2)"></span><span style="font-family:var(--font-mono);font-size:10.5px;color:var(--accent-text);white-space:nowrap">NEW</span></div>
+            <div style="display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border-radius:24px;background:var(--surface);border:1px solid var(--line);overflow:hidden">
+              <div style="padding:48px 44px;display:flex;flex-direction:column;justify-content:center;gap:20px">
+                <h2 style="margin:0;font-size:38px;line-height:1.08;letter-spacing:-0.035em;font-weight:600;text-wrap:balance">Push 10,000 requests a second through a system and see what breaks.</h2>
+                <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-2);text-wrap:pretty">Load balancers, servers, caches and databases you can scale, break and fix. No system-design knowledge needed.</p>
+                <button onClick="{{ openPlay }}" style="align-self:flex-start;display:flex;align-items:center;gap:16px;height:52px;padding:0 12px 0 22px;border-radius:var(--r-md);border:none;background:var(--ink);color:var(--bg);font-size:16px;font-weight:500;cursor:pointer;margin-top:6px">
+                  <span style="white-space:nowrap">Open the playground</span>
+                  <span style="display:flex;gap:3px">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">{{ mod }}</span>
+                    <span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:5px;background:var(--accent);color:var(--accent-ink);font-family:var(--font-mono);font-size:12px;line-height:1">↵</span>
+                  </span>
+                </button>
+              </div>
+              <div style="position:relative;height:460px;background:var(--surface-sunk);border-left:1px solid var(--line)">
+                <dc-import name="Iso Scene" state="healthy" animate="{{ true }}" labels="{{ false }}" theme="{{ theme }}" unit="{{ 40 }}" pad="{{ 10 }}" style="position:absolute;inset:24px" hint-size="100%,412px"></dc-import>
+                <span style="position:absolute;left:20px;bottom:18px;display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--ink-3)"><span style="width:7px;height:7px;border-radius:50%;background:var(--ok)"></span>live preview · 4,000 req/s · all healthy</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- 06 WRITING -->
+          <section id="writing" style="display:flex;flex-direction:column;gap:30px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 06 · WRITING</span><span style="flex:1;height:1px;background:var(--line-2)"></span><span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">G</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">W</span></span></div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <h2 style="margin:0;font-size:38px;letter-spacing:-0.03em;font-weight:600">Notes &amp; case studies.</h2>
+              <a href="#" style="font-family:var(--font-mono);font-size:13px;color:var(--accent-text);text-decoration:none;white-space:nowrap">all posts →</a>
+            </div>
+            <a href="#" style="display:grid;grid-template-columns:180px minmax(0,1fr) auto;gap:32px;align-items:start;padding:28px 30px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);text-decoration:none;color:var(--ink)">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-family:var(--font-mono);font-size:12px;color:var(--ink-3)">Feb 2026</span>
+                <span style="align-self:flex-start;font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:var(--accent-text);border:1px solid var(--line-2);border-radius:5px;padding:3px 7px">CASE STUDY</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:24px;font-weight:600;letter-spacing:-0.02em">AI Book Reader: Deep Case Study</span>
+                <span style="font-size:15.5px;line-height:1.6;color:var(--ink-2);text-wrap:pretty">A privacy-first web app that turns personal documents and web articles into audiobooks using multiple AI TTS providers, built entirely client-side, with offline reading, audio caching and an immersive reader.</span>
+                <div style="display:flex;gap:6px;margin-top:4px">
+                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);background:var(--surface-2);border-radius:5px;padding:3px 8px">AI</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);background:var(--surface-2);border-radius:5px;padding:3px 8px">TTS</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);background:var(--surface-2);border-radius:5px;padding:3px 8px">System Design</span>
+                </div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:18px;color:var(--ink-3)">→</span>
+            </a>
+          </section>
+
+          <!-- 07 NOW -->
+          <section id="now" style="display:flex;flex-direction:column;gap:30px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="width:8px;height:8px;border-radius:50%;background:var(--ok);animation:grsPulse 2.4s ease-in-out infinite"></span><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 07 · NOW</span><span style="flex:1;height:1px;background:var(--line-2)"></span><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-3);white-space:nowrap">updated Feb 2026</span></div>
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px">
+              <sc-for list="{{ now }}" as="nw" hint-placeholder-count="4">
+                <div style="padding:22px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:14px">
+                  <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--accent-text)">{{ nw.t }}</span>
+                  <span style="font-size:15px;line-height:1.6;color:var(--ink-2);flex:1;text-wrap:pretty">{{ nw.d }}</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:5px">
+                    <sc-for list="{{ nw.tags }}" as="tg" hint-placeholder-count="2">
+                      <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--ink-2);border:1px solid var(--line-2);border-radius:5px;padding:3px 8px">{{ tg }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <!-- 08 CONTACT -->
+          <section id="contact" style="display:flex;flex-direction:column;gap:30px">
+            <div style="display:flex;align-items:center;gap:14px"><span style="font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;color:var(--ink-3);white-space:nowrap">// 08 · CONTACT</span><span style="flex:1;height:1px;background:var(--line-2)"></span><span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">G</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:10px">C</span></span></div>
+            <div style="padding:64px 56px;border-radius:24px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:26px;text-align:center">
+              <h2 style="margin:0;font-size:56px;letter-spacing:-0.04em;font-weight:600;line-height:1.02;white-space:nowrap">Let’s build reliable systems.</h2>
+              <div style="display:flex;align-items:center;gap:12px">
+                <a href="mailto:gautamsingh1997@gmail.com" style="font-family:var(--font-mono);font-size:20px;color:var(--accent-text);text-decoration:none">gautamsingh1997@gmail.com</a>
+                <button onClick="{{ copyEmail }}" style="display:flex;align-items:center;gap:7px;height:36px;padding:0 13px;border-radius:8px;border:1px solid var(--line-2);background:var(--surface-2);color:{{ copyColor }};font-family:var(--font-mono);font-size:12px;cursor:pointer">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                  {{ copyLabel }}
+                </button>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:6px">
+                <sc-for list="{{ socials }}" as="sc" hint-placeholder-count="5">
+                  <a href="{{ sc.url }}" target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:7px;height:44px;padding:0 18px;border-radius:10px;border:1px solid var(--line-2);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500">{{ sc.name }} <span style="font-family:var(--font-mono);font-size:12px;color:var(--ink-3)">↗</span></a>
+                </sc-for>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- footer -->
+        <footer style="margin-top:120px;border-top:1px solid var(--line-2);padding:34px 130px 36px;display:flex;justify-content:space-between;align-items:flex-start;gap:32px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:14px;font-weight:500">© 2026 <span style="font-family:var(--font-display);font-weight:400">Gautam Rajeev Singh</span></span>
+            <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3);line-height:1.6">Built with Next.js &amp; TypeScript.<br>No tracking.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3)">CONNECT</span>
+            <div style="display:flex;gap:6px">
+              <sc-for list="{{ socials }}" as="sc" hint-placeholder-count="5">
+                <a href="{{ sc.url }}" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-mono);font-size:12px;color:var(--ink-2);text-decoration:none;border:1px solid var(--line-2);border-radius:7px;padding:5px 10px">{{ sc.name }} ↗</a>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+            <button onClick="{{ openSheetBtn }}" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 6px 0 12px;border-radius:8px;border:1px solid var(--line-2);background:none;color:var(--ink-2);font-family:var(--font-mono);font-size:12px;cursor:pointer">shortcuts <span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-size:10px">?</span></button>
+            <span style="display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;color:var(--ink-3)"><span style="width:6px;height:6px;border-radius:50%;background:var(--ok)"></span>deployed · v3</span>
+          </div>
+        </footer>
+
+        <!-- command palette -->
+        <sc-if value="{{ palOpen }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ closePal }}" style="position:absolute;inset:0;z-index:100;background:var(--scrim);opacity:{{ scrimOp }};transition:opacity 220ms cubic-bezier(.16,1,.3,1)"></div>
+          <div style="position:absolute;left:400px;top:128px;width:640px;z-index:101;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-xl);box-shadow:var(--shadow-overlay);overflow:hidden;transform:{{ palTransform }};opacity:{{ palOpacity }};transition:{{ palTransition }}">
+            <div style="display:flex;align-items:center;gap:12px;padding:16px 18px 16px 20px;border-bottom:1px solid var(--line)">
+              <span style="font-family:var(--font-mono);font-size:14px;color:var(--accent-text)">→</span>
+              <input ref="{{ inputRef }}" value="{{ q }}" onChange="{{ onQ }}" onKeyDown="{{ onPalKey }}" placeholder="Where to? Try a project, or a tech like Go" style="flex:1;min-width:0;border:none;background:transparent;outline:none;color:var(--ink);font-family:var(--font-sans);font-size:17px;box-shadow:none">
+              <span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">esc</span>
+            </div>
+            <div style="max-height:440px;overflow:auto;padding:6px 8px 10px">
+              <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+                <div style="padding:12px 12px 6px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3)">{{ g.title }}</div>
+                <sc-for list="{{ g.rows }}" as="row" hint-placeholder-count="3">
+                  <button onClick="{{ row.run }}" onMouseEnter="{{ row.hover }}" style="width:100%;display:flex;align-items:center;gap:14px;padding:10px 12px;border:none;border-radius:var(--r-md);background:{{ row.bg }};color:var(--ink);cursor:pointer;text-align:left">
+                    <span style="font-size:15px;font-weight:500;white-space:nowrap">{{ row.label }}</span>
+                    <span style="flex:1;min-width:0;font-size:13px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ row.meta }}</span>
+                    <span style="display:flex;align-items:center;gap:3px">
+                      <sc-for list="{{ row.keys }}" as="kc" hint-placeholder-count="0">
+                        <sc-if value="{{ kc.accent }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--accent);color:var(--accent-ink);box-shadow:inset 0 -2px 0 rgba(0,0,0,.16);font-family:var(--font-mono);font-size:11px;line-height:1">{{ kc.t }}</span></sc-if>
+                        <sc-if value="{{ kc.plain }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;line-height:1">{{ kc.t }}</span></sc-if>
+                        <sc-if value="{{ kc.then }}" hint-placeholder-val="{{ false }}"><span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-3);padding:0 3px">then</span></sc-if>
+                      </sc-for>
+                    </span>
+                  </button>
+                </sc-for>
+              </sc-for>
+              <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:44px 20px 40px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center">
+                  <span style="font-size:16px;font-weight:500">No matches for “{{ q }}”.</span>
+                  <span style="font-size:14px;color:var(--ink-3)">Try a project name, or a tech like Go or Flutter.</span>
+                </div>
+              </sc-if>
+            </div>
+            <div style="display:flex;align-items:center;gap:18px;padding:10px 18px;border-top:1px solid var(--line);background:var(--surface-2);font-family:var(--font-mono);font-size:10.5px;color:var(--ink-3)">
+              <span style="display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-size:10px">↑↓</span>move</span>
+              <span style="display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-size:10px">↵</span>open</span>
+              <span style="display:flex;align-items:center;gap:6px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-size:10px">esc</span>close</span>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- shortcuts sheet -->
+        <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;z-index:100;background:var(--scrim);opacity:{{ sheetOp }};transition:opacity 220ms cubic-bezier(.16,1,.3,1)"></div>
+          <div style="position:absolute;left:360px;top:{{ sheetTop }};width:720px;z-index:101;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-xl);box-shadow:var(--shadow-overlay);padding:26px 30px 24px;opacity:{{ sheetOp }};transform:{{ sheetTransform }};transition:opacity 220ms cubic-bezier(.16,1,.3,1),transform 340ms cubic-bezier(.16,1,.3,1)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3)">// SHORTCUTS</span>
+                <span style="font-size:22px;font-weight:600;letter-spacing:-0.02em">Keyboard shortcuts</span>
+              </div>
+              <button onClick="{{ closeSheet }}" style="display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:5px;border:none;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px;cursor:pointer">esc</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+              <div style="display:flex;flex-direction:column">
+                <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3);padding-bottom:8px">GENERAL</span>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line);font-size:15px"><span>Search</span><span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ mod }}</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">K</span></span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line);font-size:15px"><span>Open the playground</span><span style="display:flex;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ mod }}</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:5px;background:var(--accent);color:var(--accent-ink);box-shadow:inset 0 -2px 0 rgba(0,0,0,.16);font-family:var(--font-mono);font-size:12px">↵</span></span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line);font-size:15px"><span>This sheet</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">?</span></div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line);font-size:15px"><span>Close / exit playground</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:5px;background:var(--accent);color:var(--accent-ink);box-shadow:inset 0 -2px 0 rgba(0,0,0,.16);font-family:var(--font-mono);font-size:11px">esc</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column">
+                <span style="font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink-3);padding-bottom:8px">GO TO</span>
+                <sc-for list="{{ chordRows }}" as="cr" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-top:1px solid var(--line);font-size:15px"><span>{{ cr.label }}</span><span style="display:flex;align-items:center;gap:3px"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">G</span><span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-3);padding:0 4px">then</span><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 6px;border-radius:5px;background:var(--cap-ui-bg);color:var(--cap-ui-ink);box-shadow:var(--cap-ui-shadow);font-family:var(--font-mono);font-size:11px">{{ cr.key }}</span></span></div>
+                </sc-for>
+              </div>
+            </div>
+            <p style="margin:20px 0 0;font-size:13px;color:var(--ink-3)">Shortcuts pause while you’re typing in a field.</p>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <!-- playground states -->
+    <div style="display:flex;flex-direction:column;gap:18px;padding-top:24px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span style="font-family:'Martian Mono',monospace;font-size:12px;letter-spacing:.14em;color:#6A645B">// SYSTEM DESIGN PLAYGROUND · STATE FRAMES (follow 2a’s mode)</span>
+        <span style="font-size:15px;color:#4E4942;max-width:900px;line-height:1.5">Isometric scene is a reusable component (Iso Scene) with heat, particle and failure states. Engineering swaps in the real simulation; these frames lock the visual language.</span>
+      </div>
+      <dc-import name="Playground Frames" theme="{{ theme }}" hint-size="2980px,3900px"></dc-import>
+    </div>
+
+    <!-- mobile -->
+    <div style="display:flex;flex-direction:column;gap:18px;padding-top:24px">
+      <span style="font-family:'Martian Mono',monospace;font-size:12px;letter-spacing:.14em;color:#6A645B">// MOBILE · 390</span>
+      <dc-import name="Mobile Frames" theme="{{ theme }}" variant="{{ variant }}" muted="{{ muted }}" hint-size="1800px,900px"></dc-import>
+    </div>
+
+    <!-- component sheet + tokens -->
+    <div style="display:flex;flex-direction:column;gap:18px;padding-top:24px">
+      <span style="font-family:'Martian Mono',monospace;font-size:12px;letter-spacing:.14em;color:#6A645B">// KEYBOARD COMPONENT SHEET · TOKENS · MOTION</span>
+      <dc-import name="Keyboard Sheet" hint-size="2980px,1600px"></dc-import>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;os&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mac&quot;,&quot;windows&quot;,&quot;linux&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'mac'|'windows'|'linux'&quot;,&quot;section&quot;:&quot;Keyboard&quot;},&quot;reducedMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Keyboard&quot;},&quot;idleAutoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Keyboard&quot;}}">
+class Component extends DCLogic {
+  state = Object.assign({ theme: 'light', variant: 'thk', muted: true, hoverChip: null, kbMenu: false, nudge: false, pal2: null }, this.loadPrefs(), { ox: 0, oy: 0, q: '', sel: 0, sheet: null, toast: null, real: false, play: false, playUi: false, ask: false, askThread: [], askInput: '', askFallback: false, copied: false, open: { hashicorp: true } });
+  loadPrefs() { try { const v = localStorage.getItem('grs:kb:variant'), m = localStorage.getItem('grs:kb:muted'); const o = {}; if (['thk', 'tik', 'clk', 'pop', 'pew', '8bt'].includes(v)) o.variant = v; if (m === 'false') o.muted = false; return o; } catch (e) { return {}; } }
+  savePrefs(o) { try { if (o.variant) localStorage.setItem('grs:kb:variant', o.variant); if (o.muted != null) localStorage.setItem('grs:kb:muted', String(o.muted)); } catch (e) {} }
+  setVariant(v) { this.setState({ variant: v, kbMenu: false }); this.savePrefs({ variant: v }); }
+  setMuted(m) { this.setState({ muted: m, nudge: false }); this.savePrefs({ muted: m }); if (!m) setTimeout(() => { const k = this.kb(); k && k.previewSound && k.previewSound(); }, 30); }
+  setTheme(t) {
+    if (t === this.state.theme) return;
+    const el = this.thumb, from = t === 'dark' ? 0 : 32, to = 32 - from;
+    if (el && el.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) el.animate([{ transform: `translateX(${from}px) scaleX(1)` }, { transform: `translateX(${(from + to) / 2}px) scaleX(1.32)`, offset: .42 }, { transform: `translateX(${to}px) scaleX(1)` }], { duration: 460, easing: 'cubic-bezier(.34,1.56,.64,1)' });
+    this.setState({ theme: t });
+  }
+  nudgeMute() {
+    if (!this.state.muted || this.nudged) return; this.nudged = true;
+    setTimeout(() => { if (!this.state.muted) return; this.setState({ nudge: true }); const b = this.muteEl; b && b.animate && b.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(-12deg)' }, { transform: 'rotate(9deg)' }, { transform: 'rotate(-5deg)' }, { transform: 'rotate(0)' }], { duration: 560, easing: 'ease-in-out' }); }, 450);
+    setTimeout(() => this.setState({ nudge: false }), 4200);
+  }
+  componentDidMount() { this.onKb = e => this.handleKb(e.detail || {}); window.addEventListener('hero-kb', this.onKb); }
+  componentWillUnmount() { window.removeEventListener('hero-kb', this.onKb); }
+  kb() { return document.querySelector('[data-kb-ab="main"]'); }
+  osName() {
+    const o = this.props.os ?? 'auto'; if (o !== 'auto') return o;
+    const p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    return /mac|iphone|ipad/i.test(p) ? 'mac' : /win/i.test(p) ? 'windows' : 'linux';
+  }
+  toast(msg) { clearTimeout(this.tt); this.setState({ toast: msg }); this.tt = setTimeout(() => this.setState({ toast: null }), 1900); }
+  openPalette(ox, oy) {
+    this.setState({ pal2: 'from', ox, oy, q: '', sel: 0, sheet: null, palMenu: false, soundMenu: false });
+    requestAnimationFrame(() => requestAnimationFrame(() => { this.setState({ pal2: 'in' }); this.input && this.input.focus({ preventScroll: true }); }));
+  }
+  closePalette() { if (!this.state.pal2) return; this.input && this.input.blur(); this.setState({ pal2: 'out' }); setTimeout(() => this.state.pal2 === 'out' && this.setState({ pal2: null }), 200); }
+  openSheet(top) { this.setState({ sheet: 'from', sheetTop: top ?? 170 }); requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ sheet: 'in' }))); }
+  closeSheet() { if (!this.state.sheet) return; this.setState({ sheet: 'out' }); setTimeout(() => this.state.sheet === 'out' && this.setState({ sheet: null }), 220); }
+  handleKb(d) {
+    if (d.ab !== 'main') return;
+    const S = this.state, M = { about: '01 · ABOUT', experience: '03 · EXPERIENCE', projects: '04 · PROJECTS', writing: '06 · WRITING', contact: '08 · CONTACT' };
+    switch (d.type) {
+      case 'real': this.setState({ real: true }); this.nudgeMute(); break;
+      case 'palette': S.pal2 === 'in' ? this.closePalette() : this.openPalette(d.x, d.y); break;
+      case 'shortcuts': S.sheet === 'in' ? this.closeSheet() : this.openSheet(); break;
+      case 'escape': this.closePalette(); this.closeSheet(); this.setState({ ask: false, kbMenu: false }); break;
+      case 'nav': this.toast('Jumping to // ' + M[d.target]); break;
+      case 'playground-start': this.closePalette(); this.closeSheet(); this.setState({ play: true, playUi: false, ask: false }); break;
+      case 'playground': this.setState({ playUi: true }); break;
+      case 'playground-exit': this.setState({ playUi: false }); setTimeout(() => this.setState({ play: false }), 700); break;
+      case 'board': this.setState({ play: false, playUi: false }); break;
+    }
+  }
+  runAction(a) {
+    const M = { about: '01 · ABOUT', skills: '02 · SKILLS', experience: '03 · EXPERIENCE', projects: '04 · PROJECTS', writing: '06 · WRITING', now: '07 · NOW', contact: '08 · CONTACT' };
+    if (a.nav) { this.closePalette(); this.toast('Jumping to // ' + M[a.nav]); }
+    else if (a.project) { this.closePalette(); this.toast('Opening ' + a.project); }
+    else if (a.play) { this.closePalette(); setTimeout(() => { const k = this.kb(); k && k.enterPlayground(); }, 200); }
+    else if (a.email) { this.copyEmail(); this.closePalette(); this.toast('Email copied'); }
+    else if (a.theme) this.setTheme(this.state.theme === 'light' ? 'dark' : 'light');
+    else if (a.sheet) { this.closePalette(); setTimeout(() => this.openSheet(), 180); }
+    else if (a.ask) { this.closePalette(); this.setState({ ask: true }); }
+    else if (a.toast) { this.closePalette(); this.toast(a.toast); }
+  }
+  copyEmail() { navigator.clipboard && navigator.clipboard.writeText('gautamsingh1997@gmail.com').catch(() => {}); this.setState({ copied: true }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: false }), 1600); }
+  answers() {
+    return [
+      { id: 'work', q: 'What do you work on?', k: ['work', 'job', 'do you do', 'hashicorp', 'ibm', 'role', 'current'], a: 'I’m an Engineer 2 at HashiCorp (IBM), building and operating high-availability HVD clusters in Go, with Terraform and Kubernetes across AWS and Azure.', cta: 'View experience', act: { nav: 'experience' } },
+      { id: 'apps', q: 'Show me your apps', k: ['app', 'android', 'flutter', 'play store', 'mobile', 'built'], a: '12 shipped so far, mostly local-first Android apps in Flutter: Perch, Mull, HeadShorts, Dally, Kuber and A Tour of Go.', cta: 'View projects', act: { nav: 'projects' } },
+      { id: 'stack', q: 'What’s your tech stack?', k: ['stack', 'tech', 'language', 'skills', 'go', 'python', 'kubernetes', 'terraform'], a: 'Backend: Go, Python, Django, Flask. Cloud: Kubernetes, Terraform, AWS, GCP, Azure, Docker. Frontend: Next.js, React, TypeScript. Data: SQL, Redis, MongoDB, Firestore.', cta: 'See skills', act: { nav: 'skills' } },
+      { id: 'roles', q: 'Are you open to roles?', k: ['open', 'hire', 'hiring', 'role', 'opportunit', 'available', 'job offer'], a: 'Best to ask me directly. Email gautamsingh1997@gmail.com and I’ll reply.', cta: 'Copy email', act: { email: true } },
+      { id: 'contact', q: 'How do I contact you?', k: ['contact', 'email', 'reach', 'linkedin', 'github', 'talk'], a: 'Email gautamsingh1997@gmail.com, or find me on GitHub and LinkedIn.', cta: 'Copy email', act: { email: true } },
+    ];
+  }
+  ask(item, qText) {
+    this.setState(s => ({ askThread: [...s.askThread, { q: qText || item.q, a: item.a, cta: item.cta, act: item.act }].slice(-3), askFallback: false, askInput: '' }));
+  }
+  askFree() {
+    const q = this.state.askInput.trim(); if (!q) return; const ql = q.toLowerCase();
+    const hit = this.answers().find(a => a.k.some(k => ql.includes(k)));
+    if (hit) this.ask(hit, q);
+    else this.setState(s => ({ askThread: [...s.askThread, { q, a: 'I don’t know that one yet.', cta: null }].slice(-3), askFallback: true, askInput: '' }));
+  }
+  data(mod) {
+    const K = (t, accent) => ({ t, accent: !!accent, plain: !accent, then: false });
+    const TH = { t: '', accent: false, plain: false, then: true };
+    return {
+      goto: [['About', '// 01', [K('G'), TH, K('A')], { nav: 'about' }], ['Skills', '// 02', [], { nav: 'skills' }], ['Experience', '// 03', [K('G'), TH, K('E')], { nav: 'experience' }], ['Projects', '// 04', [K('G'), TH, K('P')], { nav: 'projects' }], ['Playground', '// 05', [], { play: true }], ['Writing', '// 06', [K('G'), TH, K('W')], { nav: 'writing' }], ['Now', '// 07', [], { nav: 'now' }], ['Contact', '// 08', [K('G'), TH, K('C')], { nav: 'contact' }]],
+      projects: [['Perch', 'Flutter · Riverpod · Drift · Android'], ['Mull', 'Flutter · SQLite · Python · Android'], ['HeadShorts', 'Flutter · RSS · Android'], ['Dally', 'Flutter · Dart · Android'], ['AtmaBal', 'Next.js · TypeScript · Python · SQLite'], ['PyRoutine', 'Python · Go · PyPI · Concurrency'], ['A Tour of Go', 'Flutter · Go Playground'], ['Kuber: Money Manager', 'Flutter · Isar · Android'], ['PostPurush', 'Next.js · TypeScript · IndexedDB'], ['CodeBench', 'Go · Docker · CLI'], ['AI Reader', 'Next.js · TypeScript · Web Speech'], ['Terraform GCP Modules', 'Terraform · GCP']].map(([l, m]) => [l, m, [], { project: l }]),
+      actions: [['Open the playground', 'Push traffic through a system', [K(mod), K('↵', true)], { play: true }], ['Download resume', 'GRS_resume.docx', [], { toast: 'Resume download started' }], ['Copy email', 'gautamsingh1997@gmail.com', [], { email: true }], ['Toggle theme', 'Light / dark', [], { theme: true }], ['Ask about me', 'Quick answers about my work', [], { ask: true }], ['Keyboard shortcuts', 'Everything you can press', [K('?')], { sheet: true }]],
+    };
+  }
+  renderVals() {
+    const S = this.state, os = this.osName(), mod = os === 'mac' ? '⌘' : 'Ctrl';
+    const { goto, projects, actions } = this.data(mod);
+    const q = S.q.trim().toLowerCase();
+    const match = r => !q || r[0].toLowerCase().includes(q) || r[1].toLowerCase().includes(q);
+    const sets = [['GO TO', goto.filter(match)], ['PROJECTS', q ? projects.filter(match) : projects.slice(0, 4)], ['ACTIONS', actions.filter(match)]].filter(g => g[1].length);
+    let idx = 0; const flat = [];
+    const groups = sets.map(([title, rows]) => ({ title, rows: rows.map(r => { const i = idx++; flat.push(r[3]); return { label: r[0], meta: r[1], keys: r[2], bg: i === S.sel ? 'var(--surface-2)' : 'transparent', run: () => this.runAction(r[3]), hover: () => this.state.sel !== i && this.setState({ sel: i }) }; }) }));
+    const palIn = S.pal2 === 'in';
+    const KBS = [
+      { id: 'thk', name: 'Mechanical', sub: 'Deep, tactile switch (default)' },
+      { id: 'tik', name: 'Laptop', sub: 'Soft, low-travel click' },
+      { id: 'clk', name: 'Typewriter', sub: 'Clack, with a bell on Enter' },
+      { id: 'pop', name: 'Bubble', sub: 'Soft pops' },
+      { id: 'pew', name: 'Bullet', sub: 'Pew. Pew pew.' },
+      { id: '8bt', name: 'Arcade', sub: 'Chiptune blips' },
+    ];
+    const kc = KBS.find(k => k.id === S.variant) || KBS[0];
+    const dark = S.theme === 'dark', soundOn = !S.muted;
+    const kbChips = KBS.map(k => {
+      const on = k.id === S.variant, hv = S.hoverChip === k.id, show = on || hv;
+      return { key: k.id, name: k.name, sub: k.sub, aria: k.name + ' keyboard', on: String(on), gap: show ? '8px' : '0px', nameW: show ? '110px' : '0px', nameOp: show ? 1 : 0,
+        bg: on ? 'var(--surface-2)' : 'var(--cap-ui-bg)', fg: on ? 'var(--ink)' : 'var(--cap-ui-ink)', sh: on ? 'var(--cap-ui-pressed)' : 'var(--cap-ui-shadow),0 2px 0 var(--line-2)', tf: on ? 'translateY(1px)' : hv ? 'translateY(-1px)' : 'none',
+        pick: () => this.setVariant(k.id), enter: () => this.state.hoverChip !== k.id && this.setState({ hoverChip: k.id }), leave: () => this.state.hoverChip === k.id && this.setState({ hoverChip: null }) };
+    });
+    const jobs = [
+      { id: 'hashicorp', title: 'Engineer 2', company: 'HashiCorp · An IBM Company', range: 'Apr 2025 to Present', location: 'Bangalore, India', current: true, stack: ['Go', 'Kubernetes', 'Terraform', 'AWS', 'Azure', 'Cadence', 'Datadog'], points: ['Engineer new modules and implement core bug fixes for HVD clusters using Go, including designing new Cadence workflows and modifying Protobuf files.', 'Manage on-call escalations to troubleshoot and debug HVD clusters deployed across AWS and Azure environments.', 'Develop Go/Bash scripts utilizing AWS IAM roles to automate the cleanup of excessive S3 storage and stale IAM resources, optimizing cloud costs.', 'Automate operations and deploy proof-of-concept projects using Terraform and Kubernetes to reduce manual tasks.', 'Monitor infrastructure health and incidents using Datadog; resolve issues promptly.'] },
+      { id: 'hsbc', title: 'Manager, Decision Sciences', company: 'HSBC', range: 'Sep 2024 to Apr 2025', location: 'Bangalore, India', stack: ['Python', 'Risk Modeling'], points: ['Independently validating and challenging financial models developed for Risk Management in the Retail domain.', 'Communicating complex information about models and risks to other departments in the company.', 'Reviewing Python code for models, providing feedback and approvals for changes (Pull Requests).'] },
+      { id: 'fractal', title: 'Engineer', company: 'Fractal', range: 'Jan 2023 to Sep 2024', location: 'Bangalore, India', stack: ['Flask', 'Django', 'React', 'Redux', 'Azure AKS', 'PySpark'], points: ['Spearheaded the development and maintenance of backend APIs using Flask and Django for various projects.', 'Designed and maintained responsive front-end components with ReactJS and Redux Toolkit.', 'Orchestrated microservices using Azure Kubernetes Service (AKS) for efficient deployment and horizontal scaling.', 'Utilized PySpark in Azure Databricks for stream processing, fetching high-volume data from SAP databases to optimize data transformations.'] },
+      { id: 'springml', title: 'Data Engineer', company: 'SpringML', range: 'Dec 2021 to Dec 2022', location: 'Hyderabad, India', stack: ['GCP', 'Flask', 'Terraform', 'GKE', 'Pub/Sub'], points: ['Developed REST APIs on Flask, deploying them seamlessly on GCP, establishing CI/CD pipelines utilizing Google Cloud Build and GitHub Actions.', 'Leveraged Terraform for Infrastructure as Code to efficiently manage cloud resources.', 'Implemented event-driven architecture using Google Cloud Pub/Sub for message delivery, integrating with Twilio Voice API to create a scalable, real-time call queue system.'] },
+      { id: 'codenicely', title: 'Software Development Engineer', company: 'CodeNicely', range: 'Oct 2019 to Dec 2021', location: 'Raipur, India', stack: ['Django', 'DRF', 'AWS EC2', 'S3', 'Sentry'], points: ['Pioneered the development of tailored backend systems and REST APIs using Django Rest Framework (DRF).', 'Led a team of four professionals, guiding the design and development of projects across diverse platforms.', 'Engineered Python scripts integrated with custom AWS IAM service roles to achieve automated EC2 scaling.'] },
+      { id: 'byjus', title: 'Business Development Associate', company: 'Byju’s', range: 'Jan 2019 to Sep 2019', location: 'Raipur, India', stack: ['Sales'], points: ['Consistently met warm-calling targets with 2.5 to 3 hours call time per day.', 'Achieved weekly target revenue of ₹1.5L to 2L before pivoting into engineering.'] },
+    ].map(j => { const open = !!S.open[j.id]; return Object.assign(j, { current: !!j.current, open, chev: open ? 'rotate(90deg)' : 'none', border: open ? 'var(--line-2)' : 'var(--line)', dot: j.current ? 'var(--ok)' : open ? 'var(--accent)' : 'var(--line-2)', toggle: () => this.setState(s => ({ open: Object.assign({}, s.open, { [j.id]: !s.open[j.id] }) })) }); });
+    const askChips = this.answers().filter(a => !S.askThread.some(t => t.q === a.q)).map(a => ({ q: a.q, run: () => this.ask(a) }));
+    return {
+      theme: S.theme, os, mod, variant: S.variant, muted: S.muted, mutedStr: S.muted ? 'true' : 'false', variantName: kc.name,
+      kbMenu: S.kbMenu, kbMenuStr: String(S.kbMenu), kbChev: S.kbMenu ? 'rotate(0deg)' : 'rotate(180deg)',
+      toggleKbMenu: () => this.setState(s => ({ kbMenu: !s.kbMenu })), closeKbMenu: () => this.setState({ kbMenu: false }),
+      kbOpts: KBS.map(k => { const on = k.id === S.variant; return { key: k.id, name: k.name, sub: k.sub, on: String(on), check: on ? '✓' : '', bg: on ? 'var(--surface-2)' : 'transparent', capBg: on ? 'var(--surface-2)' : 'var(--cap-ui-bg)', capFg: on ? 'var(--ink)' : 'var(--cap-ui-ink)', capSh: on ? 'var(--cap-ui-pressed)' : 'var(--cap-ui-shadow)', pick: () => this.setVariant(k.id) }; }),
+      kbChips, selPE: S.play ? 'none' : 'auto', nudge: S.nudge,
+      muteRef: el => { this.muteEl = el; }, toggleMute: () => this.setMuted(!S.muted), soundOnStr: String(soundOn), muteLabel: soundOn ? 'Mute keyboard sound' : 'Turn keyboard sound on',
+      muteBg: soundOn ? 'var(--surface-2)' : 'var(--cap-ui-bg)', muteFg: soundOn ? 'var(--accent-text)' : 'var(--ink-2)', muteTf: soundOn ? 'translateY(1px)' : 'none',
+      muteSh: soundOn ? 'var(--cap-ui-pressed)' : S.nudge ? 'var(--cap-ui-shadow),0 2px 0 var(--line-2),0 0 0 4px var(--accent-soft)' : 'var(--cap-ui-shadow),0 2px 0 var(--line-2)',
+      reducedStr: this.props.reducedMotion ? 'true' : 'auto',
+      autoplayStr: (this.props.idleAutoplay ?? true) ? 'true' : 'false',
+      demos: [
+        { label: `Hold ${mod} · shortcut reveal`, run: () => this.kb() && this.kb().simulate('mod') },
+        { label: 'G then … · chord', run: () => this.kb() && this.kb().simulate('chord') },
+        { label: `${mod}K · palette from K`, run: () => this.kb() && this.kb().simulate('palette') },
+        { label: `${mod}↵ · morph to playground`, run: () => this.kb() && this.kb().simulate('play') },
+        { label: 'Type “hello world”', run: () => this.kb() && this.kb().simulate('type') },
+        { label: 'Next keyboard', run: () => { const ids = KBS.map(k => k.id); this.setVariant(ids[(ids.indexOf(S.variant) + 1) % ids.length]); } },
+        { label: 'Arcade · ↑↑↓↓←→←→BA', run: () => { if (S.variant !== '8bt') { this.setVariant('8bt'); setTimeout(() => this.kb() && this.kb().simulate('konami'), 900); } else this.kb() && this.kb().simulate('konami'); } },
+      ],
+      chromeOp: S.play ? 0 : 1, leftShift: S.play ? '-40px' : '0px', play: S.play, playOp: S.playUi ? 1 : 0,
+      real: S.real, notReal: !S.real, toast: S.toast,
+      soundWave1: soundOn ? 'M15.54 8.46a5 5 0 0 1 0 7.07' : 'M22 9l-6 6', soundWave2: soundOn ? 'M19.07 4.93a10 10 0 0 1 0 14.14' : 'M16 9l6 6',
+      thumbRef: el => { this.thumb = el; }, thumbX: dark ? '32px' : '0px',
+      lightChecked: String(!dark), darkChecked: String(dark),
+      setLight: () => this.setTheme('light'), setDark: () => this.setTheme('dark'),
+      sunC: dark ? 'var(--ink-3)' : 'var(--ink)', moonC: dark ? 'var(--ink)' : 'var(--ink-3)',
+      sunT: dark ? 'rotate(-70deg) scale(.8)' : 'rotate(0deg) scale(1)', moonT: dark ? 'rotate(0deg) scale(1)' : 'rotate(40deg) scale(.8)',
+      openSearch: () => this.openPalette(860, 38),
+      openPlay: () => { const k = this.kb(); if (k) { k.enterPlayground(); } },
+      exitPlay: () => { const k = this.kb(); k && k.exitPlayground(); },
+      kpis: [{ n: '7.5+', l: 'years' }, { n: '12', l: 'apps shipped' }, { n: '5', l: 'PyPI packages' }, { n: '26', l: 'projects' }].map((k, i, a) => Object.assign(k, { div: i < a.length - 1 ? '1px solid var(--line-2)' : 'none' })),
+      askOpen: S.ask, askTop: S.askThread.length ? '300px' : '470px',
+      toggleAsk: () => this.setState(s => ({ ask: !s.ask })),
+      askBtnLabel: S.ask ? 'Close' : 'Ask about me', askBtnBg: S.ask ? 'var(--surface)' : 'var(--ink)', askBtnFg: S.ask ? 'var(--ink)' : 'var(--bg)',
+      askThread: S.askThread.map(t => ({ q: t.q, a: t.a, cta: t.cta, run: () => this.runAction(t.act) })),
+      askChips, askFallback: S.askFallback, askInput: S.askInput,
+      onAskInput: e => this.setState({ askInput: e.target.value }),
+      onAskKey: e => { if (e.key === 'Enter') { e.preventDefault(); this.askFree(); } else if (e.key === 'Escape') this.setState({ ask: false }); },
+      askSubmit: () => this.askFree(),
+      aboutStats: [
+        { label: 'EXPERIENCE', value: '7.5', unit: '+ yrs', sub: '', size: '34px' }, { label: 'ROLES', value: '6', unit: '', sub: '', size: '34px' },
+        { label: 'PROJECTS', value: '26', unit: '', sub: '', size: '34px' }, { label: 'PyPI PACKAGES', value: '5', unit: '', sub: '', size: '34px' },
+        { label: 'APPS SHIPPED', value: '12', unit: '', sub: '', size: '34px' }, { label: 'NOW', value: 'HVD clusters', unit: '', sub: 'Go · K8s · Terraform', size: '19px' },
+      ],
+      skills: [
+        { label: 'BACKEND', items: ['Go', 'Python', 'Django', 'Flask', 'DRF'] },
+        { label: 'DEVOPS / CLOUD', items: ['Kubernetes', 'Terraform', 'AWS', 'GCP', 'Azure', 'Docker'] },
+        { label: 'FRONTEND', items: ['Next.js', 'React', 'Redux Toolkit', 'TypeScript'] },
+        { label: 'DATABASES', items: ['SQL', 'Redis', 'MongoDB', 'Firestore'] },
+      ],
+      jobs,
+      expandAll: () => this.setState({ open: Object.fromEntries(jobs.map(j => [j.id, true])) }),
+      collapseAll: () => this.setState({ open: {} }),
+      projects: [
+        { type: 'PERSONAL', year: '2026', title: 'Mull', excerpt: 'An offline English (UK) dictionary and vocabulary app for Android: look words up or swipe through curated collections, with zero network calls.', tech: ['Flutter', 'Dart', 'Riverpod', 'Drift', 'SQLite'], code: true },
+        { type: 'PERSONAL', year: '2026', title: 'HeadShorts', excerpt: 'A calm, finite RSS reader for Android: chronological briefings that end in “You are caught up”, no algorithm, no infinite scroll, no analytics.', tech: ['Flutter', 'Dart', 'Riverpod', 'RSS'], code: true },
+        { type: 'PERSONAL', year: '2026', title: 'Perch', excerpt: 'A fast, local-first Android link manager: save from the share sheet, organise in nested folders and tags, and treat every link as a markdown note.', tech: ['Flutter', 'Dart', 'Drift', 'SQLite'], code: true },
+        { type: 'PERSONAL', year: '2026', title: 'Dally', excerpt: 'A minimal, 100% offline games collection for Android built with Flutter, requiring zero permissions and collecting no telemetry.', tech: ['Flutter', 'Dart', 'Riverpod', 'Android'], code: true },
+        { type: 'PERSONAL', year: '2026', title: 'AtmaBal', excerpt: 'A privacy-first, editorial reference application empowering women in India with plain-language legal rights, safety data, and local support resources.', tech: ['Next.js', 'TypeScript', 'Python', 'SQLite'], code: true },
+        { type: 'OSS', year: '2026', title: 'PyRoutine', excerpt: 'Go-style concurrency primitives for Python, bringing routines, channels, select, WaitGroup and Once without C extensions.', tech: ['Python', 'Go', 'PyPI', 'Concurrency'], code: true },
+      ],
+      now: [
+        { t: 'WORK', d: 'Engineer 2 at HashiCorp (IBM), focused on high-availability infrastructure deployments scaling globally.', tags: ['Infrastructure', 'Kubernetes'] },
+        { t: 'BUILDING', d: 'Local-first AI side projects, edge computing, and modern full-stack architectures, for fun.', tags: ['Next.js', 'Golang'] },
+        { t: 'LEARNING', d: 'Local, high-performance RAG pipelines and memory paradigms for intelligent agents.', tags: ['RAG', 'Agents'] },
+        { t: 'READING', d: 'Re-reading “Designing Data-Intensive Applications” and “Staff Engineer”.', tags: ['Books'] },
+      ],
+      socials: [{ name: 'GitHub', url: 'https://github.com/singhgautam7' }, { name: 'LinkedIn', url: 'https://www.linkedin.com/in/singhgautam7' }, { name: 'Medium', url: 'https://medium.com/@singhgautam7' }, { name: 'Instagram', url: 'https://www.instagram.com/singhgautam7' }, { name: 'YouTube', url: 'https://www.youtube.com/watch?v=g0OA1Le593c' }],
+      copyEmail: () => this.copyEmail(), copyLabel: S.copied ? 'copied' : 'copy', copyColor: S.copied ? 'var(--ok)' : 'var(--ink-2)',
+      openSheetBtn: e => { const art = e.currentTarget.closest('[data-artboard]'); const top = art ? Math.max(170, art.scrollHeight - 700) : 170; this.openSheet(top); },
+      palOpen: !!S.pal2, scrimOp: palIn ? 1 : 0, palOpacity: palIn ? 1 : 0,
+      palTransform: S.pal2 === 'from' ? `translate(${(S.ox - 720).toFixed(0)}px, ${(S.oy - 360).toFixed(0)}px) scale(0.06)` : S.pal2 === 'out' ? 'translateY(6px) scale(0.98)' : 'none',
+      palTransition: S.pal2 === 'from' ? 'none' : S.pal2 === 'out' ? 'transform 180ms cubic-bezier(.65,0,.35,1), opacity 160ms linear' : 'transform 380ms cubic-bezier(.16,1,.3,1), opacity 160ms linear',
+      closePal: () => this.closePalette(), inputRef: el => { this.input = el; }, q: S.q,
+      onQ: e => this.setState({ q: e.target.value, sel: 0 }),
+      onPalKey: e => {
+        const k = e.key;
+        if (k === 'Escape' || ((e.metaKey || e.ctrlKey) && (k === 'k' || k === 'K'))) { e.preventDefault(); this.closePalette(); }
+        else if (k === 'ArrowDown') { e.preventDefault(); this.setState(s => ({ sel: Math.min(flat.length - 1, s.sel + 1) })); }
+        else if (k === 'ArrowUp') { e.preventDefault(); this.setState(s => ({ sel: Math.max(0, s.sel - 1) })); }
+        else if (k === 'Enter') { e.preventDefault(); const a = flat[this.state.sel]; a && this.runAction(a); }
+      },
+      groups, noResults: groups.length === 0,
+      sheetOpen: !!S.sheet, sheetOp: S.sheet === 'in' ? 1 : 0, sheetTop: (S.sheetTop ?? 170) + 'px',
+      sheetTransform: S.sheet === 'in' ? 'none' : 'translateY(10px) scale(0.98)', closeSheet: () => this.closeSheet(),
+      chordRows: [{ label: 'About', key: 'A' }, { label: 'Experience', key: 'E' }, { label: 'Projects', key: 'P' }, { label: 'Writing', key: 'W' }, { label: 'Contact', key: 'C' }],
+      scenarios: [
+        { tag: 'SCENARIO 01', title: 'Your app goes viral', goal: 'Handle 10k requests/sec. Keep it fast (under 200ms) and drop under 1%.' },
+        { tag: 'SCENARIO 02', title: 'Black Friday spike', goal: 'Survive a 5× burst for 60 seconds without dropping orders.' },
+        { tag: 'SCENARIO 03', title: 'The database goes down', goal: 'Fail over to a replica and recover in under 30 seconds.' },
+        { tag: 'FREE BUILD', title: 'Free build', goal: 'No goal. Add components and push traffic until something breaks.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
