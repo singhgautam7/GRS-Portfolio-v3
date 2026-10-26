@@ -26,7 +26,7 @@ export function ProjectsClient() {
           margin: '0 0 16px',
         }}
       >
-        Project <span style={{ color: 'var(--accent)' }}>Archive</span>
+        Project <span style={{ color: 'var(--accent-text)' }}>Archive</span>
       </h1>
       <p
         style={{

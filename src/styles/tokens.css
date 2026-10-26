@@ -1,0 +1,181 @@
+/* singhgautam.com v3 — design tokens
+   Two modes only: [data-theme="light"] (warm ceramic + signal orange) and [data-theme="dark"] (graphite + neon phosphor green).
+   Keyboard variants: [data-kb="thk|tik|clk|pop|pew|8bt"] on the keyboard element (or any container) re-skins the --kb-* tokens.
+   Live keys (Esc, Enter, bound shortcuts, reveal + chord highlights) always use --kb-cap-accent = --accent in every variant.
+
+   Copied verbatim from specs/design/.../tokens.css. Only change: the font stacks lead with the
+   next/font/local variables (set on <html> by src/styles/fonts.ts), same families as the design.
+   Values mirrored in src/lib/tokens.ts are checked against this file by src/lib/tokens.test.ts. */
+
+:root {
+  --font-sans: var(--ff-host-grotesk), 'Host Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--ff-martian-mono), 'Martian Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-display: var(--ff-young-serif), 'Young Serif', Georgia, serif;          /* wordmark only */
+  --font-type: var(--ff-special-elite), 'Special Elite', 'Courier New', monospace;  /* typewriter paper */
+  --font-pixel: var(--ff-press-start), 'Press Start 2P', ui-monospace, monospace; /* arcade marquee */
+
+  --fs-display: 68px; --fs-h1: 52px; --fs-h2: 36px; --fs-h3: 22px;
+  --fs-lead: 19px; --fs-body: 16px; --fs-small: 14px; --fs-label: 12px; --fs-micro: 11px;
+  --lh-tight: 1.02; --lh-snug: 1.2; --lh-body: 1.55;
+  --tr-display: -0.04em; --tr-heading: -0.025em; --tr-label: 0.08em; --tr-marker: 0.16em;
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 20px; --s-6: 24px;
+  --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-14: 56px; --s-16: 64px; --s-20: 80px; --s-24: 96px; --s-32: 128px;
+
+  --r-xs: 4px; --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px; --r-pill: 999px;
+
+  --dur-instant: 70ms; --dur-fast: 140ms; --dur-base: 220ms; --dur-slow: 380ms; --dur-xslow: 900ms;
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-press: cubic-bezier(.2, .9, .3, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --spring-press-k: 2400;   --spring-press-c: 98;
+  --spring-release-k: 900;  --spring-release-c: 40;
+  --spring-settle-k: 460;   --spring-settle-c: 22;
+  --spring-reveal-k: 320;   --spring-reveal-c: 26;
+  --stagger-key: 24ms; --stagger-row: 55ms; --ripple-step: 30ms; --ripple-decay: 500ms;
+  --trail-life: 1500ms; --chord-timeout: 1500ms; --idle-delay: 4000ms; --breath-period: 3200ms;
+  --swap-out: 240ms; --swap-in: 440ms; /* keyboard swap total ≤ 700ms */
+
+  --z-content: 1; --z-chrome: 3; --z-toast: 20; --z-overlay: 100;
+}
+
+/* ---------- LIGHT · warm ceramic + signal orange ---------- */
+:root, [data-theme="light"] {
+  --bg: #EFEBE4; --surface: #F8F6F2; --surface-2: #E6E1D8; --surface-sunk: #E2DDD3;
+  --line: rgba(48, 36, 20, .11); --line-2: rgba(48, 36, 20, .2);
+  --ink: #1B1916; --ink-2: #4E4942; --ink-3: #6C665D;
+  --accent: #FF5B1F; --accent-ink: #1B1916; --accent-text: #B83A0B; --accent-soft: rgba(255, 91, 31, .14);
+  --ok: #2F8F5B; --warn: #B7791F; --danger: #C2362B;
+  --scrim: rgba(40, 32, 22, .28);
+  --shadow-1: 0 1px 2px rgba(40, 30, 15, .06), 0 6px 16px -6px rgba(40, 30, 15, .16);
+  --shadow-2: 0 2px 4px rgba(40, 30, 15, .05), 0 18px 40px -16px rgba(40, 30, 15, .22);
+  --shadow-overlay: 0 1px 0 rgba(255,255,255,.6) inset, 0 40px 90px -30px rgba(40, 30, 15, .38), 0 12px 24px -12px rgba(40, 30, 15, .18);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --cap-ui-bg: #FBFAF7; --cap-ui-ink: #3B362F;
+  --cap-ui-shadow: inset 0 0 0 1px rgba(48,36,20,.16), inset 0 -2px 0 rgba(48,36,20,.14), 0 1px 1px rgba(48,36,20,.08);
+  --cap-ui-pressed: inset 0 2px 3px rgba(48,36,20,.2), inset 0 0 0 1px rgba(48,36,20,.18);
+
+  /* keyboard defaults = Mechanical (thk) */
+  --kb-case: #CFCBC3; --kb-plate: #8F8A82;
+  --kb-cap: #F2EFE8; --kb-cap-mod: #D6D0C5; --kb-cap-accent: var(--accent);
+  --kb-cap-2: #F2EFE8; --kb-cap-3: #F2EFE8; --kb-cap-4: #F2EFE8;
+  --kb-legend: #2A2622; --kb-legend-mod: #3E3932; --kb-legend-accent: var(--accent-ink);
+  --kb-metal: #B9B4AB; --kb-trim: #8F8A82; --kb-glass: #E8E4DC; --kb-paper: #FBF8F1;
+  --kb-glow-mode: normal; --kb-glow-strength: .55; --kb-emissive: .16; --kb-dim: .14;
+  --kb-shadow-opacity: .2; --kb-contact-opacity: .26; --kb-env: .9; --kb-metalness: .55; --kb-roughness: .42;
+}
+
+/* ---------- DARK · graphite + neon phosphor green ---------- */
+[data-theme="dark"] {
+  --bg: #0A0C0D; --surface: #121517; --surface-2: #1A1E21; --surface-sunk: #060708;
+  --line: rgba(200, 236, 214, .08); --line-2: rgba(200, 236, 214, .15);
+  --ink: #E6EEEA; --ink-2: #A3B0AA; --ink-3: #7C8983;
+  --accent: #3DFF8A; --accent-ink: #03140A; --accent-text: #5CFF9E; --accent-soft: rgba(61, 255, 138, .15);
+  --ok: #52D98C; --warn: #F2B84B; --danger: #FF6464;
+  --scrim: rgba(0, 0, 0, .55);
+  --shadow-1: 0 1px 2px rgba(0,0,0,.5), 0 8px 18px -8px rgba(0,0,0,.7);
+  --shadow-2: 0 2px 4px rgba(0,0,0,.4), 0 20px 44px -16px rgba(0,0,0,.8);
+  --shadow-overlay: 0 1px 0 rgba(255,255,255,.04) inset, 0 40px 100px -30px rgba(0,0,0,.9);
+  --focus-ring: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent);
+  --cap-ui-bg: #1C2124; --cap-ui-ink: #CFDAD4;
+  --cap-ui-shadow: inset 0 0 0 1px rgba(200,236,214,.09), inset 0 -2px 0 rgba(0,0,0,.5), 0 1px 1px rgba(0,0,0,.5);
+  --cap-ui-pressed: inset 0 2px 4px rgba(0,0,0,.6), inset 0 0 0 1px rgba(200,236,214,.12);
+
+  --kb-case: #262B2E; --kb-plate: #0C0F10;
+  --kb-cap: #1D2225; --kb-cap-mod: #161A1C; --kb-cap-accent: var(--accent);
+  --kb-cap-2: #1D2225; --kb-cap-3: #1D2225; --kb-cap-4: #1D2225;
+  --kb-legend: #D2DEDA; --kb-legend-mod: #93A29C; --kb-legend-accent: var(--accent-ink);
+  --kb-metal: #3A4044; --kb-trim: #2E3438; --kb-glass: #22282B; --kb-paper: #F3EFE6;
+  --kb-glow-mode: additive; --kb-glow-strength: .95; --kb-emissive: .3; --kb-dim: .45;
+  --kb-shadow-opacity: .6; --kb-contact-opacity: .75; --kb-env: .5; --kb-metalness: .65; --kb-roughness: .38;
+}
+
+/* ---------- Laptop (tik) · silver / space grey aluminium ---------- */
+[data-kb="tik"] {
+  --kb-case: #CDD0D4; --kb-plate: #A3A8AE; --kb-cap: #F6F7F8; --kb-cap-mod: #EBEDEF;
+  --kb-legend: #2B2E33; --kb-legend-mod: #4A4E55; --kb-metal: #DCDFE2; --kb-glass: #D4D7DB; --kb-trim: #9DA2A8;
+  --kb-metalness: .55; --kb-roughness: .5; --kb-env: 1; --kb-glow-strength: 0; --kb-emissive: .05;
+}
+[data-theme="dark"] [data-kb="tik"], [data-theme="dark"][data-kb="tik"] {
+  --kb-case: #55595E; --kb-plate: #141517; --kb-cap: #141517; --kb-cap-mod: #111214;
+  --kb-legend: #D6D9DD; --kb-legend-mod: #A4A8AE; --kb-metal: #5E6267; --kb-glass: #54585D; --kb-trim: #2A2D31;
+  --kb-metalness: .5; --kb-roughness: .58; --kb-env: .6; --kb-glow-strength: 0; --kb-emissive: .08;
+}
+
+/* ---------- Typewriter (clk) · cream enamel + nickel / black enamel + gold pinstripe ---------- */
+[data-kb="clk"] {
+  --kb-case: #EADFC6; --kb-plate: #2A2622; --kb-cap: #1E1C1A; --kb-cap-mod: #2B2825;
+  --kb-legend: #F3EDE0; --kb-legend-mod: #DCD4C3; --kb-metal: #C8CBCE; --kb-trim: #2B2826; --kb-glass: #F7F1E3; --kb-paper: #FBF8F0;
+  --kb-metalness: .1; --kb-roughness: .38; --kb-env: .9; --kb-glow-strength: .25; --kb-emissive: .1;
+}
+[data-theme="dark"] [data-kb="clk"], [data-theme="dark"][data-kb="clk"] {
+  --kb-case: #141316; --kb-plate: #0B0A0C; --kb-cap: #EFE7D6; --kb-cap-mod: #DCD2BE;
+  --kb-legend: #1E1B17; --kb-legend-mod: #3A342C; --kb-metal: #B9BCBF; --kb-trim: #C9A44C; --kb-glass: #1C1B1F; --kb-paper: #F1ECE0;
+  --kb-metalness: .15; --kb-roughness: .3; --kb-env: .7; --kb-glow-strength: .5; --kb-emissive: .2;
+}
+
+/* ---------- Bubble (pop) · cream + pastels / plum-navy + candy ---------- */
+[data-kb="pop"] {
+  --kb-case: #E6CFB3; --kb-plate: #D9BF9F;
+  --kb-cap: #FF9E78; --kb-cap-2: #7FD6AE; --kb-cap-3: #B7A0F2; --kb-cap-4: #F6CB57; --kb-cap-mod: #F7EEE2;
+  --kb-legend: #2E241F; --kb-legend-mod: #4A3D34; --kb-metal: #E6D8C4; --kb-trim: #E6D8C4;
+  --kb-metalness: 0; --kb-roughness: .55; --kb-env: .9; --kb-glow-strength: .45; --kb-emissive: .14;
+}
+[data-theme="dark"] [data-kb="pop"], [data-theme="dark"][data-kb="pop"] {
+  --kb-case: #261E3D; --kb-plate: #1B1530;
+  --kb-cap: #FF7FA8; --kb-cap-2: #5FD4FF; --kb-cap-3: #B98BFF; --kb-cap-4: #FFD35A; --kb-cap-mod: #382E58;
+  --kb-legend: #1A1430; --kb-legend-mod: #DCD3F2; --kb-metal: #1B1530; --kb-trim: #1B1530;
+  --kb-metalness: 0; --kb-roughness: .4; --kb-env: .6; --kb-glow-strength: .8; --kb-emissive: .26;
+}
+
+/* ---------- Bullet (pew) · desert tan + gunmetal / gunmetal + olive ---------- */
+[data-kb="pew"] {
+  --kb-case: #C6B28C; --kb-plate: #45484B; --kb-cap: #C9A35A; --kb-cap-mod: #5A5E62;
+  --kb-legend: #2A2418; --kb-legend-mod: #ECE6D8; --kb-metal: #55595D; --kb-trim: #6B6F73;
+  --kb-metalness: .35; --kb-roughness: .55; --kb-env: .9; --kb-glow-strength: .3; --kb-emissive: .12;
+}
+[data-theme="dark"] [data-kb="pew"], [data-theme="dark"][data-kb="pew"] {
+  --kb-case: #3A3E42; --kb-plate: #18191B; --kb-cap: #B08A45; --kb-cap-mod: #4B5236;
+  --kb-legend: #1E1A10; --kb-legend-mod: #DCE0CC; --kb-metal: #26292C; --kb-trim: #59603F;
+  --kb-metalness: .55; --kb-roughness: .5; --kb-env: .6; --kb-glow-strength: .5; --kb-emissive: .2;
+}
+
+/* ---------- Arcade (8bt) · white panel + primaries / black panel + glowing buttons ---------- */
+[data-kb="8bt"] {
+  --kb-case: #F1F1EC; --kb-plate: #E3E3DC;
+  --kb-cap: #E8412F; --kb-cap-2: #2F6BE8; --kb-cap-3: #F2C230; --kb-cap-4: #2FB45A; --kb-cap-mod: #2A2A2C;
+  --kb-legend: #FFFFFF; --kb-legend-mod: #F1F1EC; --kb-metal: #1F1F22; --kb-trim: #2F6BE8; --kb-glass: #0B0B0D;
+  --kb-metalness: .05; --kb-roughness: .4; --kb-env: .9; --kb-glow-strength: .6; --kb-emissive: .3;
+}
+[data-theme="dark"] [data-kb="8bt"], [data-theme="dark"][data-kb="8bt"] {
+  --kb-case: #121214; --kb-plate: #08080A;
+  --kb-cap: #FF4D6D; --kb-cap-2: #4DA3FF; --kb-cap-3: #FFD84D; --kb-cap-4: #B46BFF; --kb-cap-mod: #2C2C33;
+  --kb-legend: #FFFFFF; --kb-legend-mod: #E6E6EE; --kb-metal: #2A2A30; --kb-trim: #B46BFF; --kb-glass: #050506;
+  --kb-metalness: .05; --kb-roughness: .3; --kb-env: .6; --kb-glow-strength: 1; --kb-emissive: .55;
+}
+
+/* ---------- Added in code (not in the design's tokens.css) ----------
+   Values that recur inline across the design frames, named so components never hardcode them. */
+:root {
+  --cap-accent-shadow: inset 0 -2px 0 rgba(0, 0, 0, .16);         /* accent keycaps, ↵ hints, send */
+  --cap-accent-shadow-pressed: inset 0 -1px 0 rgba(0, 0, 0, .16);
+  --cap-ui-raised: var(--cap-ui-shadow), 0 2px 0 var(--line-2);    /* selector / mute / mobile keys */
+  /* Fixed keyboard-prop colours the design rig hardcodes (keyboard3d.js), same in both modes. */
+  --kb-ink: #2B2723;         /* typewriter ribbon ink on the paper */
+  --kb-void: #0A0A0A;        /* Bullet side port, Arcade coin slot */
+  --kb-marquee-bg: #060607;  /* Arcade pixel marquee */
+}
+/* AA text on surfaces for the ok green (design --ok is 3.7:1 on light surfaces; fill use only). */
+:root, [data-theme="light"] { --ok-text: #237049; }
+[data-theme="dark"] { --ok-text: var(--ok); }
+/* Iso Scene lighting (Iso Scene.dc.html: highlight edge, cast shadow, face gradients per mode). */
+:root, [data-theme="light"] {
+  --iso-hl: rgba(255, 255, 255, .6); --iso-shadow: rgba(0, 0, 0, .2);
+  --iso-top: .55; --iso-side: .14; --iso-ao: .2; --iso-spec: .4;
+}
+[data-theme="dark"] {
+  --iso-hl: rgba(255, 255, 255, .22); --iso-shadow: rgba(0, 0, 0, .5);
+  --iso-top: .16; --iso-side: .05; --iso-ao: .35; --iso-spec: .14;
+}

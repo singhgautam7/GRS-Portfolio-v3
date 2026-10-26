@@ -1,97 +1,100 @@
 @import 'tailwindcss';
+@import '../styles/tokens.css';
 
 /* ==========================================================================
-   GRS Portfolio v3 — design tokens (lifted verbatim from the handoff
-   tokens.css / GRS Portfolio v3.dc.html). AMOLED dark is the default (:root).
-   Light overrides under [data-theme="light"]. data-theme is set on <html> and
-   hydrated from localStorage('grs-theme') by a blocking inline script.
+   Tokens live in src/styles/tokens.css (the design's file, two modes only).
+   data-theme / data-os are set on <html> before first paint by the inline
+   script in src/components/providers/ThemeProvider.tsx.
    ========================================================================== */
 
+/* Legacy v3.0 token names still read by pre-refresh components. Each maps onto
+   a design token; delete this block once those components are restyled. */
 :root,
+[data-theme='light'],
 [data-theme='dark'] {
-  --bg: #000000;
-  --surface: #0b0e14;
-  --surface-2: #11151e;
-  --surface-3: #161b26;
-  --bubble-user: rgba(90, 160, 255, 0.14);
-  --line: rgba(150, 180, 225, 0.12);
-  --line-2: rgba(150, 180, 225, 0.24);
-  --accent: #5aa0ff;
-  --accent-2: #8fc4ff;
-  --accent-ink: #04162e;
-  --ink: #eef2f9;
-  --ink-2: #a4b0c4;
-  --ink-3: #69748a;
-  --ink-faint: #3a4459;
-  --ok: #46d18b;
-  --warn: #f5b45a;
-  --grid: rgba(120, 160, 255, 0.05);
-  --grid-quiet: rgba(120, 160, 255, 0.022);
-  --shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.85);
-  --avatar-glow: 0 0 28px -6px rgba(90, 160, 255, 0.5);
-  --scrim: rgba(0, 0, 0, 0.55);
-  /* Hero ambient field (theme-aware). Dark: light glow on black, additive. */
-  --hero-surface: #000000;
-  --ambient-blend: screen;
-  --ambient-core: rgba(90, 160, 255, 0.55);
-  --ambient-mid: rgba(40, 90, 205, 0.2);
+  --surface-3: var(--surface-sunk);
+  --accent-2: var(--accent-text);
+  --ink-faint: var(--ink-3);
+  --bubble-user: var(--accent-soft);
+  --grid: transparent; /* the design has no blueprint grid */
+  --grid-quiet: transparent;
+  --shadow: var(--shadow-2);
+  --avatar-glow: var(--shadow-1);
+  --hero-surface: var(--bg);
+  --ambient-core: var(--accent-soft);
+  --ambient-mid: var(--accent-soft);
 }
 
-[data-theme='light'] {
-  --bg: #f3f6fb;
-  --surface: #ffffff;
-  --surface-2: #eef2f9;
-  --surface-3: #e6ecf6;
-  --bubble-user: rgba(194, 20, 60, 0.1);
-  --line: rgba(30, 62, 112, 0.13);
-  --line-2: rgba(30, 62, 112, 0.22);
-  /* Light theme uses a crimson accent (dark theme stays blue). Crimson reads
-     clearly on the pale surface and the multiply-blend hero glow shows as a soft
-     red tint instead of vanishing the way blue did. */
-  --accent: #c2143c;
-  --accent-2: #9f1239;
-  --accent-ink: #ffffff;
-  --ink: #0d1726;
-  --ink-2: #45546d;
-  --ink-3: #75839a;
-  --ink-faint: #b6c3d8;
-  --ok: #16a34a;
-  --warn: #c2790a;
-  /* Darker grid stroke so the hero grid reads on the pale surface. */
-  --grid: rgba(30, 64, 130, 0.11);
-  --grid-quiet: rgba(40, 90, 170, 0.03);
-  --shadow: 0 24px 54px -28px rgba(31, 70, 140, 0.32);
-  --avatar-glow: 0 10px 26px -12px rgba(47, 111, 224, 0.5);
-  --scrim: rgba(20, 30, 50, 0.32);
-  /* Hero ambient field. Light: crimson accent multiplied over a neutral light
-     surface so the motion reads as a soft red tint instead of vanishing. */
-  --hero-surface: #efedf0;
-  --ambient-blend: multiply;
-  --ambient-core: rgba(194, 20, 60, 0.45);
-  --ambient-mid: rgba(194, 20, 60, 0.22);
+/* OS-aware legends without hydration shift: render every OS variant, CSS shows
+   the one matching html[data-os] (see components/ui/Keycap2D ModKey). */
+[data-os-only] {
+  display: none;
 }
-
-:root {
-  /* next/font self-hosts IBM Plex; fall back to the Google/system name. */
-  --font-sans: var(--font-ibm-sans), 'IBM Plex Sans', system-ui, sans-serif;
-  --font-mono: var(--font-ibm-mono), 'IBM Plex Mono', ui-monospace, monospace;
-  --maxw: 1080px;
-  --gutter: clamp(18px, 4vw, 32px);
-  --r-card: 14px;
-  --r-control: 9px;
-  --r-input: 15px;
-  --r-chip: 6px;
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --header-height: 58px;
+html:not([data-os='mac']) [data-os-only='other'],
+html[data-os='mac'] [data-os-only='mac'] {
+  display: inline;
 }
-
-/* Expose a couple of tokens to Tailwind's utility layer for convenience. */
-@theme inline {
-  --font-sans: var(--font-ibm-sans), 'IBM Plex Sans', system-ui, sans-serif;
-  --font-mono: var(--font-ibm-mono), 'IBM Plex Mono', ui-monospace, monospace;
-  --color-accent: var(--accent);
-  --color-ink: var(--ink);
-  --color-bg: var(--bg);
+html:not([data-theme='dark']) [data-theme-only='dark'],
+html[data-theme='dark'] [data-theme-only='light'] {
+  display: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -60px;
+  z-index: var(--z-overlay);
+  padding: 10px 16px;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  color: var(--bg);
+  font-size: var(--fs-small);
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 16px;
+}
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+/* Page changes: each route's <main> fades in. */
+main {
+  animation: pageIn var(--dur-slow) var(--ease-out) both;
+}
+/* Theme switch: a crossfade of the whole page at the design's 380ms "page colours" timing
+   (View Transitions; instant where unsupported). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--dur-slow);
+  animation-timing-function: var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) {
+  main {
+    animation: none;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+/* No keyboard hints on touch-only devices. */
+@media (hover: none) and (pointer: coarse) {
+  [data-kbd-hint] {
+    display: none !important;
+  }
 }
 
 * {
@@ -127,9 +130,8 @@ body {
   border: 3px solid var(--bg);
 }
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 2px;
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 /* ---- keyframes (from the design) ---- */

@@ -15,7 +15,7 @@
   font-weight: inherit;
 }
 .grs-prose a {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -41,7 +41,7 @@
 }
 .grs-prose li::before {
   content: '▪';
-  color: var(--accent);
+  color: var(--accent-text);
   font-family: var(--font-mono);
   flex: none;
 }
@@ -151,7 +151,7 @@
   border-left: 2px solid var(--accent);
 }
 .grs-prose pre code [data-highlighted-line]::before {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 /* reader layout: article + sticky TOC; single column under 860px */
@@ -189,5 +189,5 @@
   z-index: 1;
 }
 .grs-code-copy[data-copied='1'] {
-  color: var(--ok);
+  color: var(--ok-text);
 }

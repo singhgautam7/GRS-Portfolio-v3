@@ -62,7 +62,7 @@ export const intents: Intent[] = [
     handler: (ctx) =>
       r(
         {
-          text: `gautam, senior software engineer. ${ctx.roleCount} roles, ${ctx.experienceLabel} years, and a habit of building things on weekends. You are currently talking to my on-device assistant.`,
+          text: `gautam, senior software engineer. ${ctx.roleCount} roles, ${ctx.experienceLabel} years, and a habit of building things on weekends. You are reading answers I wrote myself.`,
           buttons: [
             { label: 'See experience', kind: 'ghost', action: 'route', value: 'Experience' },
           ],
@@ -93,7 +93,7 @@ export const intents: Intent[] = [
     handler: () =>
       r(
         {
-          text: 'I answer questions about Gautam, all on-device. Try: experience, what he works on, his projects, what he is up to now, or how to get in touch. Easter eggs exist for the curious.',
+          text: 'I answer questions about Gautam. Try: experience, what he works on, his projects, what he is up to now, or how to get in touch. Easter eggs exist for the curious.',
           buttons: [
             { label: 'Experience', kind: 'ghost', action: 'ask', value: 'How much experience do you have?' },
             { label: 'Projects', kind: 'ghost', action: 'ask', value: 'Show me your best projects' },
@@ -501,7 +501,7 @@ export const intents: Intent[] = [
     handler: () =>
       r(
         {
-          text: "I'm a small rule-based assistant running entirely in your browser. No server, no API key, nothing leaves your device. Think of me as Gautam's answering machine with good manners.",
+          text: "No. These are answers Gautam wrote himself, matched by keyword right here in your browser. No server, no API key, nothing leaves your device. Think of it as an answering machine with good manners.",
           buttons: [
             { label: 'What he works on', kind: 'ghost', action: 'ask', value: 'What do you work on?' },
           ],
@@ -603,7 +603,7 @@ export const intents: Intent[] = [
   {
     id: 'meta',
     examples: [
-      'how does this assistant work?',
+      'how do these answers work?',
       'how was this site built?',
       'is this open source?',
       'what is this site built with?',
@@ -628,10 +628,9 @@ export const intents: Intent[] = [
     handler: () =>
       r(
         {
-          text: 'This whole site is a static Next.js build with zero runtime cost, and this assistant is a small rule-based engine running entirely in your browser: no server, no API key, nothing leaves your device. Answers come from a hand-written intent registry plus an in-browser search index over my content.',
+          text: 'This whole site is a static Next.js build with zero runtime cost, and these answers are matched by keyword right here in your browser: no server, no API key, nothing leaves your device. Answers come from a hand-written intent registry plus an in-browser search index over my content.',
           buttons: [
             { label: 'See my projects', kind: 'ghost', action: 'route', value: 'Projects' },
-            { label: 'Are you a real AI?', kind: 'ghost', action: 'ask', value: 'Are you a real AI?' },
           ],
         },
         'meta',
@@ -914,7 +913,7 @@ export const intents: Intent[] = [
     handler: () =>
       r(
         {
-          text: "Hey! I'm Gautam. This is my on-device assistant, and everything it answers runs right here in your browser. Ask me about my experience, what I'm working on, my projects, or how to get in touch.",
+          text: "Hey! I'm Gautam. Everything here runs right in your browser. Ask me about my experience, what I'm working on, my projects, or how to get in touch.",
           buttons: [
             { label: 'Best projects', kind: 'ghost', action: 'ask', value: 'Show me your best projects' },
             { label: 'Contact', kind: 'ghost', action: 'ask', value: 'How do I contact you?' },

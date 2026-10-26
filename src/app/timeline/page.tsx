@@ -26,7 +26,7 @@ const KIND_BG: Record<TimelineKind, string> = {
 };
 
 const LEGEND: Array<{ color: string; label: string }> = [
-  { color: 'var(--accent)', label: 'Role' },
+  { color: 'var(--accent-text)', label: 'Role' },
   { color: 'var(--accent-2)', label: 'Project' },
   { color: 'var(--ok)', label: 'Certification' },
   { color: 'var(--warn)', label: 'Milestone' },
@@ -51,7 +51,7 @@ export default function TimelinePage() {
           margin: '0 0 16px',
         }}
       >
-        Career <span style={{ color: 'var(--accent)' }}>Timeline</span>
+        Career <span style={{ color: 'var(--accent-text)' }}>Timeline</span>
       </h1>
       <p
         style={{
@@ -137,7 +137,7 @@ export default function TimelinePage() {
                   }}
                 >
                   <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: '-0.01em' }}>{ev.title}</div>
-                  <div style={{ fontSize: 13, color: 'var(--accent)', marginTop: 3 }}>{ev.org}</div>
+                  <div style={{ fontSize: 13, color: 'var(--accent-text)', marginTop: 3 }}>{ev.org}</div>
                   {ev.points.length > 0 ? (
                     <ul
                       style={{
@@ -154,7 +154,7 @@ export default function TimelinePage() {
                           key={pt}
                           style={{ display: 'flex', gap: 10, fontSize: 13.5, lineHeight: 1.55, color: 'var(--ink-2)' }}
                         >
-                          <span style={{ color: 'var(--accent)', fontFamily: mono, flex: 'none' }}>→</span>
+                          <span style={{ color: 'var(--accent-text)', fontFamily: mono, flex: 'none' }}>→</span>
                           <span>{pt}</span>
                         </li>
                       ))}

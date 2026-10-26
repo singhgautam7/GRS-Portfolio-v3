@@ -1,17 +1,11 @@
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { AskClient } from './AskClient';
-import { AskmeSkeleton } from '@/components/assistant/AskmeSkeleton';
+import { AskPage } from '@/features/ask/AskPage';
 
 export const metadata: Metadata = {
   title: 'Ask Me Anything',
-  description: "Ask Gautam's on-device assistant about his experience, work and projects.",
+  description: 'Questions about Gautam’s experience, work and projects, answered right in your browser.',
 };
 
-export default function AskPage() {
-  return (
-    <Suspense fallback={<AskmeSkeleton />}>
-      <AskClient />
-    </Suspense>
-  );
+export default function Page() {
+  return <AskPage />;
 }

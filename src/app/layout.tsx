@@ -1,23 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import { IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
+import { fontVariables } from '@/styles/fonts';
 import { ThemeProvider, themeNoFlashScript } from '@/components/providers/ThemeProvider';
 import { SiteChrome } from '@/components/chrome/SiteChrome';
 import { SITE } from '@/lib/site';
-
-const sans = IBM_Plex_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-ibm-sans',
-  display: 'swap',
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-ibm-mono',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -59,8 +45,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: dark)', color: '#0b0e14' },
-    { media: '(prefers-color-scheme: light)', color: '#f3f6fb' },
+    // --bg per mode (src/styles/tokens.css); metadata cannot read CSS variables.
+    { media: '(prefers-color-scheme: dark)', color: '#0A0C0D' },
+    { media: '(prefers-color-scheme: light)', color: '#EFEBE4' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -69,11 +56,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className={fontVariables} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeNoFlashScript }} />
       </head>
-      <body className={`${sans.variable} ${mono.variable}`}>
+      <body>
         <ThemeProvider>
           <SiteChrome>{children}</SiteChrome>
         </ThemeProvider>
