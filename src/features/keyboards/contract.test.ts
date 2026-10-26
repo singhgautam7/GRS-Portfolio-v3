@@ -36,8 +36,8 @@ describe('keyboard variant contract', () => {
 });
 
 describe('selector persistence', () => {
-  test('defaults: Mechanical, muted', () => {
-    expect(DEFAULT_PREFS).toEqual({ variant: 'thk', muted: true });
+  test('defaults: Mechanical, unmuted', () => {
+    expect(DEFAULT_PREFS).toEqual({ variant: 'thk', muted: false });
   });
   test('variant ids validate', () => {
     expect(isVariantId('8bt')).toBe(true);

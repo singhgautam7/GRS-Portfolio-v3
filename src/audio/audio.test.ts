@@ -52,15 +52,8 @@ function setup(initial: Partial<KbPrefs> = {}) {
 }
 
 describe('audio', () => {
-  test('muted by default: input makes no context and no sound', () => {
+  test('unmuted by default: nothing plays before a gesture, gesture unlocks and plays', () => {
     const r = setup();
-    r.input.synthetic('KeyJ', 'j', true, 'pointer');
-    expect(r.created()).toBe(0);
-    expect(r.fake.started).toHaveLength(0);
-  });
-
-  test('nothing plays before a gesture, even when stored unmuted', () => {
-    const r = setup({ muted: false });
     expect(r.created()).toBe(0);
     r.engine.play('thk', 'down');
     expect(r.fake.started).toHaveLength(0);
@@ -69,8 +62,15 @@ describe('audio', () => {
     expect(r.fake.started.length).toBeGreaterThan(0);
   });
 
+  test('when muted: input makes no context and no sound', () => {
+    const r = setup({ muted: true });
+    r.input.synthetic('KeyJ', 'j', true, 'pointer');
+    expect(r.created()).toBe(0);
+    expect(r.fake.started).toHaveLength(0);
+  });
+
   test('unmute (a click) unlocks and previews', () => {
-    const r = setup();
+    const r = setup({ muted: true });
     r.setPrefs({ muted: false });
     expect(r.created()).toBe(1);
     expect(r.fake.started.length).toBeGreaterThan(0);
