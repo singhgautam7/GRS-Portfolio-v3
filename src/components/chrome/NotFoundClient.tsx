@@ -63,7 +63,7 @@ export function NotFoundClient() {
               <span style={{ color: 'var(--ink)' }}>whereis page</span>
             </div>
             <div>
-              page: <span style={{ color: 'var(--accent)' }}>not found</span>, but the good stuff is one
+              page: <span style={{ color: 'var(--accent-text)' }}>not found</span>, but the good stuff is one
               command away.
             </div>
             <div style={{ marginTop: 14, color: 'var(--ink-3)' }}># try one of these:</div>
@@ -91,7 +91,7 @@ export function NotFoundClient() {
             <Home size={16} /> Home
           </Link>
           <button
-            onClick={openPalette}
+            onClick={(e) => openPalette(e.currentTarget.getBoundingClientRect())}
             className="grs-ghost-btn"
             style={{
               display: 'inline-flex',

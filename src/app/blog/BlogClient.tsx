@@ -26,7 +26,7 @@ export function BlogClient() {
           margin: '0 0 16px',
         }}
       >
-        The <span style={{ color: 'var(--accent)' }}>Blog</span>
+        The <span style={{ color: 'var(--accent-text)' }}>Blog</span>
       </h1>
       <p
         style={{

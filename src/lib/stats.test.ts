@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 import { readdirSync } from 'node:fs';
 import { computeStats, aboutStatCells } from './stats';
-import { buildChips, CHIP_POOL } from './chips';
 
 // Count source files on disk so the test tracks content/ without manual edits.
 const onDisk = (dir: string) => readdirSync(`content/${dir}`).filter((f) => !f.startsWith('.')).length;
@@ -34,19 +33,5 @@ describe('aboutStatCells', () => {
     expect(cells).toHaveLength(5);
     expect(cells[0]!.label).toBe('EXPERIENCE');
     expect(cells[1]!.num).toBe(String(onDisk('projects')));
-  });
-});
-
-describe('buildChips', () => {
-  it('picks one chip per bucket (6 total)', () => {
-    const chips = buildChips(() => 0.5);
-    expect(chips).toHaveLength(6);
-  });
-  it('always includes a playful chip', () => {
-    for (let i = 0; i < 20; i++) {
-      const chips = buildChips();
-      const hasPlayful = chips.some((c) => CHIP_POOL.playful.includes(c));
-      expect(hasPlayful).toBe(true);
-    }
   });
 });

@@ -1,0 +1,563 @@
+/* Hero (design 2a at 1440×900; positions scale with the hero box) and mobile hero (4a, 7e). */
+
+.hero {
+  position: relative;
+  /* 900px at 1440 (16:10, the design frame), never taller than the viewport, so the selector and
+     hint line below the board are always on the first screen. */
+  height: clamp(700px, min(100svh, 62.5vw), 960px);
+  overflow: hidden;
+}
+
+/* ---------- 3D stage + posters ---------- */
+.stage {
+  position: absolute;
+  inset: 0;
+}
+.posters,
+.canvasHost {
+  position: absolute;
+  inset: 0;
+}
+.poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+.canvasHost {
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+.stage[data-phase='ready'][data-loading='false'] .canvasHost {
+  opacity: 1;
+}
+
+/* Loader where the board sits (shown until the 3D keyboard, or a swapped-in variant, is ready). */
+.loader {
+  position: absolute;
+  left: 50%;
+  right: 0;
+  top: 32%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+.stage[data-loading='true']:not([data-phase='poster']) .loader {
+  opacity: 1;
+}
+.loaderKeys {
+  display: flex;
+  gap: 8px;
+}
+.loaderKey {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--r-md);
+  background: var(--cap-ui-bg);
+  color: var(--cap-ui-ink);
+  box-shadow: var(--cap-ui-raised);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  animation: loaderPress 1.2s var(--ease-press) infinite;
+}
+.loaderKey:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.loaderKey:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes loaderPress {
+  0%,
+  60%,
+  100% {
+    transform: none;
+    box-shadow: var(--cap-ui-raised);
+  }
+  25% {
+    transform: translateY(2px);
+    box-shadow: var(--cap-ui-pressed);
+    color: var(--accent-text);
+  }
+}
+.loaderText {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--ink-3);
+}
+
+/* ---------- left column ---------- */
+.left {
+  position: absolute;
+  left: 96px;
+  top: 0;
+  bottom: 0;
+  width: 560px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+.left a,
+.left button {
+  pointer-events: auto;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 16px 0 13px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.live {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+  animation: heroPulse 2.4s ease-in-out infinite;
+}
+@keyframes heroPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.title {
+  margin: 26px 0 22px;
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-display);
+  font-weight: var(--fw-semibold);
+  text-wrap: balance;
+}
+.lead {
+  margin: 0;
+  max-width: 440px;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 38px;
+}
+.ctaRow {
+  display: flex;
+  gap: 12px;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+}
+.playBtn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 52px;
+  padding: 0 12px 0 20px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.playBtn:hover {
+  opacity: 0.8;
+}
+.keys {
+  display: flex;
+  gap: 3px;
+}
+.resumeBtn {
+  padding: 0 20px 0 18px;
+}
+.ext {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--ink-3);
+}
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  margin: 52px 0 0;
+  border-top: 1px solid var(--line-2);
+}
+.kpi {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 16px 28px 0 0;
+  margin-right: 28px;
+  border-right: 1px solid var(--line-2);
+}
+.kpi:last-child {
+  border-right: none;
+}
+.kpiN {
+  margin: 0;
+  font-size: 30px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.kpiL {
+  font-size: 13px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ---------- hint line + selector (below the board) ---------- */
+.hint {
+  position: absolute;
+  left: 44.44%;
+  right: 16.67%;
+  top: 85.1%;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--ink-3);
+}
+.hintOff {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.hintOn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-2);
+}
+.hintDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.selector {
+  position: absolute;
+  left: 41.67%;
+  right: 13.89%;
+  top: 88.9%;
+  display: flex;
+  justify-content: center;
+  z-index: 35;
+}
+.mobileKeys {
+  display: none;
+}
+
+/* ---------- mobile hero (4a) ---------- */
+@media (max-width: 1023px), (hover: none) and (pointer: coarse) {
+  /* 4a order: pill, headline, copy, keycap cluster + selector, then KPIs. */
+  .hero {
+    height: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 22px 22px 8px;
+  }
+  .stage,
+  .hint,
+  .selector {
+    display: none;
+  }
+  .left {
+    display: contents;
+    pointer-events: auto;
+  }
+  .pill {
+    align-self: flex-start;
+  }
+  .pill {
+    height: 30px;
+    padding: 0 12px 0 10px;
+    font-size: 10.5px;
+    gap: 8px;
+  }
+  .live {
+    width: 7px;
+    height: 7px;
+  }
+  .title {
+    margin: 20px 0 14px;
+    font-size: 44px;
+  }
+  .lead {
+    font-size: var(--fs-body);
+  }
+  .ctas {
+    display: none;
+  }
+  .kpis {
+    order: 3;
+    box-sizing: border-box;
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 18px;
+    padding-top: 14px;
+  }
+  .kpi {
+    padding: 0;
+    margin: 0;
+    border: none;
+  }
+  .kpiN {
+    font-size: 22px;
+  }
+  .kpiL {
+    font-size: var(--fs-micro);
+    white-space: normal;
+    line-height: 1.25;
+  }
+  .mobileKeys {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 26px;
+  }
+}
+
+/* ---------- mobile keycap cluster, per keyboard (Keycap Cluster.dc.html) ---------- */
+.cluster {
+  --drop: rgba(0, 0, 0, 0.35);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 12px;
+  padding: var(--deck-pad, 0);
+  border-radius: var(--deck-r, 0);
+  background: var(--deck-bg, transparent);
+  box-shadow: var(--deck-sh, none);
+}
+.ck {
+  height: 112px;
+  border: none;
+  border-radius: var(--r);
+  padding: 14px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: var(--align, flex-start);
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--dur-instant) var(--ease-press),
+    box-shadow var(--dur-instant);
+}
+.ck:active {
+  transform: translateY(6px);
+}
+.ckA {
+  background: var(--a-bg);
+  color: var(--a-fg);
+  box-shadow: var(--a-sh);
+}
+.ckM {
+  background: var(--m-bg);
+  color: var(--m-fg);
+  box-shadow: var(--m-sh);
+}
+.ckC {
+  grid-column: span 2;
+  height: 96px;
+  padding: 14px 22px 18px;
+  flex-direction: row;
+  align-items: flex-end;
+  background: var(--c-bg);
+  color: var(--kb-legend-accent);
+  box-shadow: var(--c-sh);
+}
+.ckLeg {
+  font-family: var(--leg-font, var(--font-mono));
+  font-size: var(--leg-size, 12px);
+  opacity: 0.75;
+  text-shadow: var(--leg-glow, none);
+}
+.ckLabel {
+  font-size: 17px;
+  font-weight: var(--fw-semibold);
+  white-space: nowrap;
+  text-shadow: var(--leg-glow, none);
+}
+.ckRun {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.ckRun .ckLeg {
+  font-size: var(--fs-micro);
+}
+.ckBig {
+  font-size: 19px;
+  font-weight: var(--fw-semibold);
+}
+.ckEnter {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  line-height: 1;
+}
+.cluster[data-kb='thk'] {
+  --r: 16px;
+  --a-bg: var(--kb-cap);
+  --a-fg: var(--kb-legend);
+  --a-sh: inset 0 2px 0 rgba(255, 255, 255, 0.5), inset 0 -4px 0 rgba(0, 0, 0, 0.05), 0 7px 0 var(--kb-cap-mod), 0 16px 22px -10px var(--drop);
+  --m-bg: var(--kb-cap-mod);
+  --m-fg: var(--kb-legend-mod);
+  --m-sh: inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -4px 0 rgba(0, 0, 0, 0.06), 0 7px 0 var(--kb-plate), 0 16px 22px -10px var(--drop);
+  --c-bg: var(--kb-cap-accent);
+  --c-sh: inset 0 2px 0 rgba(255, 255, 255, 0.35), inset 0 -4px 0 rgba(0, 0, 0, 0.08), 0 7px 0 var(--accent-text), 0 18px 26px -10px var(--accent-soft), 0 16px 22px -10px rgba(0, 0, 0, 0.3);
+}
+.cluster[data-kb='tik'] {
+  --r: 12px;
+  --deck-pad: 14px;
+  --deck-r: 22px;
+  --deck-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.35), transparent 40%), var(--kb-metal);
+  --deck-sh: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 0 rgba(0, 0, 0, 0.08), 0 18px 30px -18px rgba(0, 0, 0, 0.4);
+  --a-bg: var(--kb-cap);
+  --a-fg: var(--kb-legend);
+  --a-sh: 0 0 0 3px var(--kb-plate), 0 2px 0 3px var(--kb-plate);
+  --m-bg: var(--kb-cap-mod);
+  --m-fg: var(--kb-legend-mod);
+  --m-sh: 0 0 0 3px var(--kb-plate), 0 2px 0 3px var(--kb-plate);
+  --c-bg: var(--kb-cap-accent);
+  --c-sh: 0 0 0 3px var(--kb-plate), 0 2px 0 3px var(--kb-plate), 0 0 24px -6px var(--accent);
+}
+:global([data-theme='dark']) .cluster[data-kb='tik'] {
+  --leg-glow: 0 0 10px var(--accent);
+}
+.cluster[data-kb='clk'] {
+  --r: 999px;
+  --align: center;
+  --deck-pad: 18px 16px;
+  --deck-r: 28px;
+  --deck-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 35%), var(--kb-case);
+  --deck-sh: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 18px 30px -16px var(--drop);
+  --a-bg: radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, 0.5), transparent 55%), var(--kb-cap);
+  --a-fg: var(--kb-legend);
+  --a-sh: 0 0 0 4px var(--kb-metal), 0 0 0 5px rgba(0, 0, 0, 0.25), 0 10px 0 2px rgba(0, 0, 0, 0.14), 0 18px 20px -10px var(--drop);
+  --m-bg: radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, 0.4), transparent 55%), var(--kb-cap-mod);
+  --m-fg: var(--kb-legend-mod);
+  --m-sh: var(--a-sh);
+  --c-bg: radial-gradient(120% 90% at 50% 0%, rgba(255, 255, 255, 0.4), transparent 55%), var(--kb-cap-accent);
+  --c-sh: var(--a-sh);
+}
+.cluster[data-kb='pop'] {
+  --r: 999px;
+  --align: center;
+  --deck-pad: 16px;
+  --deck-r: 34px;
+  --deck-bg: var(--kb-case);
+  --deck-sh: inset 0 4px 0 rgba(255, 255, 255, 0.35), inset 0 -6px 0 rgba(0, 0, 0, 0.06), 0 18px 30px -16px var(--drop);
+  --a-bg: var(--kb-cap-2);
+  --a-fg: var(--kb-legend);
+  --a-sh: inset 0 5px 0 rgba(255, 255, 255, 0.45), inset 0 -7px 0 rgba(0, 0, 0, 0.08), 0 6px 0 rgba(0, 0, 0, 0.12), 0 14px 20px -8px rgba(0, 0, 0, 0.3);
+  --m-bg: var(--kb-cap-3);
+  --m-fg: var(--kb-legend);
+  --m-sh: var(--a-sh);
+  --c-bg: var(--kb-cap-accent);
+  --c-sh: inset 0 5px 0 rgba(255, 255, 255, 0.4), inset 0 -7px 0 rgba(0, 0, 0, 0.1), 0 6px 0 rgba(0, 0, 0, 0.14), 0 14px 20px -8px rgba(0, 0, 0, 0.3);
+}
+.cluster[data-kb='pew'] {
+  --r: 8px;
+  --deck-pad: 24px 16px 16px;
+  --deck-r: 12px;
+  --deck-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 30%), var(--kb-case);
+  --deck-sh: inset 0 0 0 2px var(--kb-metal), inset 0 3px 0 rgba(255, 255, 255, 0.18), 0 18px 30px -16px var(--drop);
+  --a-bg: radial-gradient(circle at 26px 26px, transparent 0 12px, rgba(0, 0, 0, 0.24) 13px 15px, transparent 16px), linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 42%), var(--kb-cap);
+  --a-fg: var(--kb-legend);
+  --a-sh: inset 0 2px 0 rgba(255, 255, 255, 0.35), 0 8px 0 var(--kb-plate), 0 18px 22px -10px rgba(0, 0, 0, 0.45);
+  --m-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 40%), var(--kb-cap-mod);
+  --m-fg: var(--kb-legend-mod);
+  --m-sh: inset 0 2px 0 rgba(255, 255, 255, 0.2), 0 8px 0 var(--kb-plate), 0 18px 22px -10px rgba(0, 0, 0, 0.45);
+  --c-bg: var(--kb-cap-accent);
+  --c-sh: inset 0 2px 0 rgba(255, 255, 255, 0.3), 0 8px 0 var(--kb-plate), 0 18px 22px -10px rgba(0, 0, 0, 0.45);
+}
+/* Bullet rivets on the deck */
+.cluster[data-kb='pew']::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 8px;
+  height: 9px;
+  background:
+    radial-gradient(circle 4.5px at 4.5px 4.5px, var(--kb-trim) 98%, transparent) left / 9px 9px no-repeat,
+    radial-gradient(circle 4.5px at 4.5px 4.5px, var(--kb-trim) 98%, transparent) center / 9px 9px no-repeat,
+    radial-gradient(circle 4.5px at 4.5px 4.5px, var(--kb-trim) 98%, transparent) right / 9px 9px no-repeat;
+}
+.cluster[data-kb='8bt'] {
+  --r: 999px;
+  --align: center;
+  --leg-font: var(--font-pixel);
+  --leg-size: 10px;
+  --deck-pad: 18px 16px;
+  --deck-r: 20px;
+  --deck-bg: var(--kb-case);
+  --deck-sh: inset 0 0 0 2px var(--kb-plate), inset 0 -4px 0 var(--kb-trim), 0 18px 30px -16px var(--drop);
+  --a-bg: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.6), transparent 42%), var(--kb-cap);
+  --a-fg: var(--kb-legend);
+  --a-sh: 0 0 0 5px var(--kb-metal), 0 7px 0 4px rgba(0, 0, 0, 0.24), 0 16px 22px -8px rgba(0, 0, 0, 0.35);
+  --m-bg: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.6), transparent 42%), var(--kb-cap-2);
+  --m-fg: var(--kb-legend);
+  --m-sh: var(--a-sh);
+  --c-bg: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.55), transparent 42%), var(--kb-cap-accent);
+  --c-sh: var(--a-sh);
+}
+:global([data-theme='dark']) .cluster[data-kb='8bt'] {
+  --a-sh: 0 0 0 5px var(--kb-metal), 0 7px 0 4px rgba(0, 0, 0, 0.24), 0 16px 22px -8px rgba(0, 0, 0, 0.35), 0 0 30px -2px var(--kb-cap);
+  --m-sh: 0 0 0 5px var(--kb-metal), 0 7px 0 4px rgba(0, 0, 0, 0.24), 0 16px 22px -8px rgba(0, 0, 0, 0.35), 0 0 30px -2px var(--kb-cap-2);
+  --c-sh: 0 0 0 5px var(--kb-metal), 0 7px 0 4px rgba(0, 0, 0, 0.24), 0 16px 22px -8px rgba(0, 0, 0, 0.35), 0 0 30px -2px var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .live,
+  .loaderKey {
+    animation: none;
+  }
+  .ck:active {
+    transform: none;
+  }
+}

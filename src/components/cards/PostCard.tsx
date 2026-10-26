@@ -51,7 +51,7 @@ export function PostCard({ post, big = false }: { post: Post; big?: boolean }) {
             style={{
               fontFamily: mono,
               fontSize: 11,
-              color: 'var(--accent)',
+              color: 'var(--accent-text)',
               border: '1px solid var(--line)',
               borderRadius: 6,
               padding: '3px 9px',
@@ -66,7 +66,7 @@ export function PostCard({ post, big = false }: { post: Post; big?: boolean }) {
               marginLeft: 'auto',
               fontFamily: mono,
               fontSize: 12,
-              color: 'var(--accent)',
+              color: 'var(--accent-text)',
               display: 'inline-flex',
               alignItems: 'center',
               gap: 3,

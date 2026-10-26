@@ -5,18 +5,20 @@
  */
 
 export const SITE = {
-  name: 'Gautam Singh',
+  name: 'Gautam Rajeev Singh',
   shortName: 'GRS',
   domain: 'singhgautam.com',
   url: 'https://singhgautam.com',
   email: 'gautamsingh1997@gmail.com',
   role: 'Senior software engineer in backend, cloud infrastructure & AI systems.',
+  /** Hero status pill (design copy). */
+  headline: 'Senior Software Engineer · HashiCorp (IBM)',
   description:
-    'Gautam Singh, senior software engineer in backend, cloud infrastructure and AI systems. Ask the on-device assistant anything.',
+    'Gautam Rajeev Singh, senior software engineer at HashiCorp (IBM). Backend, cloud infrastructure and systems that stay up: Go, Kubernetes and Terraform, plus local-first apps.',
   /**
    * Experience start constant: 13 Jan 2019, 9:00 AM IST. All experience math
    * (years, precise mode) derives from this. Bumping it shifts every derived
-   * number across the site and the assistant.
+   * number across the site.
    */
   experienceStart: '2019-01-13T09:00:00+05:30',
   // Resume is a user-initiated navigation to a static asset, not a runtime fetch.
@@ -37,7 +39,7 @@ export const SOCIALS: SocialLink[] = [
   { name: 'YouTube', url: 'https://www.youtube.com/watch?v=g0OA1Le593c' },
 ];
 
-/** Grouped skills shown in the Skills section and answered by the assistant. */
+/** Grouped skills shown in the Skills section and in Ask about me answers. */
 export const SKILL_GROUPS = [
   { label: 'BACKEND', items: ['Go', 'Python', 'Django', 'Flask', 'DRF'] },
   {

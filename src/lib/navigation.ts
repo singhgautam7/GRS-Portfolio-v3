@@ -9,8 +9,9 @@ export const SECTIONS = [
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
   { id: 'experience', label: 'Experience' },
-  { id: 'projects', label: 'Featured Projects' },
-  { id: 'posts', label: 'Writing' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'playground', label: 'Playground' },
+  { id: 'writing', label: 'Writing' },
   { id: 'now', label: 'Now' },
   { id: 'contact', label: 'Contact' },
 ] as const;
@@ -24,7 +25,7 @@ const SECTION_BY_NAME: Record<string, string> = {
   Skills: 'skills',
   Experience: 'experience',
   'Featured Projects': 'projects',
-  Writing: 'posts',
+  Writing: 'writing',
   Now: 'now',
   Contact: 'contact',
 };
@@ -40,13 +41,14 @@ const REDUCED = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const HEADER_HEIGHT = 58;
+/** Breathing room above a section when jumping to it (the top bar is not sticky). */
+const SCROLL_OFFSET = 32;
 
-/** Smooth-scroll to a landing section, accounting for the sticky navbar. */
+/** Smooth-scroll to a landing section. */
 export function scrollToSection(id: string): void {
   const el = document.getElementById(id);
   if (!el) return;
-  const y = el.getBoundingClientRect().top + window.scrollY - HEADER_HEIGHT;
+  const y = el.getBoundingClientRect().top + window.scrollY - SCROLL_OFFSET;
   window.scrollTo({ top: y, behavior: REDUCED() ? 'auto' : 'smooth' });
 }
 

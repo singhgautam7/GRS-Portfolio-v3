@@ -117,7 +117,7 @@ export function PostReader({
                 style={{
                   fontFamily: mono,
                   fontSize: 11,
-                  color: 'var(--accent)',
+                  color: 'var(--accent-text)',
                   border: '1px solid var(--line)',
                   borderRadius: 6,
                   padding: '3px 9px',

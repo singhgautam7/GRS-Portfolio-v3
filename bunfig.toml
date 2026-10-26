@@ -1,0 +1,3 @@
+[test]
+# Unit tests live in src/; e2e/ is Playwright.
+root = "src"

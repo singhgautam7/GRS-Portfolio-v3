@@ -102,7 +102,7 @@ function H2({ id, children }: { id?: string; children?: ReactNode }) {
           onClick={copy}
           className="grs-anchor"
           aria-label="Link to this section"
-          style={{ color: 'var(--accent)', textDecoration: 'none', fontFamily: mono, fontSize: '0.62em', cursor: 'pointer' }}
+          style={{ color: 'var(--accent-text)', textDecoration: 'none', fontFamily: mono, fontSize: '0.62em', cursor: 'pointer' }}
         >
           #
         </a>

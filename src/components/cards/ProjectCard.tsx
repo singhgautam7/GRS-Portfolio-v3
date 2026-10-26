@@ -26,7 +26,7 @@ export function ProjectCard({ project }: { project: Project }) {
           style={{
             fontFamily: mono,
             fontSize: 11,
-            color: 'var(--accent)',
+            color: 'var(--accent-text)',
             border: '1px solid var(--line-2)',
             borderRadius: 6,
             padding: '3px 8px',
@@ -64,7 +64,7 @@ export function ProjectCard({ project }: { project: Project }) {
             target="_blank"
             rel="noopener noreferrer"
             className="grs-link"
-            style={{ color: 'var(--accent)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 3 }}
+            style={{ color: 'var(--accent-text)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 3 }}
           >
             live <ArrowUpRight size={12} />
           </a>
@@ -75,7 +75,7 @@ export function ProjectCard({ project }: { project: Project }) {
             target="_blank"
             rel="noopener noreferrer"
             className="grs-link"
-            style={{ color: 'var(--accent)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 3 }}
+            style={{ color: 'var(--accent-text)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 3 }}
           >
             code <ArrowUpRight size={12} />
           </a>

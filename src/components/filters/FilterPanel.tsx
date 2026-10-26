@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { X } from 'lucide-react';
 import { FilterGroup } from './FilterGroup';
-import { useReducedMotion } from '@/lib/hooks/useReducedMotion';
+import { useReducedMotion } from '@/lib/reduced-motion';
 import type { ResolvedGroup } from '@/lib/filters/useArchiveFilters';
 
 const mono = 'var(--font-mono)';

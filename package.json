@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "private": true,
   "type": "module",
-  "description": "Gautam Singh — personal portfolio v3. A fully static, mobile-first conversational portfolio with a client-side \"Ask Me Anything\" assistant.",
+  "description": "Gautam Rajeev Singh, personal portfolio v3. Fully static: a 3D keyboard hero with six switchable keyboards, a system design playground, and quick answers about his work.",
   "scripts": {
     "dev": "next dev",
     "og": "velite --clean && bun run scripts/generate-og.ts",
@@ -15,7 +15,9 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "format": "prettier --write \"**/*.{ts,tsx,css,md,mdx,json}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,css,md,mdx,json}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,css,md,mdx,json}\"",
+    "posters": "bun run scripts/generate-posters.ts",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@orama/orama": "^3.1.18",
@@ -24,16 +26,20 @@
     "motion": "^12.40.0",
     "next": "15.5.19",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "three": "0.186.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
     "@eslint/eslintrc": "^3.2.0",
+    "@playwright/test": "1.64.1",
     "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/postcss": "^4.3.1",
     "@types/bun": "latest",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/three": "0.186.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "15.5.19",
     "prettier": "^3.8.4",

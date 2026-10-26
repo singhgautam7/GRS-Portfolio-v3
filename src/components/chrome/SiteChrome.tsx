@@ -1,86 +1,163 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { ChromeContext } from './ChromeContext';
-import { Navbar } from './Navbar';
-import { ScrollProgress } from './ScrollProgress';
-import { SectionPill } from './SectionPill';
-import { CommandPalette } from './CommandPalette';
-import { ShortcutsOverlay } from './ShortcutsOverlay';
-import { Footer } from '@/components/sections/Footer';
+import { getInput } from '@/input';
+import { NAV_TARGETS } from '@/input/layer';
+import { useSiteNav } from '@/lib/navigation';
+import { prefersReducedMotion } from '@/lib/reduced-motion';
+import { getPrefs, hydratePrefs, subscribePrefs } from '@/features/keyboards/prefs';
+import { getKeyboardBridge } from '@/features/keyboards/bridge';
+import { TopBar } from '@/features/chrome/TopBar';
+import { Footer } from '@/features/chrome/Footer';
+import { Toast } from '@/features/chrome/Toast';
+import { dur } from '@/lib/tokens';
+
+// Overlays are not needed for first paint: their code loads on demand.
+const CommandPalette = dynamic(() => import('@/features/command-palette/CommandPalette'), { ssr: false });
+const ShortcutsSheet = dynamic(() => import('@/features/shortcuts-sheet/ShortcutsSheet'), { ssr: false });
+const AskWidget = dynamic(() => import('@/features/ask/AskWidget'), { ssr: false });
 
 /**
- * Global UI shell present on every route: navbar, command palette, shortcuts
- * overlay, scroll-progress bar and active-section pill, plus the global key
- * handlers (⌘K palette, ? shortcuts, Esc close).
+ * Global shell: top bar, footer, overlays, and the one place the input layer is attached and its
+ * shortcuts are given meaning. Also lazily connects audio once sound is turned on.
  */
 export function SiteChrome({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/\/+$/, '') || '/';
   const router = useRouter();
+  const { goSection } = useSiteNav();
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [paletteOrigin, setPaletteOrigin] = useState<DOMRect | null>(null);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
-
-  const openPalette = useCallback(() => setPaletteOpen(true), []);
-  const closePalette = useCallback(() => setPaletteOpen(false), []);
-  const openShortcuts = useCallback(() => setShortcutsOpen(true), []);
-  const closeShortcuts = useCallback(() => setShortcutsOpen(false), []);
-
-  // The /askme page is a full-screen chat surface; it hides the global pill/progress.
-  // Normalize the trailing slash added by `trailingSlash: true`.
-  const isChat = pathname.replace(/\/+$/, '') === '/askme';
-
+  const [askOpen, setAskOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState<string | null>(null);
+  // Overlays mount on first use and stay mounted so their close animations can play.
+  const [used, setUsed] = useState({ palette: false, sheet: false });
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
-        e.preventDefault();
-        setShortcutsOpen(false);
-        setPaletteOpen((o) => !o);
-        return;
+    if (paletteOpen || shortcutsOpen) setUsed((u) => ({ palette: u.palette || paletteOpen, sheet: u.sheet || shortcutsOpen }));
+  }, [paletteOpen, shortcutsOpen]);
+  const toastT = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const playing = useRef(false);
+
+  const isPlayground = pathname === '/playground';
+  const isAsk = pathname === '/askme';
+
+  const openPalette = useCallback((origin?: DOMRect | null) => {
+    setShortcutsOpen(false);
+    setPaletteOrigin(origin ?? null);
+    setPaletteOpen(true);
+  }, []);
+  const toast = useCallback((msg: string) => {
+    if (toastT.current) clearTimeout(toastT.current);
+    setToastMsg(msg);
+    toastT.current = setTimeout(() => setToastMsg(null), 1900);
+  }, []);
+
+  const goPlayground = useCallback(async () => {
+    if (playing.current) return;
+    playing.current = true;
+    setPaletteOpen(false);
+    setShortcutsOpen(false);
+    try {
+      const bridge = pathname === '/' ? getKeyboardBridge() : null;
+      if (bridge) {
+        await Promise.race([
+          bridge.enterPlayground(),
+          new Promise((r) => setTimeout(r, 850)),
+        ]);
       }
-      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-        if (!isChat) {
-          e.preventDefault();
-          router.push('/askme');
-          return;
-        }
+      // v1 transition: crossfade out, then the playground fades in on mount.
+      const main = document.querySelector('main');
+      if (main && !prefersReducedMotion()) {
+        await main.animate([{ opacity: 1 }, { opacity: 0 }], { duration: dur.base, fill: 'forwards' }).finished;
       }
-      const tag = (e.target as HTMLElement | null)?.tagName ?? '';
-      const typing = tag === 'INPUT' || tag === 'TEXTAREA';
-      if (e.key === '?' && !typing) {
-        e.preventDefault();
-        setShortcutsOpen((o) => !o);
-        return;
-      }
-      if (e.key === 'Escape') {
-        if (shortcutsOpen) setShortcutsOpen(false);
-        else if (paletteOpen) setPaletteOpen(false);
-      }
+      router.push('/playground');
+    } finally {
+      playing.current = false;
+    }
+  }, [pathname, router]);
+
+  // The input layer: attached once for the whole app.
+  useEffect(() => {
+    const detach = getInput().attach(window, document);
+    return () => detach();
+  }, []);
+  useEffect(() => {
+    hydratePrefs();
+    // Audio code loads only once sound is on (muted by default). One connection per page, even
+    // when effects run twice (dev Strict Mode) or modules hot-reload: two engines would play every
+    // sound twice, slightly offset.
+    const maybeConnect = () => {
+      const g = globalThis as { __grsAudio?: boolean };
+      if (g.__grsAudio || getPrefs().muted) return;
+      g.__grsAudio = true;
+      void import('@/audio/connect').then(({ connectAudio }) => connectAudio(getInput(), { get: getPrefs, subscribe: subscribePrefs }));
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [paletteOpen, shortcutsOpen, router, isChat]);
+    maybeConnect();
+    return subscribePrefs(maybeConnect);
+  }, []);
+
+  // Give shortcuts their meaning.
+  useEffect(() => {
+    const input = getInput();
+    const offs = [
+      input.handle('palette', () => {
+        setShortcutsOpen(false);
+        setPaletteOpen((open) => {
+          if (open) return false;
+          setPaletteOrigin(getKeyboardBridge()?.keyRect('KeyK') ?? null);
+          return true;
+        });
+      }),
+      input.handle('sheet', () => {
+        setPaletteOpen(false);
+        setShortcutsOpen((o) => !o);
+      }),
+      input.handle('playground', () => void goPlayground()),
+      input.handle('escape', () => {
+        if (!isPlayground) setAskOpen(false);
+      }),
+      ...NAV_TARGETS.map(([id, target]) => input.handle(id, () => goSection(target))),
+    ];
+    return () => offs.forEach((f) => f());
+  }, [goPlayground, goSection, isPlayground]);
+
+  // Overlays that own typing pause the keyboard mirroring and shortcuts.
+  useEffect(() => {
+    getInput().set({ blocked: paletteOpen || shortcutsOpen });
+  }, [paletteOpen, shortcutsOpen]);
 
   return (
     <ChromeContext.Provider
-      value={{ paletteOpen, openPalette, closePalette, shortcutsOpen, openShortcuts, closeShortcuts }}
+      value={{
+        paletteOpen,
+        paletteOrigin,
+        openPalette,
+        closePalette: () => setPaletteOpen(false),
+        shortcutsOpen,
+        openShortcuts: () => {
+          setPaletteOpen(false);
+          setShortcutsOpen(true);
+        },
+        closeShortcuts: () => setShortcutsOpen(false),
+        askOpen,
+        setAskOpen,
+        toast,
+        goPlayground: () => void goPlayground(),
+      }}
     >
-      <div
-        style={{
-          position: 'relative',
-          minHeight: '100vh',
-          background: 'var(--bg)',
-          color: 'var(--ink)',
-        }}
-      >
-        <Navbar />
-        {!isChat && <ScrollProgress />}
-        {children}
-        {!isChat && <Footer />}
-        {!isChat && <SectionPill />}
-        <CommandPalette />
-        <ShortcutsOverlay />
-      </div>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      {!isPlayground && <TopBar overlay={pathname === '/'} />}
+      {children}
+      {!isPlayground && !isAsk && <Footer />}
+      {!isPlayground && !isAsk && <AskWidget />}
+      {used.palette && <CommandPalette />}
+      {used.sheet && <ShortcutsSheet />}
+      <Toast message={toastMsg} />
     </ChromeContext.Provider>
   );
 }
